@@ -1,99 +1,333 @@
-/* Écrans moyens/laptops (1200px - 1439px) */
-@media (max-width: 1439px) and (min-width: 1200px) {
-    .hero-section h1 {
-        font-size: 70px;
-    }
+/* ===== RESPONSIVE HERO SECTION ===== */
 
-    .hero-section button {
-        font-size: 18px;
-        padding: 1rem 2.5rem;
-    }
-}
-
-/* Petits laptops (1024px - 1199px) */
-@media (max-width: 1199px) and (min-width: 1024px) {
+/* Très grands écrans (1440px et plus) */
+@media (min-width: 1440px) {
     .hero-section h1 {
         font-size: 50px;
     }
 
     .hero-section button {
-        font-size: 17px;
-        padding: 0.95rem 2.3rem;
+        font-size: 14px;
+        padding: 0.8rem 1.8rem;
+    }
+}
+
+/* Grands écrans/laptops (1200px - 1439px) */
+@media (max-width: 1439px) and (min-width: 1200px) {
+    .hero-section h1 {
+        font-size: 46px;
+    }
+
+    .hero-section button {
+        font-size: 13px;
+        padding: 0.75rem 1.6rem;
+    }
+}
+
+/* Laptops moyens (1024px - 1199px) */
+@media (max-width: 1199px) and (min-width: 1024px) {
+    .hero-section h1 {
+        font-size: 40px;
+    }
+
+    .hero-section button {
+        font-size: 12px;
+        padding: 0.7rem 1.4rem;
     }
 }
 
 /* Tablettes en paysage (768px - 1023px) */
 @media (max-width: 1023px) and (min-width: 768px) {
     .hero-section h1 {
-        font-size: 48px;
+        font-size: 32px;
     }
 
     .hero-section button {
-        font-size: 16px;
-        padding: 0.9rem 2rem;
+        font-size: 10px;
+        padding: 0.6rem 1.2rem;
     }
 }
 
 /* Tablettes en portrait (600px - 767px) */
-@media (max-width: 918px) and (min-width: 600px) {
-    .hero-section h1 {
-        font-size: 36px;
-    }
-
-    .hero-section button {
-        font-size: 15px;
-        padding: 0.8rem 1.8rem;
-    }
-
-    .hero-section>div {
-        gap: 1.5rem;
-    }
-}
-
-/* Grands mobiles (480px - 599px) */
-@media (max-width: 739px) and (min-width: 200px) {
+@media (max-width: 767px) and (min-width: 600px) {
     .hero-section h1 {
         font-size: 26px;
     }
 
     .hero-section button {
-        font-size: 11px;
-        padding: 0.6rem 1.3rem;
-    }
-
-    .hero-section>div {
-        gap: 1.2rem;
+        font-size: 9px;
+        padding: 0.5rem 1rem;
     }
 }
 
-/* Mobiles moyens (375px - 479px) */
-@media (max-width: 558px) and (min-width: 375px) {
+/* Grands mobiles (480px - 599px) */
+@media (max-width: 599px) and (min-width: 480px) {
     .hero-section h1 {
-        font-size: 19px;
+        font-size: 21px;
     }
 
     .hero-section button {
         font-size: 8px;
-        padding: 0.6rem 1.3rem;
-    }
-
-    .hero-section>div {
-        gap: 1rem;
+        padding: 0.45rem 0.85rem;
     }
 }
 
-
-@media (max-width: 409px) {
+/* Mobiles moyens (375px - 479px) */
+@media (max-width: 479px) and (min-width: 375px) {
     .hero-section h1 {
-        font-size: 15px;
+        font-size: 17px;
     }
 
     .hero-section button {
         font-size: 7px;
-        padding: 0.4rem 1rem;
+        padding: 0.4rem 0.75rem;
+    }
+}
+
+/* Petits mobiles (320px - 374px) */
+@media (max-width: 374px) and (min-width: 320px) {
+    .hero-section h1 {
+        font-size: 14px;
     }
 
-    .hero-section>div {
+    .hero-section button {
+        font-size: 6px;
+        padding: 0.35rem 0.65rem;
+    }
+}
+
+/* Très petits écrans (moins de 320px) */
+@media (max-width: 319px) {
+    .hero-section h1 {
+        font-size: 12px;
+    }
+
+    .hero-section button {
+        font-size: 5px;
+        padding: 0.3rem 0.55rem;
+    }
+}
+
+/* ===== RESPONSIVE ABOUT SECTION ===== */
+
+/* Tablettes et petits écrans (max-width: 1024px) */
+@media (max-width: 1400px) {
+    .about-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 2rem 1.5rem;
+        min-height: auto;
+    }
+
+    /* Logo au-dessus du texte, centré */
+    .about-section img[alt="logo"] {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 250px;
+        height: 250px;
+        margin: 0 auto 2rem;
+    }
+
+    /* Contenu textuel centré */
+    .about-section>div {
+        position: relative;
+        max-width: 100%;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .about-section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .about-section p {
+        font-size: 1.5rem;
+    }
+
+    /* Image about en dessous du texte, centrée */
+    .about-section img[alt="image about section"] {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 80%;
+        max-width: 500px;
+        height: auto;
+        margin: 2rem auto 0;
+        transform: none;
+        /* Bordures arrondies partout en responsive */
+        border-radius: 40px !important;
+        /* Bordure blanche partout autour de l'image */
+        border: 4px solid white !important;
+    }
+}
+
+/* Mobiles (max-width: 768px) */
+@media (max-width: 768px) {
+    .about-section {
+        padding: 1.5rem 1rem;
+    }
+
+    .about-section img[alt="logo"] {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 1.5rem;
+    }
+
+    .about-section h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .about-section p {
+        font-size: 1.25rem;
+    }
+
+    .about-section img[alt="image about section"] {
+        width: 90%;
+        max-width: 400px;
+        margin-top: 1.5rem;
+    }
+}
+
+/* Petits mobiles (max-width: 480px) */
+@media (max-width: 480px) {
+    .about-section {
+        padding: 1rem 0.75rem;
+    }
+
+    .about-section img[alt="logo"] {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 1rem;
+    }
+
+    .about-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .about-section p {
+        font-size: 1rem;
+    }
+
+    .about-section>div>div {
         gap: 1rem;
+    }
+
+    .about-section img[alt="image about section"] {
+        width: 95%;
+        max-width: 300px;
+        margin-top: 1rem;
+    }
+}
+
+/* ===== RESPONSIVE EQUIPE SECTION ===== */
+
+/* Tablettes en paysage et moins (max-width: 1023px) */
+@media (max-width: 1023px) and (min-width: 768px) {
+    .Equipe h2 {
+        font-size: 42px;
+    }
+
+    .Equipe p {
+        font-size: 28px;
+    }
+
+    /* Carrés des membres */
+    .Equipe .flex.flex-col.items-center.gap-4 h3 {
+        font-size: 18px;
+    }
+
+    .Equipe .w-52.h-52 {
+        width: 11rem !important;
+        height: 11rem !important;
+    }
+}
+
+/* Tablettes en portrait (600px - 767px) */
+@media (max-width: 767px) and (min-width: 600px) {
+    .Equipe h2 {
+        font-size: 38px;
+    }
+
+    .Equipe p {
+        font-size: 24px;
+    }
+
+    /* Carrés des membres */
+    .Equipe .flex.flex-col.items-center.gap-4 h3 {
+        font-size: 16px;
+    }
+
+    .Equipe .w-52.h-52 {
+        width: 10rem !important;
+        height: 10rem !important;
+    }
+}
+
+/* Grands mobiles (480px - 599px) */
+@media (max-width: 599px) and (min-width: 480px) {
+    .Equipe h2 {
+        font-size: 32px;
+    }
+
+    .Equipe p {
+        font-size: 20px;
+    }
+
+    /* Carrés des membres */
+    .Equipe .flex.flex-col.items-center.gap-4 h3 {
+        font-size: 15px;
+    }
+
+    .Equipe .w-52.h-52 {
+        width: 9rem !important;
+        height: 9rem !important;
+    }
+}
+
+/* Mobiles moyens (375px - 479px) */
+@media (max-width: 479px) and (min-width: 375px) {
+    .Equipe h2 {
+        font-size: 28px;
+    }
+
+    .Equipe p {
+        font-size: 18px;
+    }
+
+    /* Carrés des membres */
+    .Equipe .flex.flex-col.items-center.gap-4 h3 {
+        font-size: 14px;
+    }
+
+    .Equipe .w-52.h-52 {
+        width: 8rem !important;
+        height: 8rem !important;
+    }
+}
+
+/* Petits mobiles (moins de 375px) */
+@media (max-width: 374px) {
+    .Equipe h2 {
+        font-size: 24px;
+    }
+
+    .Equipe p {
+        font-size: 16px;
+    }
+
+    /* Carrés des membres */
+    .Equipe .flex.flex-col.items-center.gap-4 h3 {
+        font-size: 13px;
+    }
+
+    .Equipe .w-52.h-52 {
+        width: 7rem !important;
+        height: 7rem !important;
     }
 }
