@@ -1,8 +1,13 @@
 import React from 'react';
 import NavBar from '../components/navBar';
+import Footer from '../components/Footer';
 import './styles/responsive.css';
 
+import { useNavigate} from 'react-router-dom';
+
+
 export default function Home() {
+   const navigate = useNavigate();
   return (
     <div
       className="min-h-screen bg-[#1D1D1B]"
@@ -30,7 +35,7 @@ export default function Home() {
                          drop-shadow-[0_8px_8px_rgba(0,0,0,0.85)]
                          transition-all duration-500 ease-out
                          hover:text-[#1E1E1E] hover:bg-white hover:scale-105"
-            >
+            onClick={() => navigate('/evenements')}>
               PROCHAIN ÉVÉNEMENT
             </button>
           </div>
@@ -173,12 +178,12 @@ export default function Home() {
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-4">
         {/* Carte effet glass */}
         <div
-          className="w-[80%] max-w-[600px] h-[300px] sm:h-[260px] md:h-[320px] lg:h-[360px]
+          className="w-[80%] max-w-[600px] h-[300px] sm:h-[260px]  lg:h-[360px]
                      rounded-[40px] border-2 border-white
-                     backdrop-blur-md bg-gradient-to-br from-white/80 to-[#393939]/20
+                     backdrop-blur-md bg-linear-to-br from-white/80 to-[#393939]/20
                      flex items-center justify-center text-white text-2xl sm:text-xl md:text-3xl font-semibold shadow-lg"
         >
-          <p className="text-center px-6">Aucun événement à venir</p>
+          <p className="text-center px-6 tracking-custom">Aucun événement à venir</p>
         </div>
 
         {/* Bouton sous la carte */}
@@ -195,10 +200,27 @@ export default function Home() {
     </div>
   </div>
 </section>
-
-
-
-      </main>
+<section className='contact-class'>
+    <h2 className='tracking-custom text-center text-5xl font-bold underline mt-15'>CONTACEZ NOUS</h2>
+    <p className='tracking-custom text-center text-3xl mt-10'>UNE QUESTION ?</p>
+    <p className='tracking-custom text-center text-3xl mt-9'>UN PROBLEME ?</p>
+    <div className="flex justify-center w-full">
+      <button
+        className="overflow-hidden bg-[#1E1E1E] text-white font-bold py-4 px-10 
+                   rounded-full border-2 border-white tracking-custom text-lg
+                   drop-shadow-[0_8px_8px_rgba(0,0,0,0.85)]
+                   transition-all duration-500 ease-out
+                   hover:text-[#1E1E1E] hover:bg-white hover:scale-105 hover:border-[#1E1E1E] mt-10"
+                   onClick={() => navigate('/contact')}
+      >
+        CONTACTEZ NOUS
+      </button>
+    </div>
+</section>
+</main>
+    <footer>
+      <Footer/>
+    </footer>
     </div>
   );
 }

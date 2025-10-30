@@ -108,6 +108,25 @@
     }
 }
 
+/* ===== GAP RESPONSIVE HERO SECTION ===== */
+@media (max-width: 1023px) and (min-width: 768px) {
+    .hero-section>div {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 767px) and (min-width: 480px) {
+    .hero-section>div {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 479px) {
+    .hero-section>div {
+        gap: 0.5rem;
+    }
+}
+
 /* ===== RESPONSIVE ABOUT SECTION ===== */
 
 /* Tablettes et petits écrans (max-width: 1024px) */
@@ -140,7 +159,7 @@
     }
 
     .about-section h2 {
-        font-size: 2.5rem;
+
         margin-bottom: 2rem;
     }
 
@@ -334,20 +353,13 @@
 
 
 /* ---------- Responsive du titre HIVERNALES À VENIR ---------- */
-.event-title {
-    font-size: 2.75rem;
-    /* text-3xl équivalent */
-    margin-bottom: 2.5rem;
-    /* mb-10 */
-    padding: 0 1rem;
-    /* équivaut à px-4 */
-}
+
 
 @media (min-width: 640px) {
 
     /* sm */
     .event-title {
-        font-size: 2.25rem;
+        font-size: 2rem;
         /* text-4xl */
     }
 }
@@ -356,7 +368,7 @@
 
     /* md */
     .event-title {
-        font-size: 3rem;
+        font-size: 2rem;
         /* text-5xl */
     }
 }
@@ -367,5 +379,77 @@
     .event-title {
         font-size: 3.75rem;
         /* text-6xl */
+    }
+}
+
+/* ===== RESPONSIVE CONTACT SECTION ===== */
+
+@media (max-width: 1200px) {
+    .contact-class h2 {
+        font-size: 2.7rem;
+        margin-top: 2.5rem;
+    }
+
+    .contact-class p {
+        font-size: 1.7rem;
+        margin-top: 1.5rem;
+    }
+
+    .contact-class button {
+        font-size: 1.1rem;
+        padding: 1rem 2.2rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .contact-class h2 {
+        font-size: 2.1rem;
+        margin-top: 2rem;
+    }
+
+    .contact-class p {
+        font-size: 1.2rem;
+        margin-top: 1.2rem;
+    }
+
+    .contact-class button {
+        font-size: 1rem;
+        padding: 0.8rem 1.7rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .contact-class h2 {
+        font-size: 1.4rem;
+        margin-top: 1.2rem;
+    }
+
+    .contact-class p {
+        font-size: 1rem;
+        margin-top: 0.7rem;
+    }
+
+    .contact-class button {
+        font-size: 0.9rem;
+        padding: 0.7rem 1.2rem;
+    }
+}
+
+/* ===== RESPONSIVE H2 HIVERNALES A VENIR ===== */
+@media (max-width: 1200px) {
+    .event h2 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .event h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .event h2 {
+        font-size: 1.5rem;
     }
 }
