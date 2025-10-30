@@ -19,7 +19,7 @@ export default function Home() {
           />
 
           <div className="absolute top-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-8 text-center">
-            <h1 className="text-white font-bold tracking-custom text-[70px] flex flex-col items-center gap-2 drop-shadow-[0_8px_8px_rgba(0,0,0,0.85)]">
+            <h1 className="text-white font-bold tracking-custom text-[75px] flex flex-col items-center gap-2 drop-shadow-[0_8px_8px_rgba(0,0,0,0.85)]">
               <span>ASSOCIATION</span>
               <span>MOTO</span>
               <span>BENEZES RIDERS</span>
@@ -154,6 +154,50 @@ export default function Home() {
             </div>
           </div>
         </section>
+<section className="event mt-20 relative">
+ <h2 className="tracking-custom font-bold underline text-center mb-10 text-4xl text-white event-title">
+  HIVERNALES À VENIR
+</h2>
+
+
+  <div className="relative w-full flex justify-center items-center">
+    {/* Image de fond */}
+    <div className="relative w-full">
+      <img
+        src="/img/image4.png"
+        alt="image de fond hivernal"
+        className="w-full h-[700px] object-cover sm:h-[600px] md:h-[650px] lg:h-[750px]"
+      />
+
+      {/* Contenu centré dans l’image */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-4">
+        {/* Carte effet glass */}
+        <div
+          className="w-[80%] max-w-[600px] h-[300px] sm:h-[260px] md:h-[320px] lg:h-[360px]
+                     rounded-[40px] border-2 border-white
+                     backdrop-blur-md bg-gradient-to-br from-white/80 to-[#393939]/20
+                     flex items-center justify-center text-white text-2xl sm:text-xl md:text-3xl font-semibold shadow-lg"
+        >
+          <p className="text-center px-6">Aucun événement à venir</p>
+        </div>
+
+        {/* Bouton sous la carte */}
+        <button
+          className="overflow-hidden bg-[#1E1E1E] text-white font-bold py-4 px-10 
+                     rounded-full border-2 border-white tracking-custom text-lg
+                     drop-shadow-[0_8px_8px_rgba(0,0,0,0.85)]
+                     transition-all duration-500 ease-out
+                     hover:text-[#1E1E1E] hover:bg-white hover:scale-105 hover:border-[#1E1E1E]"
+        >
+          PLUS DE DÉTAILS
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
       </main>
     </div>
   );

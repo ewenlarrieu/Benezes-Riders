@@ -3,7 +3,7 @@
 /* Très grands écrans (1440px et plus) */
 @media (min-width: 1440px) {
     .hero-section h1 {
-        font-size: 50px;
+        font-size: 70px;
     }
 
     .hero-section button {
@@ -329,5 +329,43 @@
     .Equipe .w-52.h-52 {
         width: 7rem !important;
         height: 7rem !important;
+    }
+}
+
+
+/* ---------- Responsive du titre HIVERNALES À VENIR ---------- */
+.event-title {
+    font-size: 2.75rem;
+    /* text-3xl équivalent */
+    margin-bottom: 2.5rem;
+    /* mb-10 */
+    padding: 0 1rem;
+    /* équivaut à px-4 */
+}
+
+@media (min-width: 640px) {
+
+    /* sm */
+    .event-title {
+        font-size: 2.25rem;
+        /* text-4xl */
+    }
+}
+
+@media (min-width: 768px) {
+
+    /* md */
+    .event-title {
+        font-size: 3rem;
+        /* text-5xl */
+    }
+}
+
+@media (min-width: 1024px) {
+
+    /* lg */
+    .event-title {
+        font-size: 3.75rem;
+        /* text-6xl */
     }
 }
