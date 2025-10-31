@@ -13,7 +13,10 @@ export default function Home() {
       className="min-h-screen bg-[#1D1D1B]"
       style={{ fontFamily: 'Poppins, sans-serif' }}
     >
+      <nav>
+
       <NavBar />
+      </nav>
       <main>
         {/* Hero section */}
         <section className="hero-section relative px-0 py-0">
@@ -201,9 +204,9 @@ export default function Home() {
   </div>
 </section>
 <section className='contact-class'>
-    <h2 className='tracking-custom text-center text-5xl font-bold underline mt-15'>CONTACEZ NOUS</h2>
+    <h2 className='tracking-custom text-center text-5xl font-bold underline mt-15'>CONTACTEZ NOUS</h2>
     <p className='tracking-custom text-center text-3xl mt-10'>UNE QUESTION ?</p>
-    <p className='tracking-custom text-center text-3xl mt-9'>UN PROBLEME ?</p>
+    <p className='tracking-custom text-center text-3xl mt-9'>UN PROBLÈME ?</p>
     <div className="flex justify-center w-full">
       <button
         className="overflow-hidden bg-[#1E1E1E] text-white font-bold py-4 px-10 
