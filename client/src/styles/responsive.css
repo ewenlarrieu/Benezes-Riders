@@ -453,3 +453,37 @@
         font-size: 1.5rem;
     }
 }
+
+
+
+/* ------- RESPONSIVE ------- */
+
+/* Par défaut (écran large) */
+.admin-section {
+    position: relative;
+}
+
+.admin-label {
+    position: absolute;
+    right: 20px;
+    top: 0;
+}
+
+/* Pour les écrans plus petits que 768px */
+@media (max-width: 1000px) {
+    .admin-label {
+        position: static;
+        /* retire la position absolue */
+        text-align: center;
+        /* centre le texte */
+        margin-bottom: 10px;
+        /* espace entre admin et boutons */
+    }
+
+    .admin-buttons {
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+}
