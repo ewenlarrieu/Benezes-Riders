@@ -1,3 +1,29 @@
+/* ===== RESPONSIVE TITRE GALERIE PHOTOS ===== */
+.photos-title {
+    font-size: 3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 1023px) {
+    .photos-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .photos-title {
+        font-size: 1.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .photos-title {
+        font-size: 1.6rem;
+    }
+}
+
 /* ===== RESPONSIVE HERO SECTION ===== */
 
 /* Très grands écrans (1440px et plus) */
@@ -485,5 +511,90 @@
         align-content: center;
         align-items: center;
         gap: 10px;
+    }
+}
+
+@keyframes fadeInBackground {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.85) translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.animate-fadeInBg {
+    animation: fadeInBackground 0.3s ease forwards;
+}
+
+.animate-modalPop {
+    animation: modalPop 0.35s ease forwards;
+}
+
+.button-hover {
+    transition: all 0.3s ease;
+}
+
+.button-hover:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+
+
+/* Bouton VOIR LES PHOTOS */
+.album-button {
+    font-size: 1.125rem;
+    /* 18px */
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    transition: all 0.5s ease-out;
+}
+
+/* Responsive pour les écrans ≤ 768px */
+
+
+/* Titre album */
+.album-title {
+    font-size: 2.5rem;
+    /* desktop par défaut ~40px */
+    padding: 0.5rem 1.5rem;
+}
+
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+    .album-title {
+        font-size: 1.5rem;
+        /* ~24px */
+        padding: 0.4rem 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .album-image {
+        width: 100%;
+        height: auto;
+        border-width: 2px;
+        margin-top: 1.5rem;
+    }
+
+    .album-button {
+        font-size: 0.575rem;
+        /* 14px */
+        padding: 0.5rem 1rem;
+        /* plus petit pour mobile */
     }
 }
