@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 import Navbar from '../components/navBar';
 import Footer from '../components/Footer';
 import { AuthContext } from './AuthContext/AuthContext';
@@ -18,6 +19,7 @@ export default function Photos() {
   const coverRef = useRef();
   const editCoverRef = useRef();
   const editTitleRef = useRef();
+  const navigate = useNavigate();
 
   const token = localStorage.getItem('adminToken');
 
@@ -175,8 +177,8 @@ export default function Photos() {
                     required
                   />
                   <div className="flex gap-4 mt-2">
-                    <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded button-hover">
-                      Créer
+                    <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded button-hover" disabled={loading}>
+                      {loading ? 'Création...' : 'Créer'}
                     </button>
                     <button
                       type="button"
@@ -259,22 +261,23 @@ export default function Photos() {
                 className="w-full max-w-5xl flex flex-col items-center mt-10"
               >
                 <h3 className="album-title font-bold mb-4 text-center text-white drop-shadow-lg tracking-custom bg-[#2D2D2D] rounded-xl px-6 py-2 inline-block">
-  {album.title}
-</h3>
+                {album.title}
+                </h3>
 
                 <div className="relative w-full group max-w-5xl">
-  <img
-    src={album.coverImage}
-    alt={album.title}
-  className="album-image w-full max-w-full h-auto rounded-2xl border-4 border-white mt-10 transition-transform duration-300 ease-in-out will-change-transform group-hover:scale-103 group-hover:shadow-xl group-hover:-translate-y-1 mb-8"
-  />
-  <button
-    className="album-button absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#1E1E1E] text-white font-bold py-3 px-8 rounded-full tracking-custom text-lg transition-all duration-500 ease-out hover:text-[#1E1E1E] hover:bg-white hover:scale-105 shadow-lg z-10"
-    type="button"
-  >
-    VOIR LES PHOTOS
-  </button>
-</div>
+                <img
+                  src={album.coverImage}
+                  alt={album.title}
+                className="album-image w-full max-w-full h-auto rounded-2xl border-4 border-white mt-10 transition-transform duration-300 ease-in-out will-change-transform group-hover:scale-103 group-hover:shadow-xl group-hover:-translate-y-1 mb-8"
+                />
+                <button
+                  className="album-button absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#1E1E1E] text-white font-bold py-3 px-8 rounded-full tracking-custom text-lg transition-all duration-500 ease-out hover:text-[#1E1E1E] hover:bg-white hover:scale-105 shadow-lg z-10"
+                  type="button"
+                  onClick={()=> navigate(`/albums/${album._id}`)}
+                >
+                  VOIR LES PHOTOS
+                </button>
+              </div>
 
 
                 {isAuthenticated && (
@@ -306,7 +309,9 @@ export default function Photos() {
             <h2 className="text-xl font-bold mb-4 text-red-500">Supprimer cet album ?</h2>
             <p className="text-gray-300 mb-6">Cette action est irréversible.</p>
             <div className="flex justify-center gap-4">
-              <button className="bg-red-600 text-white px-5 py-2 rounded button-hover" onClick={() => handleDelete(selectedAlbum._id)}>Supprimer</button>
+              <button className="bg-red-600 text-white px-5 py-2 rounded button-hover" onClick={() => handleDelete(selectedAlbum._id)} disabled={loading}>
+                {loading ? 'Suppression...' : 'Supprimer'}
+              </button>
               <button className="bg-gray-500 text-white px-5 py-2 rounded button-hover" onClick={() => setShowDelete(false)}>Annuler</button>
             </div>
           </div>

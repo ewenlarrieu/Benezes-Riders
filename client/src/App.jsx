@@ -5,6 +5,7 @@ import Photos from "./Photos";
 import Events from './Events'
 import Contact from './Contact'
 import Login from "./Login";
+import AlbumDetails from "./AlbumDetails";
 
 
 
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home />} />
         <Route path="/photos" element={<Photos />} />
+        <Route path="/albums/:id" element={<AlbumDetails />} />
          <Route path="/evenements" element={<Events />} />
          <Route path="/contact" element={<Contact />} />
            <Route path="/connexion" element={<Login />} />
