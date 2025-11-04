@@ -1,3 +1,31 @@
+// Supprimer une photo d'un album
+export const deletePhotoFromAlbum = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { photoUrl } = req.body;
+    if (!photoUrl) {
+      return res.status(400).json({ message: "Aucune photo spécifiée" });
+    }
+    const album = await Album.findById(id);
+    if (!album) {
+      return res.status(404).json({ message: "Album introuvable" });
+    }
+    const photoIndex = album.photos.indexOf(photoUrl);
+    if (photoIndex === -1) {
+      return res
+        .status(404)
+        .json({ message: "Photo non trouvée dans l'album" });
+    }
+    album.photos.splice(photoIndex, 1);
+    await album.save();
+    res.status(200).json({ message: "Photo supprimée", album });
+  } catch (error) {
+    console.error("Erreur lors de la suppression de la photo:", error);
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la suppression de la photo" });
+  }
+};
 import fs from "fs";
 import "dotenv/config";
 import cloudinary from "cloudinary";
