@@ -1,0 +1,13 @@
+{
+  "build": {
+    "command": "cd client && npm install && npm run build",
+    "publish": "client/dist"
+  },
+  "redirects": [
+    {
+      "source": "/*",
+      "destination": "/index.html",
+      "type": 200
+    }
+  ]
+}
