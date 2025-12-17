@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import Navbar from '../components/navBar';
+import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { AuthContext } from './AuthContext/AuthContext';
 import { Plus, Trash2, Edit3 } from 'lucide-react';

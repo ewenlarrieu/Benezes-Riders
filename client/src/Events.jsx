@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Navbar from '../components/navBar'
+import Navbar from '../components/NavBar'
 import { AuthContext } from './AuthContext/AuthContext';
 
 

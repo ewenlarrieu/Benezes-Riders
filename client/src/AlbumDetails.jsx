@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../components/navBar";
+import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { AuthContext } from "./AuthContext/AuthContext";
 
