@@ -6,6 +6,8 @@ import Events from './Events'
 import Contact from './Contact'
 import Login from "./Login";
 import AlbumDetails from "./AlbumDetails";
+import './styles/responsive/home.css';
+import './styles/responsive/photo.css';
 
 
 

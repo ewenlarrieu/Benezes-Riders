@@ -1,0 +1,79 @@
+/* Responsive styling pour la page Contact */
+
+/* Titre principal */
+.contact-title {
+    font-size: 3rem;
+}
+
+/* Textes de description */
+.contact-description {
+    font-size: 1.5rem;
+    line-height: 1.8;
+}
+
+/* Labels du formulaire */
+.contact-form-label {
+    font-size: 1.5rem;
+}
+
+/* Inputs et textarea */
+.contact-form-input {
+    font-size: 1rem;
+    padding: 1rem;
+}
+
+/* Bouton */
+.contact-form-button {
+    font-size: 1.125rem;
+    padding: 1rem 2.5rem;
+}
+
+/* Tablette (1024px et moins) */
+@media (max-width: 1023px) {
+    .contact-title {
+        font-size: 2.2rem;
+    }
+
+    .contact-description {
+        font-size: 1.3rem;
+    }
+
+    .contact-form-label {
+        font-size: 1.3rem;
+    }
+
+    .contact-form-input {
+        font-size: 0.95rem;
+        padding: 0.9rem;
+    }
+
+    .contact-form-button {
+        font-size: 1rem;
+        padding: 0.9rem 2rem;
+    }
+}
+
+/* Mobile (767px et moins) */
+@media (max-width: 767px) {
+    .contact-title {
+        font-size: 1.5rem;
+    }
+
+    .contact-description {
+        font-size: 1.1rem;
+    }
+
+    .contact-form-label {
+        font-size: 1.1rem;
+    }
+
+    .contact-form-input {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+
+    .contact-form-button {
+        font-size: 0.9rem;
+        padding: 0.75rem 1.5rem;
+    }
+}

@@ -6,32 +6,32 @@ export default function Footer() {
   return (
     <footer className="bg-[#343433] text-white py-10 mt-20">
       {/* Liens de navigation */}
-      <ul className="flex flex-wrap justify-center gap-10 sm:gap-14 md:gap-20 lg:gap-28 tracking-custom text-lg font-medium text-center">
-        <li className="relative cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+      <ul className="footer-nav flex flex-wrap justify-center tracking-custom font-medium text-center">
+        <li className="footer-nav-item relative cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
         onClick={() => navigate('/')}>
           ACCUEIL
         </li>
-        <li className="relative cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+        <li className="footer-nav-item relative cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
         onClick={() => navigate('/photos')}>
           PHOTOS
         </li>
-        <li className="relative cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+        <li className="footer-nav-item relative cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
          onClick={() => navigate('/evenements')}>
           ÉVÉNEMENTS
         </li>
-        <li className="relative cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+        <li className="footer-nav-item relative cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
          onClick={() => navigate('/contact')}>
           CONTACT
         </li>
       </ul>
 
       {/* Texte principal */}
-      <p className="tracking-custom text-center text-2xl sm:text-xl md:text-2xl font-semibold mt-10">
+      <p className="footer-club-name tracking-custom text-center font-semibold">
         CLUB DES BENEZES RIDERS
       </p>
 
       {/* Email responsive */}
-      <p className="tracking-custom text-center text-lg sm:text-base md:text-xl font-semibold mt-4 underline wrap-break-word px-4 leading-snug">
+      <p className="footer-email tracking-custom text-center font-semibold underline wrap-break-word px-4 leading-snug">
         Benezesriders164@gmail.com
       </p>
 
@@ -51,7 +51,7 @@ export default function Footer() {
       </div>
 
       {/* Copyright */}
-      <p className="tracking-custom font-semibold text-lg sm:text-xl md:text-2xl text-center mt-5 opacity-80">
+      <p className="footer-copyright tracking-custom font-semibold text-center opacity-80">
         © 2025 Benezes Riders – Tous droits réservés
       </p>
     </footer>

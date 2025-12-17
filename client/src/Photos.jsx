@@ -4,7 +4,7 @@ import Navbar from '../components/navBar';
 import Footer from '../components/Footer';
 import { AuthContext } from './AuthContext/AuthContext';
 import { Plus, Trash2, Edit3 } from 'lucide-react';
-import './styles/responsive.css';
+
 
 export default function Photos() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -239,18 +239,18 @@ export default function Photos() {
         )}
 
         {/* TITRE GALERIE */}
-        <h1 className="photos-title tracking-custom font-bold underline text-center mt-20">
+        <h1 className="photos-title tracking-custom font-bold underline text-center">
           GALERIE PHOTOS
         </h1>
 
         {/* AFFICHAGE DES ALBUMS */}
-        <div className="mt-12 flex flex-col items-center gap-24 px-6 pb-20">
+        <div className="albums-container flex flex-col items-center gap-24 px-6 pb-20">
           {albums.length === 0 && !loading ? (
-            <div className="text-center mt-20 flex flex-col items-center justify-center">
-              <p className="text-3xl md:text-4xl font-bold text-gray-400 tracking-wider bg-[#232323] px-8 py-6 rounded-2xl shadow-[0_8px_20px_rgba(0,0,0,0.4)] border border-gray-700">
+            <div className="no-albums-message text-center flex flex-col items-center justify-center">
+              <p className="no-albums-text text-gray-400 tracking-wider bg-[#232323] px-8 py-6 rounded-2xl shadow-[0_8px_20px_rgba(0,0,0,0.4)] border border-gray-700">
                 Aucun album photo pour le moment 📷
               </p>
-              <p className="mt-4 text-lg text-gray-500 italic">
+              <p className="no-albums-subtext text-gray-500 italic">
                 Revenez bientôt pour découvrir de nouvelles photos.
               </p>
             </div>
@@ -258,20 +258,20 @@ export default function Photos() {
             albums.map((album) => (
               <div
                 key={album._id}
-                className="w-full max-w-5xl flex flex-col items-center mt-10"
+                className="album-item w-full max-w-5xl flex flex-col items-center"
               >
-                <h3 className="album-title font-bold mb-4 text-center text-white drop-shadow-lg tracking-custom bg-[#2D2D2D] rounded-xl px-6 py-2 inline-block">
+                <h3 className="album-title font-bold text-center text-white drop-shadow-lg tracking-custom bg-[#2D2D2D] rounded-xl px-6 py-2 inline-block">
                 {album.title}
                 </h3>
 
-                <div className="relative w-full group max-w-5xl">
+                <div className="album-image-container relative w-full group max-w-5xl">
                 <img
                   src={album.coverImage}
                   alt={album.title}
-                className="album-image w-full max-w-full h-auto rounded-2xl border-4 border-white mt-10 transition-transform duration-300 ease-in-out will-change-transform group-hover:scale-103 group-hover:shadow-xl group-hover:-translate-y-1 mb-8"
+                className="album-image w-full max-w-full h-auto rounded-2xl border-4 border-white transition-transform duration-300 ease-in-out will-change-transform group-hover:scale-103 group-hover:shadow-xl group-hover:-translate-y-1"
                 />
                 <button
-                  className="album-button absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#1E1E1E] text-white font-bold py-3 px-8 rounded-full tracking-custom text-lg transition-all duration-500 ease-out hover:text-[#1E1E1E] hover:bg-white hover:scale-105 shadow-lg z-10"
+                  className="album-button absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#1E1E1E] text-white font-bold rounded-full tracking-custom transition-all duration-500 ease-out hover:text-[#1E1E1E] hover:bg-white hover:scale-105 shadow-lg z-10"
                   type="button"
                   onClick={()=> navigate(`/albums/${album._id}`)}
                 >

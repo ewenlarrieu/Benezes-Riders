@@ -6,7 +6,10 @@
 
 .tracking-custom {
     letter-spacing: 0.2em;
+}
 
+.tracking-custom::placeholder {
+    letter-spacing: 0.2em;
 }
 
 @import "tailwindcss";

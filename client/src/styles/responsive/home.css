@@ -1,0 +1,734 @@
+/* Responsive styling pour la page Home */
+
+/* ========== HERO SECTION ========== */
+
+/* Titre hero h1 - Desktop */
+.hero-title {
+    font-size: 4rem;
+    gap: 0.5rem;
+}
+
+/* Bouton hero - Desktop */
+.hero-button {
+    font-size: 0.9rem;
+    padding: 0.75rem 1.6rem;
+    margin-top: 1.5rem;
+}
+
+/* Tablette large (1280px et moins) */
+@media (max-width: 1280px) {
+    .hero-title {
+        font-size: 3rem;
+        gap: 0.4rem;
+    }
+
+    .hero-button {
+        font-size: 0.85rem;
+        padding: 0.7rem 1.4rem;
+        margin-top: 1.3rem;
+    }
+}
+
+/* Tablette (1024px et moins) */
+@media (max-width: 1023px) {
+    .hero-title {
+        font-size: 2.5rem;
+        gap: 0.3rem;
+    }
+
+    .hero-button {
+        font-size: 0.8rem;
+        padding: 0.65rem 1.2rem;
+        margin-top: 1.2rem;
+    }
+}
+
+/* Tablette small (900px et moins) */
+@media (max-width: 900px) {
+    .hero-title {
+        font-size: 2rem;
+        gap: 0.25rem;
+    }
+
+    .hero-button {
+        font-size: 0.75rem;
+        padding: 0.6rem 1.1rem;
+        margin-top: 1rem;
+    }
+}
+
+/* Mobile (767px et moins) */
+@media (max-width: 767px) {
+    .hero-title {
+        font-size: 1.5rem;
+        gap: 0.2rem;
+    }
+
+    .hero-button {
+        font-size: 0.75rem;
+        padding: 0.6rem 1.1rem;
+        margin-top: 0.7rem;
+    }
+}
+
+/* Mobile small (480px et moins) */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1rem;
+        gap: 0.1rem;
+    }
+
+    .hero-button {
+        font-size: 0.6rem;
+        padding: 0.45rem 0.75rem;
+        margin-top: 0.5rem;
+    }
+}
+
+/* ========== ABOUT SECTION ========== */
+
+/* Logo about - Desktop */
+.about-logo {
+    right: 20px;
+    top: -20px;
+    width: 400px;
+    height: 400px;
+    object-fit: contain;
+}
+
+/* Section about - Desktop */
+.about-section {
+    margin-top: 40px;
+    padding: 80px 48px;
+    min-height: 700px;
+}
+
+/* Contenu textuel about - Desktop */
+.about-content {
+    max-width: 850px;
+}
+
+/* Titre about - Desktop */
+.about-title {
+    font-size: 3rem;
+    margin-bottom: 3rem;
+}
+
+/* Texte about - Desktop */
+.about-text {
+    font-size: 1.875rem;
+    margin-bottom: 2rem;
+}
+
+/* Image about - Desktop */
+.about-image {
+    right: 0;
+    top: 250px;
+    width: 650px;
+    height: 500px;
+    object-fit: contain;
+    transform: translateX(0);
+}
+
+/* ========== ABOUT SECTION RESPONSIVE ========== */
+
+/* Tablette large (1280px et moins) */
+@media (max-width: 1280px) {
+    .about-logo {
+        width: 300px;
+        height: 300px;
+        top: 10px;
+        right: 10px;
+    }
+
+    .about-title {
+        font-size: 2.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .about-text {
+        font-size: 1.5rem;
+    }
+
+    .about-content {
+        max-width: 700px;
+    }
+}
+
+/* Tablette (1024px et moins) */
+@media (max-width: 1023px) {
+    .about-logo {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 250px;
+        height: 250px;
+        margin: 0 auto 1.5rem auto;
+        display: block;
+    }
+
+    .about-section {
+        margin-top: 20px;
+        padding: 20px 24px 40px 24px;
+        text-align: center;
+    }
+
+    .about-content {
+        max-width: 100%;
+    }
+
+    .about-title {
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+    }
+
+    .about-text {
+        font-size: 1.3rem;
+    }
+
+    .about-image {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 90%;
+        max-width: 500px;
+        height: auto;
+        margin: 2rem auto 0 auto;
+        display: block;
+        border: 3px solid white;
+        border-radius: 20px;
+    }
+}
+
+/* Mobile (767px et moins) */
+@media (max-width: 767px) {
+    .about-logo {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 1rem;
+    }
+
+    .about-section {
+        margin-top: 15px;
+        padding: 15px 16px 30px 16px;
+    }
+
+    .about-title {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .about-text {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Mobile small (480px et moins) */
+@media (max-width: 480px) {
+    .about-logo {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 0.8rem;
+    }
+
+    .about-section {
+        margin-top: 10px;
+        padding: 10px 16px 30px 16px;
+    }
+
+    .about-title {
+        font-size: 0.95rem;
+    }
+
+    .about-text {
+        font-size: 0.85rem;
+    }
+}
+
+/* ========== EQUIPE SECTION ========== */
+
+/* Section équipe - Desktop */
+.Equipe {
+    margin-top: 10px;
+    padding: 60px 48px;
+}
+
+/* Titre équipe - Desktop */
+.equipe-title {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Texte équipe - Desktop */
+.equipe-text {
+    font-size: 1.875rem;
+    margin-bottom: 2rem;
+}
+
+/* Conteneur équipe - Desktop */
+.equipe-container {
+    max-width: 1400px;
+    padding: 64px;
+}
+
+/* Grille équipe - Desktop */
+.equipe-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    justify-items: center;
+}
+
+/* Carte membre - Desktop */
+.member-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Nom membre - Desktop */
+.member-name {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+/* Photo membre - Desktop */
+.member-photo {
+    width: 208px;
+    height: 208px;
+}
+
+/* ========== EQUIPE SECTION RESPONSIVE ========== */
+
+/* Tablette large (1280px et moins) */
+@media (max-width: 1280px) {
+    .equipe-title {
+        font-size: 2.5rem;
+        margin-bottom: 1.3rem;
+    }
+
+    .equipe-text {
+        font-size: 1.5rem;
+    }
+
+    .equipe-container {
+        padding: 40px;
+    }
+
+    .equipe-grid {
+        gap: 30px;
+    }
+
+    .member-photo {
+        width: 160px;
+        height: 160px;
+    }
+}
+
+/* Tablette (1024px et moins) */
+@media (max-width: 1023px) {
+    .equipe-title {
+        font-size: 2.2rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .equipe-text {
+        font-size: 1.3rem;
+    }
+
+    .equipe-container {
+        padding: 30px 25px;
+    }
+
+    .equipe-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+        justify-items: center;
+    }
+
+    .member-photo {
+        width: 140px;
+        height: 140px;
+    }
+
+    .member-name {
+        font-size: 1.1rem;
+    }
+}
+
+/* Mobile (767px et moins) */
+@media (max-width: 767px) {
+    .equipe-title {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .equipe-text {
+        font-size: 0.95rem;
+    }
+
+    .equipe-container {
+        padding: 20px 16px;
+    }
+
+    .equipe-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        justify-items: center;
+    }
+
+    .member-photo {
+        width: 120px;
+        height: 120px;
+    }
+
+    .member-name {
+        font-size: 1rem;
+    }
+}
+
+/* Mobile small (480px et moins) */
+@media (max-width: 480px) {
+    .equipe-title {
+        font-size: 0.95rem;
+    }
+
+    .equipe-text {
+        font-size: 0.85rem;
+    }
+
+    .equipe-container {
+        padding: 16px 12px;
+    }
+
+    .equipe-grid {
+        gap: 16px;
+        justify-items: center;
+    }
+
+    .member-photo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .member-name {
+        font-size: 0.9rem;
+    }
+}
+
+/* ========== EVENT SECTION ========== */
+
+/* Titre event - Desktop */
+.event-title {
+    font-size: 3rem;
+    margin-bottom: 2.5rem;
+}
+
+/* Texte event - Desktop */
+.event-text {
+    font-size: 1.875rem;
+    padding: 2rem 1.5rem;
+}
+
+/* Bouton event - Desktop */
+.event-button {
+    font-size: 1.125rem;
+    padding: 1rem 2.5rem;
+    margin-top: 1.5rem;
+}
+
+/* ========== CONTACT SECTION ========== */
+
+/* Titre contact section - Desktop */
+.contact-section-title {
+    font-size: 3rem;
+    margin-top: 4rem;
+}
+
+/* Texte contact section - Desktop */
+.contact-section-text {
+    font-size: 1.875rem;
+    margin-top: 2.5rem;
+}
+
+/* Bouton contact section - Desktop */
+.contact-section-button {
+    font-size: 1.125rem;
+    padding: 1rem 2.5rem;
+    margin-top: 2.5rem;
+}
+
+/* ========== EVENT & CONTACT RESPONSIVE ========== */
+
+/* Tablette large (1280px et moins) */
+@media (max-width: 1280px) {
+    .event-title {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .event-text {
+        font-size: 1.5rem;
+    }
+
+    .event-button {
+        font-size: 1rem;
+        padding: 0.9rem 2rem;
+    }
+
+    .contact-section-title {
+        font-size: 2.5rem;
+    }
+
+    .contact-section-text {
+        font-size: 1.5rem;
+    }
+
+    .contact-section-button {
+        font-size: 1rem;
+        padding: 0.9rem 2rem;
+    }
+}
+
+/* Tablette (1024px et moins) */
+@media (max-width: 1023px) {
+    .event-title {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .event-text {
+        font-size: 1.3rem;
+    }
+
+    .event-button {
+        font-size: 0.9rem;
+        padding: 0.8rem 1.6rem;
+    }
+
+    .contact-section-title {
+        font-size: 2.2rem;
+    }
+
+    .contact-section-text {
+        font-size: 1.3rem;
+    }
+
+    .contact-section-button {
+        font-size: 0.9rem;
+        padding: 0.8rem 1.6rem;
+    }
+}
+
+/* Mobile (767px et moins) */
+@media (max-width: 767px) {
+    .event-title {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .event-text {
+        font-size: 0.7rem;
+        padding: 1rem 0.7rem;
+    }
+
+    .event-button {
+        font-size: 0.55rem;
+        padding: 0.45rem 0.75rem;
+        margin-top: 0.7rem;
+    }
+
+    .contact-section-title {
+        font-size: 1.1rem;
+        margin-top: 2rem;
+    }
+
+    .contact-section-text {
+        font-size: 0.95rem;
+        margin-top: 1.5rem;
+    }
+
+    .contact-section-button {
+        font-size: 0.75rem;
+        padding: 0.6rem 1.1rem;
+        margin-top: 1.5rem;
+    }
+}
+
+/* Mobile small (480px et moins) */
+@media (max-width: 480px) {
+    .event-title {
+        font-size: 0.95rem;
+    }
+
+    .event-text {
+        font-size: 0.6rem;
+        padding: 0.8rem 0.5rem;
+    }
+
+    .event-button {
+        font-size: 0.5rem;
+        padding: 0.4rem 0.65rem;
+    }
+
+    .contact-section-title {
+        font-size: 0.95rem;
+    }
+
+    .contact-section-text {
+        font-size: 0.85rem;
+    }
+
+    .contact-section-button {
+        font-size: 0.65rem;
+        padding: 0.5rem 0.9rem;
+    }
+}
+
+/* ========== FOOTER ========== */
+
+/* Navigation footer - Desktop */
+.footer-nav {
+    gap: 7rem;
+}
+
+.footer-nav-item {
+    font-size: 1.125rem;
+}
+
+/* Nom du club - Desktop */
+.footer-club-name {
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+/* Email - Desktop */
+.footer-email {
+    font-size: 1.25rem;
+    margin-top: 1rem;
+}
+
+/* Copyright - Desktop */
+.footer-copyright {
+    font-size: 1.25rem;
+    margin-top: 1.25rem;
+}
+
+/* ========== FOOTER RESPONSIVE ========== */
+
+/* Tablette large (1280px et moins) */
+@media (max-width: 1280px) {
+    .footer-nav {
+        gap: 5rem;
+    }
+
+    .footer-nav-item {
+        font-size: 1rem;
+    }
+
+    .footer-club-name {
+        font-size: 1.3rem;
+    }
+
+    .footer-email {
+        font-size: 1.1rem;
+    }
+
+    .footer-copyright {
+        font-size: 1.1rem;
+    }
+}
+
+/* Tablette (1024px et moins) */
+@media (max-width: 1023px) {
+    .footer-nav {
+        gap: 3rem;
+    }
+
+    .footer-nav-item {
+        font-size: 0.9rem;
+    }
+
+    .footer-club-name {
+        font-size: 1.1rem;
+        margin-top: 2rem;
+    }
+
+    .footer-email {
+        font-size: 1rem;
+    }
+
+    .footer-copyright {
+        font-size: 1rem;
+    }
+}
+
+/* Mobile (767px et moins) */
+@media (max-width: 767px) {
+    .footer-nav {
+        gap: 2rem;
+    }
+
+    .footer-nav-item {
+        font-size: 0.75rem;
+    }
+
+    .footer-club-name {
+        font-size: 0.9rem;
+        margin-top: 1.5rem;
+        padding: 0 1.5rem;
+    }
+
+    .footer-email {
+        font-size: 0.8rem;
+        margin-top: 0.8rem;
+        padding: 0 1.5rem;
+    }
+
+    .footer-copyright {
+        font-size: 0.8rem;
+        margin-top: 1rem;
+        padding: 0 1.5rem;
+    }
+}
+
+/* Mobile small (480px et moins) */
+@media (max-width: 480px) {
+    .footer-nav {
+        gap: 1.5rem;
+    }
+
+    .footer-nav-item {
+        font-size: 0.65rem;
+    }
+
+    .footer-club-name {
+        font-size: 0.75rem;
+        padding: 0 2rem;
+    }
+
+    .footer-email {
+        font-size: 0.7rem;
+        padding: 0 2rem;
+    }
+
+    .footer-copyright {
+        font-size: 0.7rem;
+        padding: 0 2rem;
+    }
+}
+
+/* Mobile très petit (360px et moins) */
+@media (max-width: 360px) {
+    .hero-title {
+        font-size: 0.85rem;
+        gap: 0.1rem;
+    }
+
+    .hero-button {
+        font-size: 0.55rem;
+        padding: 0.4rem 0.65rem;
+        margin-top: 0.4rem;
+    }
+}

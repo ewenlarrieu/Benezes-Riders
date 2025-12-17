@@ -1,0 +1,269 @@
+/* ==================== PHOTOS PAGE RESPONSIVE ==================== */
+
+/* Titre de la galerie */
+.photos-title {
+    font-size: 3.5rem;
+    margin-top: 5rem;
+}
+
+/* Albums container */
+.albums-container {
+    margin-top: 3rem;
+}
+
+/* Message aucun album */
+.no-albums-message {
+    margin-top: 5rem;
+}
+
+.no-albums-text {
+    font-size: 2.25rem;
+    font-weight: bold;
+}
+
+.no-albums-subtext {
+    margin-top: 1rem;
+    font-size: 1.125rem;
+}
+
+/* Album item */
+.album-item {
+    margin-top: 2.5rem;
+}
+
+/* Titre d'album */
+.album-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+
+
+/* Image album */
+.album-image {
+    margin-top: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Bouton voir les photos */
+.album-button {
+    font-size: 1.125rem;
+    padding: 0.75rem 2rem;
+}
+
+/* ==================== RESPONSIVE BREAKPOINTS ==================== */
+
+/* Desktop large (1280px et moins) */
+@media (max-width: 1280px) {
+    .photos-title {
+        font-size: 3rem;
+    }
+
+    .no-albums-text {
+        font-size: 2rem;
+    }
+
+    .no-albums-subtext {
+        font-size: 1rem;
+    }
+
+    .album-title {
+        font-size: 1.75rem;
+    }
+
+    .album-button {
+        font-size: 1rem;
+        padding: 0.7rem 1.8rem;
+    }
+}
+
+/* Tablet (1023px et moins) */
+@media (max-width: 1023px) {
+    .photos-title {
+        font-size: 2.5rem;
+        margin-top: 4rem;
+    }
+
+    .albums-container {
+        margin-top: 2.5rem;
+        gap: 4rem;
+    }
+
+    .no-albums-message {
+        margin-top: 4rem;
+    }
+
+    .no-albums-text {
+        font-size: 1.75rem;
+        padding: 1.5rem 2rem;
+    }
+
+    .no-albums-subtext {
+        font-size: 0.9rem;
+    }
+
+    .album-item {
+        margin-top: 2rem;
+    }
+
+    .album-title {
+        font-size: 1.5rem;
+    }
+
+    .album-image {
+        margin-top: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .album-button {
+        font-size: 0.9rem;
+        padding: 0.65rem 1.6rem;
+    }
+}
+
+/* Mobile (767px et moins) */
+@media (max-width: 767px) {
+    .photos-title {
+        font-size: 2rem;
+        margin-top: 3rem;
+    }
+
+    .albums-container {
+        margin-top: 2rem;
+        gap: 3rem;
+        padding: 0 1.5rem;
+        padding-bottom: 3rem;
+    }
+
+    .no-albums-message {
+        margin-top: 3rem;
+    }
+
+    .no-albums-text {
+        font-size: 1.25rem;
+        padding: 1.2rem 1.5rem;
+    }
+
+    .no-albums-subtext {
+        font-size: 0.8rem;
+        margin-top: 0.8rem;
+    }
+
+    .album-item {
+        margin-top: 1.5rem;
+    }
+
+    .album-title {
+        font-size: 1.25rem;
+        padding: 0.5rem 1.5rem;
+    }
+
+    .album-image {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        border-width: 3px;
+    }
+
+    .album-button {
+        font-size: 0.75rem;
+        padding: 0.6rem 1.4rem;
+    }
+}
+
+/* Mobile small (480px et moins) */
+@media (max-width: 480px) {
+    .photos-title {
+        font-size: 1.5rem;
+        margin-top: 2.5rem;
+    }
+
+    .albums-container {
+        margin-top: 1.5rem;
+        gap: 2.5rem;
+        padding: 0 1rem;
+        padding-bottom: 2.5rem;
+    }
+
+    .no-albums-message {
+        margin-top: 2.5rem;
+    }
+
+    .no-albums-text {
+        font-size: 1rem;
+        padding: 1rem 1.2rem;
+    }
+
+    .no-albums-subtext {
+        font-size: 0.7rem;
+        margin-top: 0.7rem;
+    }
+
+    .album-item {
+        margin-top: 1.2rem;
+    }
+
+    .album-title {
+        font-size: 1rem;
+        padding: 0.4rem 1.2rem;
+    }
+
+    .album-image {
+        margin-top: 1.2rem;
+        margin-bottom: 0.8rem;
+        border-width: 2px;
+    }
+
+    .album-button {
+        font-size: 0.65rem;
+        padding: 0.5rem 1.2rem;
+    }
+}
+
+/* Mobile extra small (360px et moins) */
+@media (max-width: 360px) {
+    .photos-title {
+        font-size: 1.2rem;
+        margin-top: 2rem;
+    }
+
+    .albums-container {
+        margin-top: 1.2rem;
+        gap: 2rem;
+        padding: 0 0.8rem;
+        padding-bottom: 2rem;
+    }
+
+    .no-albums-message {
+        margin-top: 2rem;
+    }
+
+    .no-albums-text {
+        font-size: 0.85rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .no-albums-subtext {
+        font-size: 0.6rem;
+        margin-top: 0.6rem;
+    }
+
+    .album-item {
+        margin-top: 1rem;
+    }
+
+    .album-title {
+        font-size: 0.85rem;
+        padding: 0.35rem 1rem;
+    }
+
+    .album-image {
+        margin-top: 1rem;
+        margin-bottom: 0.6rem;
+        border-width: 2px;
+    }
+
+    .album-button {
+        font-size: 0.55rem;
+        padding: 0.45rem 1rem;
+    }
+}
