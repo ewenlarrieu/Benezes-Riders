@@ -32,3 +32,68 @@ export const createEvent = async (req, res) => {
     res.status(500).json({ message: "Failed to create event" });
   }
 };
+
+export const getAllEvents = async (req, res) => {
+  try {
+    const events = await Event.find();
+
+    res.status(200).json({
+      success: true,
+      count: events.length,
+      events,
+    });
+  } catch (error) {
+    console.error("Error getting events:", error);
+    res.status(500).json({
+      message: "Erreur lors de la recuperation des evenements",
+    });
+  }
+};
+
+export const deleteEvent = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleteEvent = await Event.findByIdAndDelete(id); // Ajout de 'await'
+
+    if (!deleteEvent) {
+      return res.status(404).json({
+        message: "Evenement non trouvé",
+      });
+    }
+
+    res.status(200).json({
+      message: "Evenement supprimé",
+      event: deleteEvent,
+    });
+  } catch (error) {
+    console.error("Error deleting event:", error);
+    res.status(500).json({
+      message: "Erreur lors de la suppression de l'evenement",
+    });
+  }
+};
+
+export const getEventById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({
+        message: "Evenement non trouvé",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      event,
+    });
+  } catch (error) {
+    console.error("Error getting Event:", error);
+    res.status(500).json({
+      message: "Erreur serveur lors de la récupération de l'evenement",
+    });
+  }
+};
