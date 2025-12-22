@@ -97,3 +97,37 @@ export const getEventById = async (req, res) => {
     });
   }
 };
+
+export const updateEvent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, startDate, endDate, location, description, price } =
+      req.body;
+
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({
+        message: "Evenement non trouve",
+      });
+    }
+    event.title = title ?? event.title;
+    event.startDate = startDate ?? event.startDate;
+    event.endDate = endDate ?? event.endDate;
+    event.location = location ?? event.location;
+    event.description = description ?? event.description;
+    event.price = price ?? event.price;
+
+    await event.save();
+
+    res.status(200).json({
+      message: "Evenement modifier",
+      event,
+    });
+  } catch (error) {
+    console.error("Error updating Event:", error);
+    res.status(500).json({
+      message: "Erreur lors de la modification de l'evenement",
+    });
+  }
+};
