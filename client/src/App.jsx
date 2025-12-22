@@ -8,6 +8,7 @@ import Login from "./Login";
 import AlbumDetails from "./AlbumDetails";
 import './styles/responsive/home.css';
 import './styles/responsive/photo.css';
+import './styles/responsive/events.css'
 
 
 

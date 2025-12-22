@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { AuthContext } from './AuthContext/AuthContext';
+import './styles/responsive/photo.css'
 import { Plus, Trash2, Edit3 } from 'lucide-react';
 
 

@@ -1,0 +1,224 @@
+/* Conteneur de l'image événement */
+.event-image-container {
+    min-height: 600px;
+    height: 700px;
+    max-height: 800px;
+}
+
+.event-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.event-title {
+    font-size: 3.5rem;
+    margin-top: 5rem;
+}
+
+.event-title-2 {
+    font-size: 2.50rem;
+    margin-bottom: 1rem;
+}
+
+.next-event-title {
+    font-size: 2.25rem;
+}
+
+.next-event-content {
+    font-size: 1.1rem;
+}
+
+/* Styles de base pour la carte d'événement */
+.backdrop-blur-md {
+    padding: 1.2rem;
+    max-width: 65%;
+    width: auto;
+    gap: 1.75rem;
+}
+
+.backdrop-blur-md h3 {
+    font-size: 2rem;
+}
+
+.backdrop-blur-md span {
+    font-size: 1.25rem;
+}
+
+/* Desktop large (1280px et moins) */
+@media (max-width: 1280px) {
+    .event-image-container {
+        min-height: 550px;
+        height: 650px;
+    }
+
+    .event-title {
+        font-size: 3rem;
+    }
+
+    .event-title-2 {
+        font-size: 2.75rem;
+    }
+
+    .next-event-title {
+        font-size: 3rem;
+    }
+
+    .next-event-content {
+        font-size: 1rem;
+    }
+
+    .backdrop-blur-md {
+        padding: 1.1rem;
+        max-width: 60%;
+        gap: 0.7rem;
+    }
+
+    .backdrop-blur-md span {
+        font-size: 1.1rem;
+    }
+
+}
+
+@media (max-width: 1023px) {
+    .event-image-container {
+        min-height: 500px;
+        height: 600px;
+    }
+
+    .event-title {
+        font-size: 2.5rem;
+        margin-top: 4rem;
+    }
+
+    .event-title-2 {
+        font-size: 2.5rem;
+    }
+
+    .next-event-title {
+        font-size: 1.85rem;
+    }
+
+    .next-event-content {
+        font-size: 0.95rem;
+    }
+
+    .backdrop-blur-md {
+        padding: 1rem;
+        max-width: 65%;
+        gap: 0.65rem;
+    }
+
+    .backdrop-blur-md span {
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .event-image-container {
+        min-height: 450px;
+        height: 550px;
+    }
+
+    .event-title {
+        font-size: 2rem;
+        margin-top: 3rem;
+    }
+
+    .event-title-2 {
+        font-size: 2rem;
+        padding: 0.5rem 1.5rem;
+    }
+
+    .next-event-title {
+        font-size: 1.5rem;
+    }
+
+    .next-event-content {
+        font-size: 0.85rem;
+    }
+
+    .backdrop-blur-md {
+        padding: 0.9rem;
+        max-width: 75%;
+        gap: 0.6rem;
+    }
+
+    .backdrop-blur-md span {
+        font-size: 0.95rem;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+    .event-image-container {
+        min-height: 400px;
+        height: 500px;
+    }
+
+    .event-title {
+        font-size: 1.5rem;
+        margin-top: 2.5rem;
+    }
+
+    .event-title-2 {
+        font-size: 1rem;
+        padding: 0.4rem 1.2rem;
+    }
+
+    .next-event-title {
+        font-size: 1.2rem;
+    }
+
+    .next-event-content {
+        font-size: 0.75rem;
+    }
+
+    .backdrop-blur-md {
+        padding: 0.75rem;
+        max-width: 80%;
+        gap: 0.5rem;
+    }
+
+    .backdrop-blur-md span {
+        font-size: 0.85rem;
+    }
+
+}
+
+@media (max-width: 360px) {
+    .event-image-container {
+        min-height: 350px;
+        height: 450px;
+    }
+
+    .event-title {
+        font-size: 1.2rem;
+        margin-top: 2rem;
+    }
+
+    .event-title-2 {
+        font-size: 0.85rem;
+        padding: 0.35rem 1rem;
+    }
+
+    .next-event-title {
+        font-size: 1rem;
+    }
+
+    .next-event-content {
+        font-size: 0.7rem;
+    }
+
+    .backdrop-blur-md {
+        padding: 0.6rem;
+        max-width: 85%;
+        gap: 0.45rem;
+    }
+
+    .backdrop-blur-md span {
+        font-size: 0.8rem;
+    }
+
+}

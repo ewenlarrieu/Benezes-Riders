@@ -131,3 +131,18 @@ export const updateEvent = async (req, res) => {
     });
   }
 };
+
+export const getNextEvent = async (req, res) => {
+  try {
+    const today = new Date();
+    const event = await Event.findOne({ startDate: { $gte: today } }).sort({
+      startDate: 1,
+    });
+    if (!event) {
+      return res.status(200).json({ message: "Aucun événement à venir" });
+    }
+    res.status(200).json(event);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
