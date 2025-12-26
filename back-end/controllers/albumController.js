@@ -1,3 +1,8 @@
+import fs from "fs";
+import "dotenv/config";
+import cloudinary from "cloudinary";
+import Album from "../models/Album.js";
+
 // Supprimer une photo d'un album
 export const deletePhotoFromAlbum = async (req, res) => {
   try {
@@ -26,10 +31,6 @@ export const deletePhotoFromAlbum = async (req, res) => {
       .json({ message: "Erreur lors de la suppression de la photo" });
   }
 };
-import fs from "fs";
-import "dotenv/config";
-import cloudinary from "cloudinary";
-import Album from "../models/Album.js";
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

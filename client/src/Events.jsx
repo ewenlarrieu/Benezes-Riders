@@ -3,6 +3,7 @@ import Navbar from '../components/NavBar';
 import { AuthContext } from './AuthContext/AuthContext';
 import './styles/responsive/events.css';
 import { useNavigate } from "react-router-dom";
+import { Plus, Trash2, Edit3 } from 'lucide-react';
 import Footer from '../components/Footer';
 
 export default function Events() {
@@ -32,9 +33,44 @@ export default function Events() {
          style={{ fontFamily: 'Poppins, sans-serif' }}>
       <Navbar />
       {isAuthenticated && (
-        <div className='tracking-custom text-right text-2xl font-bold mt-5 mr-5'>
-          admin
+         <div className="admin-section w-full mt-5 px-5 relative">
+          <div className="tracking-custom text-right text-2xl font-bold">
+            admin
+          </div>
+          <div className="admin-buttons flex justify-center mt-5 space-x-6 flex-wrap">
+            <button
+              type="button"
+              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+            >
+              <span>Créer un événement</span>
+              <Plus
+                size={20}
+                className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600"
+              />
+            </button>
+            <button
+              type="button"
+              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+            >
+              <span>Modifier un événement</span>
+              <Edit3
+                size={20}
+                className="transition-transform duration-200 group-hover:text-blue-600"
+              />
+            </button>
+            <button
+              type="button"
+              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+            >
+              <span>Supprimer un événement</span>
+              <Trash2
+                size={20}
+                className="transition-transform duration-200 group-hover:text-red-600"
+              />
+            </button>
+          </div>
         </div>
+        
       )}
 
       <h1 className=" event-title tracking-custom font-bold underline text-center">NOS EVENEMENTS</h1>
@@ -60,7 +96,8 @@ export default function Events() {
       Chargement...
     </p>
   ) : nextEvent ? (
-   <div className="backdrop-blur-md bg-white/10 border border-white/30 rounded-2xl p-8 text-center max-w-3xl tracking-custom shadow-lg flex flex-col items-center gap-8">
+     <div className="flex flex-col items-center gap-6 w-full max-w-3xl">
+   <div className="backdrop-blur-md bg-white/10 border border-white/30 rounded-2xl p-8 text-center w-full tracking-custom shadow-lg flex flex-col items-center gap-8">
   
   {/* TITRE */}
   <h3 className="next-event-title font-bold underline uppercase text-white drop-shadow-md">
@@ -100,7 +137,14 @@ export default function Events() {
     <p className="text-white/90 next-event-content">{nextEvent.price} €</p>
   </div>
 
-</div>
+ </div>
+<button
+    type="button"
+    className="event-signup-button bg-[#1E1E1E] text-white font-bold rounded-full tracking-custom transition-all duration-500 ease-out hover:text-[#1E1E1E] hover:bg-white hover:scale-105 shadow-lg px-8 py-3"
+  >
+    S'INSCRIRE
+  </button>
+  </div>
   ) : (
     <p className="text-white text-xl bg-black bg-opacity-50 p-4 rounded-xl">
       Aucun événement à venir
@@ -112,6 +156,7 @@ export default function Events() {
 
       {/* SECTION ALBUMS PHOTOS */}
       <AlbumsPhotos navigate={navigate} />
+      <Footer/>
     </div>
   );
 }
