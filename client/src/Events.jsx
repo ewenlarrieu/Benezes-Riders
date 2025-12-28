@@ -3,37 +3,158 @@ import Navbar from '../components/NavBar';
 import { AuthContext } from './AuthContext/AuthContext';
 import './styles/responsive/events.css';
 import { useNavigate } from "react-router-dom";
-import { Plus, Trash2, Edit3 } from 'lucide-react';
 import Footer from '../components/Footer';
+import { Plus, Trash2, Edit3 } from 'lucide-react';
 
 export default function Events() {
   const { isAuthenticated } = useContext(AuthContext);
   const [nextEvent, setNextEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [upcomingLoading, setUpcomingLoading] = useState(true);
+  const [showCreate, setShowCreate] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [formError, setFormError] = useState('');
+  const [formLoading, setFormLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const navigate = useNavigate();
+  const token = localStorage.getItem('adminToken');
+
+  const fetchNextEvent = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/next`);
+      const data = await res.json();
+      setNextEvent(data.message ? null : data); // si pas d'événement, on met null
+    } catch (err) {
+      console.error(err);
+      setNextEvent(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchUpcomingEvents = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events`);
+      const data = await res.json();
+      const events = Array.isArray(data.events) ? data.events : [];
+      const today = new Date();
+      const upcoming = events
+        .filter((event) => new Date(event.startDate) >= today)
+        .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+      setUpcomingEvents(upcoming);
+    } catch (err) {
+      console.error(err);
+      setUpcomingEvents([]);
+    } finally {
+      setUpcomingLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchNextEvent = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/events/next`);
-        const data = await res.json();
-        setNextEvent(data.message ? null : data); // si pas d'événement, on met null
-      } catch (err) {
-        console.error(err);
-        setNextEvent(null);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchNextEvent();
+    fetchUpcomingEvents();
   }, []);
+
+  const handleCreateEvent = async (e) => {
+    e.preventDefault();
+    setFormError('');
+    setFormLoading(true);
+
+    const formData = new FormData(e.target);
+    const payload = {
+      title: formData.get('title'),
+      startDate: formData.get('startDate'),
+      endDate: formData.get('endDate'),
+      location: formData.get('location'),
+      description: formData.get('description'),
+      price: Number(formData.get('price')),
+    };
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Erreur lors de la création de l'événement");
+      }
+
+      setShowCreate(false);
+      e.target.reset();
+      fetchNextEvent();
+      fetchUpcomingEvents();
+    } catch (err) {
+      console.error(err);
+      setFormError(err.message);
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const handleDeleteEvent = async (e) => {
+    e.preventDefault();
+    if (!deleteId) {
+      setDeleteError('Sélectionnez un événement à supprimer');
+      return;
+    }
+
+    setDeleteError('');
+    setDeleteLoading(true);
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${deleteId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Erreur lors de la suppression de l'événement");
+      }
+
+      setShowDelete(false);
+      setDeleteId('');
+      fetchNextEvent();
+      fetchUpcomingEvents();
+    } catch (err) {
+      console.error(err);
+      setDeleteError(err.message);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  const upcomingList = upcomingEvents.filter(
+    (event) => !nextEvent || event._id !== nextEvent._id
+  );
+  const deleteCandidates = React.useMemo(
+    () => (nextEvent ? [nextEvent, ...upcomingList] : [...upcomingList]),
+    [nextEvent, upcomingList]
+  );
+
+  useEffect(() => {
+    if (showDelete && deleteCandidates.length > 0 && !deleteId) {
+      setDeleteId(deleteCandidates[0]._id);
+    }
+  }, [showDelete, deleteCandidates, deleteId]);
 
   return (
     <div className="bg-[#1D1D1B] text-white flex flex-col min-h-screen"
          style={{ fontFamily: 'Poppins, sans-serif' }}>
       <Navbar />
       {isAuthenticated && (
-         <div className="admin-section w-full mt-5 px-5 relative">
+        <div className="admin-section w-full mt-5 px-5 relative">
           <div className="tracking-custom text-right text-2xl font-bold">
             admin
           </div>
@@ -41,6 +162,7 @@ export default function Events() {
             <button
               type="button"
               className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+              onClick={() => setShowCreate(true)}
             >
               <span>Créer un événement</span>
               <Plus
@@ -61,6 +183,10 @@ export default function Events() {
             <button
               type="button"
               className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+              onClick={() => {
+                setShowDelete(true);
+                setDeleteError('');
+              }}
             >
               <span>Supprimer un événement</span>
               <Trash2
@@ -70,10 +196,150 @@ export default function Events() {
             </button>
           </div>
         </div>
-        
+      )}
+      {showCreate && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
+          <form
+            onSubmit={handleCreateEvent}
+            className="bg-[#232323] p-8 rounded-2xl flex flex-col gap-4 w-full max-w-md shadow-2xl transform scale-95 animate-slideUp"
+          >
+            <h2 className="text-xl font-bold mb-2">Créer un événement</h2>
+            <label className="flex flex-col gap-2">
+              <span>Titre</span>
+              <input
+                name="title"
+                type="text"
+                required
+                className="p-2 rounded bg-[#1D1D1B] text-white border"
+              />
+            </label>
+            <label className="flex flex-col gap-2">
+              <span>Date de début</span>
+              <input
+                name="startDate"
+                type="date"
+                required
+                className="p-2 rounded bg-[#1D1D1B] text-white border"
+              />
+            </label>
+            <label className="flex flex-col gap-2">
+              <span>Date de fin</span>
+              <input
+                name="endDate"
+                type="date"
+                required
+                className="p-2 rounded bg-[#1D1D1B] text-white border"
+              />
+            </label>
+            <label className="flex flex-col gap-2">
+              <span>Lieu</span>
+              <input
+                name="location"
+                type="text"
+                required
+                className="p-2 rounded bg-[#1D1D1B] text-white border"
+              />
+            </label>
+            <label className="flex flex-col gap-2">
+              <span>Description</span>
+              <textarea
+                name="description"
+                required
+                className="p-2 rounded bg-[#1D1D1B] text-white border"
+              />
+            </label>
+            <label className="flex flex-col gap-2">
+              <span>Prix (€)</span>
+              <input
+                name="price"
+                type="number"
+                min="0"
+                step="0.01"
+                required
+                className="p-2 rounded bg-[#1D1D1B] text-white border"
+              />
+            </label>
+            <div className="flex gap-4 mt-2">
+              <button
+                type="submit"
+                className="bg-green-600 text-white px-4 py-2 rounded button-hover"
+                disabled={formLoading}
+              >
+                {formLoading ? 'Création...' : 'Créer'}
+              </button>
+              <button
+                type="button"
+                className="bg-gray-500 text-white px-4 py-2 rounded button-hover"
+                onClick={() => {
+                  setShowCreate(false);
+                  setFormError('');
+                }}
+              >
+                Annuler
+              </button>
+            </div>
+            {formError && <p className="text-red-400">{formError}</p>}
+          </form>
+        </div>
       )}
 
-      <h1 className=" event-title tracking-custom font-bold underline text-center">NOS EVENEMENTS</h1>
+      {showDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
+          <form
+            onSubmit={handleDeleteEvent}
+            className="bg-[#232323] p-8 rounded-2xl flex flex-col gap-4 w-full max-w-md shadow-2xl transform scale-95 animate-slideUp"
+          >
+            <h2 className="text-xl font-bold mb-2">Supprimer un événement</h2>
+            {deleteCandidates.length === 0 ? (
+              <p className="text-gray-300">Aucun événement à supprimer.</p>
+            ) : (
+              <>
+                <label className="flex flex-col gap-2">
+                  <span>Événement</span>
+                  <select
+                    value={deleteId}
+                    onChange={(event) => setDeleteId(event.target.value)}
+                    required
+                    className="p-2 rounded bg-[#1D1D1B] text-white border"
+                  >
+                    {deleteCandidates.map((event) => (
+                      <option key={event._id} value={event._id}>
+                        {event.title} — {new Date(event.startDate).toLocaleDateString()}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <p className="text-sm text-red-300">
+                  Cette action est irréversible.
+                </p>
+              </>
+            )}
+            <div className="flex gap-4 mt-2">
+              <button
+                type="submit"
+                className="bg-red-600 text-white px-4 py-2 rounded button-hover"
+                disabled={deleteLoading || deleteCandidates.length === 0}
+              >
+                {deleteLoading ? 'Suppression...' : 'Supprimer'}
+              </button>
+              <button
+                type="button"
+                className="bg-gray-500 text-white px-4 py-2 rounded button-hover"
+                onClick={() => {
+                  setShowDelete(false);
+                  setDeleteError('');
+                  setDeleteId('');
+                }}
+              >
+                Annuler
+              </button>
+            </div>
+            {deleteError && <p className="text-red-400">{deleteError}</p>}
+          </form>
+        </div>
+      )}
+
+      <h1 className=" event-title tracking-custom font-bold underline text-center">NOS ÉVÉNEMENTS</h1>
 
       <div className="flex justify-center mt-10">
         <h2 className=" event-title-2 font-bold text-center text-white drop-shadow-lg tracking-custom bg-[#2D2D2D] rounded-xl px-10 py-3 text-2xl inline-block">
@@ -96,7 +362,7 @@ export default function Events() {
       Chargement...
     </p>
   ) : nextEvent ? (
-     <div className="flex flex-col items-center gap-6 w-full max-w-3xl">
+   <div className="flex flex-col items-center gap-6 w-full max-w-3xl">
    <div className="backdrop-blur-md bg-white/10 border border-white/30 rounded-2xl p-8 text-center w-full tracking-custom shadow-lg flex flex-col items-center gap-8">
   
   {/* TITRE */}
@@ -137,8 +403,8 @@ export default function Events() {
     <p className="text-white/90 next-event-content">{nextEvent.price} €</p>
   </div>
 
- </div>
-<button
+  </div>
+  <button
     type="button"
     className="event-signup-button bg-[#1E1E1E] text-white font-bold rounded-full tracking-custom transition-all duration-500 ease-out hover:text-[#1E1E1E] hover:bg-white hover:scale-105 shadow-lg px-8 py-3"
   >
@@ -152,11 +418,51 @@ export default function Events() {
   )}
 </div>
       </div>
+
+      {!upcomingLoading && upcomingList.length > 0 && (
+        <>
+          <div className="flex justify-center mt-10">
+            <h2 className="event-title-2 font-bold text-center text-white drop-shadow-lg tracking-custom bg-[#2D2D2D] rounded-xl px-10 py-3 text-2xl inline-block">
+              AUTRES EVENEMENTS A VENIR
+            </h2>
+          </div>
+          <div className="flex flex-col items-center gap-8 mt-8 px-6">
+            {upcomingList.map((event) => (
+              <div
+                key={event._id}
+                className="bg-[#232323] border border-white/10 rounded-2xl p-6 w-full max-w-3xl text-center tracking-custom shadow-lg"
+              >
+                <h3 className="text-xl font-bold underline uppercase text-white">
+                  {event.title}
+                </h3>
+                <div className="mt-4 text-white/90 flex flex-col items-center gap-2">
+                  <div className="text-sm">
+                    <span className="uppercase font-bold">DU</span>{' '}
+                    {new Date(event.startDate).toLocaleDateString()} {' '}
+                    <span className="uppercase font-bold">AU</span>{' '}
+                    {new Date(event.endDate).toLocaleDateString()}
+                  </div>
+                  <div className="text-sm uppercase">
+                    {event.location}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="event-signup-button bg-[#1E1E1E] text-white font-bold rounded-full tracking-custom transition-all duration-500 ease-out hover:text-[#1E1E1E] hover:bg-white hover:scale-105 shadow-lg px-6 py-2 mt-5"
+                >
+                  S'INSCRIRE
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
       <h2 className='event-title tracking-custom font-bold underline text-center uppercase'>Événements passés</h2>
 
       {/* SECTION ALBUMS PHOTOS */}
       <AlbumsPhotos navigate={navigate} />
-      <Footer/>
+      <Footer />
     </div>
   );
 }
