@@ -26,6 +26,15 @@ const eventSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    registrations: [
+      {
+        name: { type: String, required: true, trim: true },
+        email: { type: String, required: true, lowercase: true, trim: true },
+        phone: { type: String, trim: true },
+        message: { type: String, trim: true },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     timestamps: true,

@@ -98,6 +98,41 @@ export const getEventById = async (req, res) => {
   }
 };
 
+export const registerToEvent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, phone, message } = req.body;
+
+    if (!name || !email) {
+      return res.status(400).json({ message: "Nom et email requis" });
+    }
+
+    const event = await Event.findById(id);
+    if (!event) {
+      return res.status(404).json({ message: "Evenement non trouvé" });
+    }
+
+    const registration = {
+      name,
+      email,
+      phone,
+      message,
+      createdAt: new Date(),
+    };
+
+    event.registrations.push(registration);
+    await event.save();
+
+    res.status(201).json({
+      message: "Inscription enregistrée",
+      registration,
+    });
+  } catch (error) {
+    console.error("Error registering to event:", error);
+    res.status(500).json({ message: "Erreur lors de l'inscription" });
+  }
+};
+
 export const updateEvent = async (req, res) => {
   try {
     const { id } = req.params;
