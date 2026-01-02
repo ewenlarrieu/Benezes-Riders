@@ -7,7 +7,7 @@ export default function AlbumGrid({
   emptyMessage = (
     <>
       <p className="no-albums-text text-gray-400 tracking-wider bg-[#232323] px-8 py-6 rounded-2xl shadow-[0_8px_20px_rgba(0,0,0,0.4)] border border-gray-700">
-        Aucun album photo pour le moment 📷
+        Aucun album photo pour le moment 
       </p>
       <p className="no-albums-subtext text-gray-500 italic">
         Revenez bientôt pour découvrir de nouvelles photos.

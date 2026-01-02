@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import './styles/responsive/home.css';
@@ -8,6 +8,32 @@ import { useNavigate} from 'react-router-dom';
 
 export default function Home() {
    const navigate = useNavigate();
+   const [nextEvent, setNextEvent] = useState(null);
+   const [loading, setLoading] = useState(true);
+
+   // Récupérer le prochain événement
+   useEffect(() => {
+     const fetchNextEvent = async () => {
+       try {
+         const res = await fetch(`${import.meta.env.VITE_API_URL}/events/next`);
+         const data = await res.json();
+         setNextEvent(data.message ? null : data);
+       } catch (err) {
+         console.error('Erreur lors de la récupération de l\'événement:', err);
+         setNextEvent(null);
+       } finally {
+         setLoading(false);
+       }
+     };
+     fetchNextEvent();
+   }, []);
+
+   // Formater la date en français
+   const formatDate = (dateString) => {
+     const date = new Date(dateString);
+     const options = { day: 'numeric', month: 'long', year: 'numeric' };
+     return date.toLocaleDateString('fr-FR', options);
+   };
   return (
     <div
       className="min-h-screen bg-[#1D1D1B]"
@@ -18,11 +44,11 @@ export default function Home() {
       <NavBar />
       </nav>
       <main>
-        {/* Hero section */}
-        <section className="hero-section relative">
+ 
+        <section className="hero-section relative" aria-label="Section d'accueil">
           <img
             src="/img/img1.png"
-            alt="image de fond 1"
+            alt="Groupe de motards Benezes Riders sur la route"
             className="w-screen h-auto"
           />
 
@@ -33,26 +59,27 @@ export default function Home() {
               <span>BENEZES RIDERS</span>
             </h1>
             <button
-              className="hero-button relative overflow-hidden bg-[#1E1E1E] text-white font-bold rounded-full
+              className="boutons relative overflow-hidden bg-[#1E1E1E] text-white font-bold rounded-full
                          tracking-custom
                          drop-shadow-[0_8px_8px_rgba(0,0,0,0.85)]
                          transition-all duration-500 ease-out
                          hover:text-[#1E1E1E] hover:bg-white hover:scale-105"
-            onClick={() => navigate('/evenements')}>
+              onClick={() => navigate('/evenements')}
+              aria-label="Voir le prochain événement">
               PROCHAIN ÉVÉNEMENT
             </button>
           </div>
         </section>
 
-        {/* About Section */}
-        <section className="about-section relative bg-[#1D1D1B]">
+      
+        <section className="about-section relative bg-[#1D1D1B]" aria-label="À propos de Benezes Riders">
           <img
             src="/img/Logo-2.png"
-            alt="logo"
+            alt="Logo Benezes Riders - Club de motards"
             className="about-logo absolute opacity-90 z-10"
           />
 
-          {/* Contenu textuel */}
+     
           <div className="about-content relative z-20">
             <h2 className="about-title tracking-custom font-bold underline text-white">
               QUI SOMMES NOUS ?
@@ -76,37 +103,37 @@ export default function Home() {
               <p className="about-text tracking-custom font-light leading-relaxed">
                 Ici, pas de prise de tête, juste la{' '}
                 <span className="font-bold">passion</span> et le{' '}
-                <span className="font-bold">respect</span> entre motards. 🏍️🤘
+                <span className="font-bold">respect</span> entre motards. 
               </p>
             </div>
           </div>
           <img
             src="/img/image-3.png"
-            alt="image about section"
+            alt="Motards du club Benezes Riders lors d'une sortie groupe"
             className="about-image absolute z-10"
           />
         </section>
-        <section className='Equipe'>
+        <section className='Equipe' aria-label="Membres de l'équipe">
           <h2 className='equipe-title tracking-custom font-bold text-center underline text-white'>MEMBRES DE L'EQUIPE</h2>
           <p className='equipe-text tracking-custom text-center text-white' style={{ fontFamily: 'Montserrat, sans-serif' }}>
             Ceux qui font tourner les moteurs des Benezes Riders
           </p>
           
-          {/* Conteneur principal avec bordure blanche, fond et bordures arrondies */}
+       
           <div className='equipe-container border-2 border-white bg-[#2F2F2C] rounded-3xl mx-auto'>
-            {/* Grille des 4 cartes membres */}
+        
             <div className='equipe-grid grid gap-10'>
               
-              {/* Carte membre 1 */}
+      
               <div className='member-card flex flex-col items-center'>
                 <h3 className='member-name text-white font-bold tracking-custom text-center'>NOM (OU SURNOM)</h3>
-                {/* Triple bordure - bordure extérieure blanche */}
+          
                 <div className='bg-white rounded-2xl p-1'>
-                  {/* Triple bordure - bordure du milieu (fond gris) */}
+               
                   <div className='bg-[#2F2F2C] rounded-2xl p-1'>
-                    {/* Triple bordure - bordure intérieure blanche */}
+                  
                     <div className='bg-white rounded-xl p-1'>
-                      {/* Carré intérieur pour la photo */}
+                   
                       <div className='member-photo bg-gray-600 rounded-lg flex items-center justify-center'>
                        
                       </div>
@@ -115,7 +142,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Carte membre 2 */}
+            
               <div className='member-card flex flex-col items-center'>
                 <h3 className='member-name text-white font-bold tracking-custom text-center'>NOM (OU SURNOM)</h3>
                 <div className='bg-white rounded-2xl p-1'>
@@ -129,7 +156,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Carte membre 3 */}
               <div className='member-card flex flex-col items-center'>
                 <h3 className='member-name text-white font-bold tracking-custom text-center'>NOM (OU SURNOM)</h3>
                 <div className='bg-white rounded-2xl p-1'>
@@ -143,7 +169,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Carte membre 4 */}
+     
               <div className='member-card flex flex-col items-center'>
                 <h3 className='member-name text-white font-bold tracking-custom text-center'>NOM (OU SURNOM)</h3>
                 <div className='bg-white rounded-2xl p-1'>
@@ -162,58 +188,85 @@ export default function Home() {
             </div>
           </div>
         </section>
-<section className="event relative">
- <h2 className="tracking-custom font-bold underline text-center text-white event-title">
-  HIVERNALES À VENIR
+<section className="event relative" aria-label="Événements à venir">
+ <h2 className="tracking-custom font-bold underline text-center text-white about-title uppercase">
+  événement à venir
 </h2>
 
 
   <div className="relative w-full flex justify-center items-center">
-    {/* Image de fond */}
+
     <div className="relative w-full">
       <img
         src="/img/image4.png"
-        alt="image de fond hivernal"
+        alt="Paysage hivernal pour événement moto Benezes Riders"
         className="w-full object-cover"
       />
 
-      {/* Contenu centré dans l’image */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        {/* Carte effet glass */}
+   
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-5">
+      
         <div
-          className="rounded-[40px] border-2 border-white
-                     backdrop-blur-md bg-linear-to-br from-white/80 to-[#393939]/20
-                     flex items-center justify-center text-white font-semibold shadow-lg"
+          className="event-card rounded-[10px] border-4 border-white/80
+                     backdrop-blur-md bg-linear-to-br from-black/40 via-black/30 to-transparent
+                     flex items-center justify-center text-white
+                     shadow-[0_20px_60px_rgba(0,0,0,0.5)]
+                     transform transition-all duration-300 hover:scale-[1.02]"
         >
-          <p className="event-text text-center tracking-custom">Aucun événement à venir</p>
+          {loading ? (
+            <p className="text-center tracking-custom text-2xl font-light animate-pulse">Chargement...</p>
+          ) : nextEvent ? (
+            <div className="text-center tracking-custom w-full">
+              <p className="event-card-title font-black uppercase drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
+                {nextEvent.title}
+              </p>
+              <div className="event-card-date flex flex-col font-semibold">
+                <p className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+                   Du {formatDate(nextEvent.startDate)}
+                </p>
+                <p className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+                  au {formatDate(nextEvent.endDate)}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <p className="event-no-event-message text-center tracking-custom font-light opacity-80">
+              Aucun événement à venir pour le moment
+            </p>
+          )}
         </div>
 
-        {/* Bouton sous la carte */}
-        <button
-          className="event-button overflow-hidden bg-[#1E1E1E] text-white font-bold
-                     rounded-full border-2 border-white tracking-custom
-                     drop-shadow-[0_8px_8px_rgba(0,0,0,0.85)]
-                     transition-all duration-500 ease-out
-                     hover:text-[#1E1E1E] hover:bg-white hover:scale-105 hover:border-[#1E1E1E]"
-        >
-          PLUS DE DÉTAILS
-        </button>
+        
+        {nextEvent && (
+          <button
+            onClick={() => navigate('/evenements')}
+            className="boutons overflow-hidden bg-white text-[#1E1E1E] font-black
+                       rounded-full border-4 border-white tracking-custom
+                       shadow-[0_10px_30px_rgba(255,255,255,0.3)]
+                       transform transition-all duration-300
+                       hover:bg-[#1E1E1E] hover:text-white hover:scale-110 hover:shadow-[0_15px_40px_rgba(255,255,255,0.5)]"
+            aria-label="Voir plus de détails sur l'événement"
+          >
+            PLUS DE DÉTAILS
+          </button>
+        )}
       </div>
     </div>
   </div>
 </section>
-<section className='contact-class'>
+<section className='contact-class' aria-label="Section de contact">
     <h2 className='contact-section-title tracking-custom text-center font-bold underline'>CONTACTEZ NOUS</h2>
     <p className='contact-section-text tracking-custom text-center'>UNE QUESTION ?</p>
-    <p className='contact-section-text tracking-custom text-center'>UN PROBLÈME ?</p>
+    <p className='contact-section-text tracking-custom text-center mb-5'>UN PROBLÈME ?</p>
     <div className="flex justify-center w-full">
       <button
-        className="contact-section-button overflow-hidden bg-[#1E1E1E] text-white font-bold
+        className="boutons overflow-hidden bg-[#1E1E1E] text-white font-bold
                    rounded-full border-2 border-white tracking-custom
                    drop-shadow-[0_8px_8px_rgba(0,0,0,0.85)]
                    transition-all duration-500 ease-out
                    hover:text-[#1E1E1E] hover:bg-white hover:scale-105 hover:border-[#1E1E1E]"
-                   onClick={() => navigate('/contact')}
+        onClick={() => navigate('/contact')}
+        aria-label="Accéder au formulaire de contact"
       >
         CONTACTEZ NOUS
       </button>

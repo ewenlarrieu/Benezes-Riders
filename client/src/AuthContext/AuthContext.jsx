@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -32,12 +33,25 @@ export const AuthProvider = ({ children }) => {
       ...(options.headers || {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
-    const res = await fetch(url, { ...options, headers });
-    if (res.status === 401 || res.status === 403) {
-      logout();
-      throw new Error("Session expirée, veuillez vous reconnecter.");
+    
+    try {
+      const res = await fetch(url, { ...options, headers });
+      
+      // Si token invalide ou expiré, déconnecter automatiquement
+      if (res.status === 401 || res.status === 403) {
+        logout();
+        window.location.href = '/home'; // Redirection automatique
+        throw new Error("Session expirée, veuillez vous reconnecter.");
+      }
+      
+      return res;
+    } catch (error) {
+      // Si erreur réseau, propager l'erreur
+      if (error.message === "Session expirée, veuillez vous reconnecter.") {
+        throw error;
+      }
+      throw new Error("Erreur de connexion au serveur");
     }
-    return res;
   };
 
   return (
