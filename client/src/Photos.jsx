@@ -1,28 +1,29 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
+import AlbumGrid from './components/AlbumGrid';
 import { AuthContext } from './AuthContext/AuthContext';
-import './styles/responsive/photo.css'
+import './styles/responsive/photo.css';
 import { Plus, Trash2, Edit3 } from 'lucide-react';
 
-
 export default function Photos() {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, authFetch } = useContext(AuthContext);
   const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+
   const titleRef = useRef();
   const coverRef = useRef();
-  const editCoverRef = useRef();
   const editTitleRef = useRef();
-  const navigate = useNavigate();
+  const editCoverRef = useRef();
 
-  const token = localStorage.getItem('adminToken');
+  const navigate = useNavigate();
 
   // Charger les albums
   useEffect(() => {
@@ -31,7 +32,8 @@ export default function Photos() {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/albums`);
         const data = await res.json();
-        setAlbums(data);
+        const list = Array.isArray(data) ? data : Array.isArray(data.albums) ? data.albums : [];
+        setAlbums(list);
       } catch (err) {
         setError('Erreur lors du chargement des albums');
       } finally {
@@ -45,22 +47,25 @@ export default function Photos() {
   const handleCreate = async (e) => {
     e.preventDefault();
     setError('');
+    if (!titleRef.current.value || !coverRef.current.files[0]) {
+      setError('Titre et image de couverture requis');
+      return;
+    }
     const formData = new FormData();
     formData.append('title', titleRef.current.value);
     formData.append('cover', coverRef.current.files[0]);
     try {
       setLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/albums`, {
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/albums`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         body: formData,
       });
       if (!res.ok) throw new Error('Erreur lors de la création');
       const newAlbum = await res.json();
-      setAlbums([newAlbum, ...albums]);
+      setAlbums((prev) => [newAlbum, ...prev]);
       setShowCreate(false);
+      titleRef.current.value = '';
+      coverRef.current.value = '';
     } catch (err) {
       setError("Erreur lors de la création de l'album");
     } finally {
@@ -69,18 +74,16 @@ export default function Photos() {
   };
 
   // Supprimer un album
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
+    if (!selectedAlbum) return;
     setError('');
     try {
       setLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/albums/${id}`, {
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/albums/${selectedAlbum._id}`, {
         method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       if (!res.ok) throw new Error('Erreur lors de la suppression');
-      setAlbums(albums.filter((a) => a._id !== id));
+      setAlbums((prev) => prev.filter((a) => a._id !== selectedAlbum._id));
       setShowDelete(false);
       setSelectedAlbum(null);
     } catch (err) {
@@ -90,29 +93,33 @@ export default function Photos() {
     }
   };
 
-  // Modifier la cover
+  // Modifier titre/couverture
   const handleEditCover = async (e) => {
     e.preventDefault();
+    if (!selectedAlbum) return;
     setError('');
     const formData = new FormData();
-    if (editCoverRef.current.files[0]) {
-      formData.append('cover', editCoverRef.current.files[0]);
+    const newTitle = editTitleRef.current.value;
+    const newCover = editCoverRef.current.files[0];
+    if (!newTitle && !newCover) {
+      setError('Renseignez un nouveau titre ou une nouvelle image');
+      return;
     }
-    if (editTitleRef.current.value && editTitleRef.current.value !== selectedAlbum.title) {
-      formData.append('title', editTitleRef.current.value);
+    if (newTitle && newTitle !== selectedAlbum.title) {
+      formData.append('title', newTitle);
+    }
+    if (newCover) {
+      formData.append('cover', newCover);
     }
     try {
       setLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/albums/${selectedAlbum._id}/cover`, {
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/albums/${selectedAlbum._id}/cover`, {
         method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         body: formData,
       });
       if (!res.ok) throw new Error('Erreur lors de la modification');
       const updated = await res.json();
-      setAlbums(albums.map((a) => (a._id === updated._id ? updated : a)));
+      setAlbums((prev) => prev.map((a) => (a._id === updated._id ? updated : a)));
       setShowEdit(false);
       setSelectedAlbum(null);
     } catch (err) {
@@ -122,12 +129,40 @@ export default function Photos() {
     }
   };
 
+  const renderActions = (album) =>
+    isAuthenticated ? (
+      <div className="flex gap-4 mt-3">
+        <button
+          className="bg-red-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-red-700"
+          onClick={() => {
+            setSelectedAlbum(album);
+            setShowDelete(true);
+          }}
+        >
+          <Trash2 size={20} /> Supprimer
+        </button>
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-700"
+          onClick={() => {
+            setSelectedAlbum(album);
+            setShowEdit(true);
+            setTimeout(() => {
+              if (editTitleRef.current) {
+                editTitleRef.current.value = album.title;
+              }
+              if (editCoverRef.current) {
+                editCoverRef.current.value = '';
+              }
+            }, 0);
+          }}
+        >
+          <Edit3 size={20} /> Modifier
+        </button>
+      </div>
+    ) : null;
+
   return (
-    <div
-      className="bg-[#1D1D1B] text-white flex flex-col min-h-screen"
-      style={{ fontFamily: 'Poppins, sans-serif' }}
-    >
-      {/* NAVBAR */}
+    <div className="bg-[#1D1D1B] text-white flex flex-col min-h-screen" style={{ fontFamily: 'Poppins, sans-serif' }}>
       <nav>
         <Navbar />
       </nav>
@@ -146,163 +181,86 @@ export default function Photos() {
                 onClick={() => setShowCreate(true)}
               >
                 <span>Ajouter un album</span>
-                <Plus
-                  size={20}
-                  className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600"
-                />
+                <Plus size={20} className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600" />
               </button>
             </div>
-
-            {/* MODALE CRÉATION */}
-            {showCreate && (
-              <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
-                <form
-                  onSubmit={handleCreate}
-                  className="bg-[#232323] p-8 rounded-2xl flex flex-col gap-4 w-full max-w-md shadow-2xl transform scale-95 animate-slideUp"
-                >
-                  <h2 className="text-xl font-bold mb-2">Créer un album</h2>
-                  <p>Titre de l'album :</p>
-                  <input
-                    ref={titleRef}
-                    type="text"
-                    placeholder="Titre de l'album"
-                    className="p-2 rounded bg-[#1D1D1B] text-white border"
-                    required
-                  />
-                  <p>Image de couverture :</p>
-                  <input
-                    ref={coverRef}
-                    type="file"
-                    accept="image/*"
-                    className="p-2 rounded bg-[#1D1D1B] text-white border"
-                    required
-                  />
-                  <div className="flex gap-4 mt-2">
-                    <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded button-hover" disabled={loading}>
-                      {loading ? 'Création...' : 'Créer'}
-                    </button>
-                    <button
-                      type="button"
-                      className="bg-gray-500 text-white px-4 py-2 rounded button-hover"
-                      onClick={() => setShowCreate(false)}
-                    >
-                      Annuler
-                    </button>
-                  </div>
-                  {error && <p className="text-red-400">{error}</p>}
-                </form>
-              </div>
-            )}
-
-            {/* MODALE MODIFICATION COVER */}
-            {showEdit && selectedAlbum && (
-              <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
-                <form
-                  onSubmit={handleEditCover}
-                  className="bg-[#232323] p-8 rounded-2xl flex flex-col gap-4 w-full max-w-md shadow-2xl transform scale-95 animate-slideUp"
-                >
-                  <h2 className="text-xl font-bold mb-2">Modifier l'album</h2>
-                  <p>Titre de l'album :</p>
-                  <input
-                    ref={editTitleRef}
-                    type="text"
-                    defaultValue={selectedAlbum.title}
-                    placeholder="Titre de l'album"
-                    className="p-2 rounded bg-[#1D1D1B] text-white border"
-                  />
-                  <p>Image de couverture :</p>
-                  <input
-                    ref={editCoverRef}
-                    type="file"
-                    accept="image/*"
-                    className="p-2 rounded bg-[#1D1D1B] text-white border"
-                  />
-                  <div className="flex gap-4 mt-2">
-                    <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded button-hover">
-                      Modifier
-                    </button>
-                    <button
-                      type="button"
-                      className="bg-gray-500 text-white px-4 py-2 rounded button-hover"
-                      onClick={() => {
-                        setShowEdit(false);
-                        setSelectedAlbum(null);
-                      }}
-                    >
-                      Annuler
-                    </button>
-                  </div>
-                  {error && <p className="text-red-400">{error}</p>}
-                </form>
-              </div>
-            )}
           </div>
         )}
 
         {/* TITRE GALERIE */}
-        <h1 className="photos-title tracking-custom font-bold underline text-center">
-          GALERIE PHOTOS
-        </h1>
+        <h1 className="photos-title tracking-custom font-bold underline text-center">GALERIE PHOTOS</h1>
 
         {/* AFFICHAGE DES ALBUMS */}
-        <div className="albums-container flex flex-col items-center gap-24 px-6 pb-20">
-          {albums.length === 0 && !loading ? (
-            <div className="no-albums-message text-center flex flex-col items-center justify-center">
-              <p className="no-albums-text text-gray-400 tracking-wider bg-[#232323] px-8 py-6 rounded-2xl shadow-[0_8px_20px_rgba(0,0,0,0.4)] border border-gray-700">
-                Aucun album photo pour le moment 📷
-              </p>
-              <p className="no-albums-subtext text-gray-500 italic">
-                Revenez bientôt pour découvrir de nouvelles photos.
-              </p>
+        {loading ? (
+          <p className="text-center mt-8">Chargement des albums...</p>
+        ) : (
+          <AlbumGrid albums={albums} onAlbumClick={(id) => navigate(`/albums/${id}`)} renderActions={renderActions} />
+        )}
+
+        {error && <p className="text-red-400 mt-6 text-center">{error}</p>}
+      </main>
+
+      <footer>
+        <Footer />
+      </footer>
+
+      {/* MODALE CREATION */}
+      {showCreate && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
+          <form
+            onSubmit={handleCreate}
+            className="bg-[#232323] p-8 rounded-2xl flex flex-col gap-4 w-full max-w-md shadow-2xl transform scale-95 animate-slideUp"
+          >
+            <h2 className="text-xl font-bold mb-2">Créer un album</h2>
+            <p>Titre de l'album :</p>
+            <input ref={titleRef} type="text" placeholder="Titre de l'album" className="p-2 rounded bg-[#1D1D1B] text-white border" required />
+            <p>Image de couverture :</p>
+            <input ref={coverRef} type="file" accept="image/*" className="p-2 rounded bg-[#1D1D1B] text-white border" required />
+            <div className="flex gap-4 mt-2">
+              <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded button-hover" disabled={loading}>
+                {loading ? 'Création...' : 'Créer'}
+              </button>
+              <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded button-hover" onClick={() => setShowCreate(false)}>
+                Annuler
+              </button>
             </div>
-          ) : (
-            albums.map((album) => (
-              <div
-                key={album._id}
-                className="album-item w-full max-w-5xl flex flex-col items-center"
+            {error && <p className="text-red-400">{error}</p>}
+          </form>
+        </div>
+      )}
+
+      {/* MODALE MODIFICATION */}
+      {showEdit && selectedAlbum && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
+          <form
+            onSubmit={handleEditCover}
+            className="bg-[#232323] p-8 rounded-2xl flex flex-col gap-4 w-full max-w-md shadow-2xl transform scale-95 animate-slideUp"
+          >
+            <h2 className="text-xl font-bold mb-2">Modifier l'album</h2>
+            <p>Titre de l'album :</p>
+            <input ref={editTitleRef} type="text" defaultValue={selectedAlbum.title} placeholder="Titre de l'album" className="p-2 rounded bg-[#1D1D1B] text-white border" />
+            <p>Image de couverture :</p>
+            <input ref={editCoverRef} type="file" accept="image/*" className="p-2 rounded bg-[#1D1D1B] text-white border" />
+            <div className="flex gap-4 mt-2">
+              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded button-hover" disabled={loading}>
+                Modifier
+              </button>
+              <button
+                type="button"
+                className="bg-gray-500 text-white px-4 py-2 rounded button-hover"
+                onClick={() => {
+                  setShowEdit(false);
+                  setSelectedAlbum(null);
+                }}
               >
-                <h3 className="album-title font-bold text-center text-white drop-shadow-lg tracking-custom bg-[#2D2D2D] rounded-xl px-6 py-2 inline-block">
-                {album.title}
-                </h3>
+                Annuler
+              </button>
+            </div>
+            {error && <p className="text-red-400">{error}</p>}
+          </form>
+        </div>
+      )}
 
-                <div className="album-image-container relative w-full group max-w-5xl">
-                <img
-                  src={album.coverImage}
-                  alt={album.title}
-                className="album-image w-full max-w-full h-auto rounded-2xl border-4 border-white transition-transform duration-300 ease-in-out will-change-transform group-hover:scale-103 group-hover:shadow-xl group-hover:-translate-y-1"
-                />
-                <button
-                  className="album-button absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#1E1E1E] text-white font-bold rounded-full tracking-custom transition-all duration-500 ease-out hover:text-[#1E1E1E] hover:bg-white hover:scale-105 shadow-lg z-10"
-                  type="button"
-                  onClick={()=> navigate(`/albums/${album._id}`)}
-                >
-                  VOIR LES PHOTOS
-                </button>
-              </div>
-
-
-                {isAuthenticated && (
-                  <div className="flex gap-4 mt-3">
-                    <button
-                      className="bg-red-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-red-700"
-                      onClick={() => {
-                        setShowDelete(true);
-                        setSelectedAlbum(album);
-                      }}
-                    >
-                      <Trash2 size={20} /> Supprimer
-                    </button>
-                    <button
-                      className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-700"
-                      onClick={() => {
-                        setShowEdit(true);
-                        setSelectedAlbum(album);
-                      }}
-                    >
-                      <Edit3 size={20} /> Modifier
-                    </button>
-                  </div>
-                )}
       {/* MODALE SUPPRESSION */}
       {showDelete && selectedAlbum && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 animate-fadeInBg">
@@ -310,24 +268,22 @@ export default function Photos() {
             <h2 className="text-xl font-bold mb-4 text-red-500">Supprimer cet album ?</h2>
             <p className="text-gray-300 mb-6">Cette action est irréversible.</p>
             <div className="flex justify-center gap-4">
-              <button className="bg-red-600 text-white px-5 py-2 rounded button-hover" onClick={() => handleDelete(selectedAlbum._id)} disabled={loading}>
+              <button className="bg-red-600 text-white px-5 py-2 rounded button-hover" onClick={handleDelete} disabled={loading}>
                 {loading ? 'Suppression...' : 'Supprimer'}
               </button>
-              <button className="bg-gray-500 text-white px-5 py-2 rounded button-hover" onClick={() => setShowDelete(false)}>Annuler</button>
+              <button
+                className="bg-gray-500 text-white px-5 py-2 rounded button-hover"
+                onClick={() => {
+                  setShowDelete(false);
+                  setSelectedAlbum(null);
+                }}
+              >
+                Annuler
+              </button>
             </div>
           </div>
         </div>
       )}
-              </div>
-            ))
-          )}
-        </div>
-
-        {error && <p className="text-red-400 mt-6 text-center">{error}</p>}
-      </main>
-      <footer>
-        <Footer/>
-      </footer>
     </div>
   );
 }
