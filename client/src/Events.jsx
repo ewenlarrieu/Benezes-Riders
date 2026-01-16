@@ -241,31 +241,59 @@ export default function Events() {
     setRegisterSuccess('');
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${registerEvent._id}/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(registerForm),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Erreur lors de l'inscription");
-      }
-
-      setRegisterSuccess('Inscription envoyée !');
-      setTimeout(() => {
-        setShowRegister(false);
-        setRegisterEvent(null);
-        setRegisterForm({
-          name: '',
-          email: '',
-          phone: '',
-          message: '',
+      // Si l'événement est gratuit, inscription directe
+      if (registerEvent.price === 0) {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${registerEvent._id}/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(registerForm),
         });
-        setRegisterSuccess('');
-      }, 1200);
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.message || "Erreur lors de l'inscription");
+        }
+
+        setRegisterSuccess('Inscription envoyée !');
+        setTimeout(() => {
+          setShowRegister(false);
+          setRegisterEvent(null);
+          setRegisterForm({
+            name: '',
+            email: '',
+            phone: '',
+            message: '',
+          });
+          setRegisterSuccess('');
+        }, 1200);
+      } else {
+        // Si l'événement est payant, créer une session Stripe
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/stripe/create-checkout-session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            eventId: registerEvent._id,
+            name: registerForm.name,
+            email: registerForm.email,
+            phone: registerForm.phone,
+            message: registerForm.message,
+          }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.message || "Erreur lors de la création de la session de paiement");
+        }
+
+        const { url } = await res.json();
+        
+        // Rediriger vers la page de paiement Stripe
+        window.location.href = url;
+      }
     } catch (err) {
       console.error(err);
       setRegisterError(err.message);

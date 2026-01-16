@@ -6,6 +6,7 @@ import Events from './Events'
 import Contact from './Contact'
 import Login from "./Login";
 import AlbumDetails from "./AlbumDetails";
+import PaymentSuccess from './PaymentSuccess';
 import './styles/responsive/home.css';
 import './styles/responsive/photo.css';
 import './styles/responsive/events.css'
@@ -23,6 +24,7 @@ const App = () => {
          <Route path="/evenements" element={<Events />} />
          <Route path="/contact" element={<Contact />} />
            <Route path="/connexion" element={<Login />} />
+           <Route path="/payment-success" element={<PaymentSuccess />} />
          
       </Routes>
     </Router>

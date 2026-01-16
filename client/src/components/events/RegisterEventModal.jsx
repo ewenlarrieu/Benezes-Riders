@@ -13,6 +13,10 @@ export default function RegisterEventModal({
 }) {
   if (!open) return null;
 
+  // Afficher le prix ou "Gratuit"
+  const displayPrice = registerEvent?.price === 0 ? 'Gratuit' : `${registerEvent?.price} €`;
+  const isFree = registerEvent?.price === 0;
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
       <form
@@ -22,6 +26,15 @@ export default function RegisterEventModal({
         <h2 className="text-xl font-bold mb-2">
           Inscription à {registerEvent?.title || "l'événement"}
         </h2>
+
+        {/* Affichage du prix */}
+        <div className="bg-[#1D1D1B] p-3 rounded border border-white/20">
+          <p className="text-center text-lg">
+            <span className="text-white/70">Prix : </span>
+            <span className="font-bold text-white">{displayPrice}</span>
+          </p>
+        </div>
+
         <label className="flex flex-col gap-2">
           <span>Nom</span>
           <input
@@ -62,10 +75,14 @@ export default function RegisterEventModal({
         <div className="flex gap-4 mt-2">
           <button
             type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded button-hover"
+            className="bg-green-600 text-white px-4 py-2 rounded button-hover flex-1"
             disabled={loading || Boolean(success)}
           >
-            {loading ? 'Envoi...' : "Je m'inscris"}
+            {loading 
+              ? 'Redirection...' 
+              : isFree 
+                ? "Je m'inscris" 
+                : 'Payer et s\'inscrire'}
           </button>
           <button
             type="button"
