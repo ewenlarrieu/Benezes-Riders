@@ -11,7 +11,8 @@ export const createEvent = async (req, res) => {
       !endDate ||
       !location ||
       !description ||
-      !price
+      price === undefined ||
+      price === null
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }

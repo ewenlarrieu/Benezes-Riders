@@ -492,7 +492,9 @@ export default function Events() {
                 {/* PRIX */}
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-3xl font-semibold ">PRIX</span>
-                  <p className="text-white/90 next-event-content">{nextEvent.price} €</p>
+                  <p className="text-white/90 next-event-content">
+                    {nextEvent.price === 0 ? 'Gratuit' : `${nextEvent.price} €`}
+                  </p>
                 </div>
               </div>
               <button
