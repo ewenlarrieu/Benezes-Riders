@@ -58,9 +58,10 @@ export default function RegisterEventModal({
         <label className="flex flex-col gap-2">
           <span>Téléphone (optionnel)</span>
           <input
-            type="tel"
+            type="text"
             value={registerForm.phone}
             onChange={(event) => onFieldChange('phone', event.target.value)}
+            placeholder="Ex: 06 12 34 56 78"
             className="p-2 rounded bg-[#1D1D1B] text-white border"
           />
         </label>

@@ -7,12 +7,36 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);
 
-  // Vérifie si un token est déjà stocké
+  // Fonction pour vérifier si le token est expiré
+  const isTokenExpired = (token) => {
+    if (!token) return true;
+    
+    try {
+      // Décoder le JWT (format: header.payload.signature)
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const expirationTime = payload.exp * 1000; // exp est en secondes, on convertit en ms
+      return Date.now() >= expirationTime;
+    } catch (error) {
+      console.error('Erreur lors du décodage du token:', error);
+      return true; // Si erreur, considérer le token comme expiré
+    }
+  };
+
+  // Vérifie si un token est déjà stocké ET valide
   useEffect(() => {
     const stored = localStorage.getItem("adminToken");
     if (stored) {
-      setIsAuthenticated(true);
-      setToken(stored);
+      // Vérifier si le token est expiré
+      if (isTokenExpired(stored)) {
+        // Token expiré, nettoyer et rediriger
+        localStorage.removeItem("adminToken");
+        setIsAuthenticated(false);
+        setToken(null);
+      } else {
+        // Token valide
+        setIsAuthenticated(true);
+        setToken(stored);
+      }
     }
   }, []);
 
