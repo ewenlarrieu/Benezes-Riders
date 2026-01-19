@@ -24,7 +24,7 @@ export const createCheckoutSession = async (req, res) => {
             product_data: {
               name: `Inscription - ${event.title}`,
               description: `Du ${event.startDate.toLocaleDateString(
-                "fr-FR"
+                "fr-FR",
               )}au ${event.endDate.toLocaleDateString("fr-FR")}`,
             },
             unit_amount: event.price * 100,
@@ -35,7 +35,6 @@ export const createCheckoutSession = async (req, res) => {
       mode: "payment",
       success_url: `${process.env.CLIENT_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_URL}/evenements`,
-      customer_email: email,
       metadata: {
         eventId: eventId,
         name: name,
@@ -77,7 +76,7 @@ export const verifyPayment = async (req, res) => {
 
     // Vérifier si déjà inscrit
     const alreadyRegistered = event.registrations.some(
-      (reg) => reg.email === email && reg.stripeSessionId === sessionId
+      (reg) => reg.email === email && reg.stripeSessionId === sessionId,
     );
 
     if (!alreadyRegistered) {
