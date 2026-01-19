@@ -236,6 +236,13 @@ export default function Events() {
       return;
     }
 
+    // Validation basique de l'email pour Stripe
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(registerForm.email)) {
+      setRegisterError('Format d\'email invalide');
+      return;
+    }
+
     setRegisterLoading(true);
     setRegisterError('');
     setRegisterSuccess('');
