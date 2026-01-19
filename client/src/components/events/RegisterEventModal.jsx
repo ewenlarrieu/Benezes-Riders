@@ -49,7 +49,6 @@ export default function RegisterEventModal({
           <span>Email</span>
           <input
             type="text"
-            inputMode="email"
             value={registerForm.email}
             onChange={(event) => onFieldChange('email', event.target.value)}
             required
