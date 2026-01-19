@@ -48,13 +48,12 @@ export default function RegisterEventModal({
         <label className="flex flex-col gap-2">
           <span>Email</span>
           <input
-            type="email"
+            type="text"
             inputMode="email"
             value={registerForm.email}
             onChange={(event) => onFieldChange('email', event.target.value)}
             required
-            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-            title="Entrez une adresse email valide"
+            placeholder="exemple@email.fr"
             className="p-2 rounded bg-[#1D1D1B] text-white border"
           />
         </label>
