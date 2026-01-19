@@ -42,7 +42,6 @@ export default function RegisterEventModal({
             type="text"
             value={registerForm.name}
             onChange={(event) => onFieldChange('name', event.target.value)}
-            required
             className="p-2 rounded bg-[#1D1D1B] text-white border"
           />
         </label>
@@ -52,7 +51,6 @@ export default function RegisterEventModal({
             type="text"
             value={registerForm.email}
             onChange={(event) => onFieldChange('email', event.target.value)}
-            required
             placeholder="exemple@email.fr"
             className="p-2 rounded bg-[#1D1D1B] text-white border"
           />

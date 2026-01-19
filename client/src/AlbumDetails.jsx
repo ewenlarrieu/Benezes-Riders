@@ -86,7 +86,7 @@ export default function AlbumDetails() {
 
       <main className="flex flex-col items-center grow p-6">
         <h1
-          className="photo-tittle font-bold underline tracking-custom mb-10 text-center whitespace-nowrap overflow-hidden text-ellipsis"
+          className="album-title font-bold underline tracking-custom mb-10 text-center whitespace-nowrap overflow-hidden text-ellipsis"
           style={{ textOverflow: 'ellipsis' }}
         >
           {album.title}
