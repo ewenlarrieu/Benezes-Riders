@@ -49,9 +49,12 @@ export default function RegisterEventModal({
           <span>Email</span>
           <input
             type="email"
+            inputMode="email"
             value={registerForm.email}
             onChange={(event) => onFieldChange('email', event.target.value)}
             required
+            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+            title="Entrez une adresse email valide"
             className="p-2 rounded bg-[#1D1D1B] text-white border"
           />
         </label>
