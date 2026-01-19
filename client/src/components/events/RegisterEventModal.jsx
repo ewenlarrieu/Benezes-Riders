@@ -21,6 +21,7 @@ export default function RegisterEventModal({
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
       <form
         onSubmit={onSubmit}
+        noValidate
         className="bg-[#232323] p-8 rounded-2xl flex flex-col gap-4 w-full max-w-md shadow-2xl transform scale-95 animate-slideUp"
       >
         <h2 className="text-xl font-bold mb-2">
