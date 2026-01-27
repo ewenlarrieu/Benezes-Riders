@@ -63,15 +63,44 @@ export const loginAdmin = async (req, res) => {
     const token = jwt.sign(
       { id: admin._id, username: admin.username },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
+
+    // Envoie le token dans un cookie HttpOnly
+    res.cookie("adminToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 3600000, // 1 heure en millisecondes
+    });
 
     res.status(200).json({
       message: "Connexion réussie.",
-      token,
     });
   } catch (error) {
     console.error("Erreur de connexion admin:", error);
     res.status(500).json({ message: "Erreur serveur." });
   }
+};
+
+// --- Déconnexion de l'administrateur ---
+export const logoutAdmin = (req, res) => {
+  res.clearCookie("adminToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  res.status(200).json({ message: "Déconnexion réussie." });
+};
+
+// --- Vérifier l'authentification ---
+export const checkAuth = (req, res) => {
+  // Si ce middleware est atteint, c'est que le token est valide
+  res.status(200).json({
+    message: "Authentifié",
+    admin: {
+      id: req.admin.id,
+      username: req.admin.username,
+    },
+  });
 };
