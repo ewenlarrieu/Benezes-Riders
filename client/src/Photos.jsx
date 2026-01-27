@@ -1,11 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/NavBar';
-import Footer from '../components/Footer';
-import AlbumGrid from './components/AlbumGrid';
+import Navbar from './components/NavBar';
+import Footer from './components/Footer';
+import AlbumGrid from './components/albums/AlbumGrid';
 import { AuthContext } from './AuthContext/AuthContext';
 import './styles/responsive/photo.css';
 import { Plus, Trash2, Edit3 } from 'lucide-react';
+import AdminSection from './components/AdminSection';
+import CreateAlbumModal from './components/albums/CreateAlbumModal';
+import EditAlbumModal from './components/albums/EditAlbumModal';
+import DeleteAlbumModal from './components/albums/DeleteAlbumModal';
 
 export default function Photos() {
   const { isAuthenticated, authFetch } = useContext(AuthContext);
@@ -170,21 +174,15 @@ export default function Photos() {
       <main className="grow">
         {/* SECTION ADMIN */}
         {isAuthenticated && (
-          <div className="admin-section w-full mt-5 px-5 relative">
-            <div className="admin-label text-2xl font-bold">
-              <p>admin</p>
-            </div>
-
-            <div className="admin-buttons flex justify-center mt-5 space-x-6 flex-wrap">
-              <button
-                className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
-                onClick={() => setShowCreate(true)}
-              >
-                <span>Ajouter un album</span>
-                <Plus size={20} className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600" />
-              </button>
-            </div>
-          </div>
+          <AdminSection>
+            <button
+              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+              onClick={() => setShowCreate(true)}
+            >
+              <span>Ajouter un album</span>
+              <Plus size={20} className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600" />
+            </button>
+          </AdminSection>
         )}
 
         {/* TITRE GALERIE */}
@@ -204,86 +202,40 @@ export default function Photos() {
         <Footer />
       </footer>
 
-      {/* MODALE CREATION */}
-      {showCreate && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
-          <form
-            onSubmit={handleCreate}
-            className="bg-[#232323] p-8 rounded-2xl flex flex-col gap-4 w-full max-w-md shadow-2xl transform scale-95 animate-slideUp"
-          >
-            <h2 className="text-xl font-bold mb-2">Créer un album</h2>
-            <p>Titre de l'album :</p>
-            <input ref={titleRef} type="text" placeholder="Titre de l'album" className="p-2 rounded bg-[#1D1D1B] text-white border" required />
-            <p>Image de couverture :</p>
-            <input ref={coverRef} type="file" accept="image/*" className="p-2 rounded bg-[#1D1D1B] text-white border" required />
-            <div className="flex gap-4 mt-2">
-              <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded button-hover" disabled={loading}>
-                {loading ? 'Création...' : 'Créer'}
-              </button>
-              <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded button-hover" onClick={() => setShowCreate(false)}>
-                Annuler
-              </button>
-            </div>
-            {error && <p className="text-red-400">{error}</p>}
-          </form>
-        </div>
-      )}
+      <CreateAlbumModal
+        open={showCreate}
+        onClose={() => setShowCreate(false)}
+        onSubmit={handleCreate}
+        loading={loading}
+        error={error}
+        titleRef={titleRef}
+        coverRef={coverRef}
+      />
 
-      {/* MODALE MODIFICATION */}
-      {showEdit && selectedAlbum && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
-          <form
-            onSubmit={handleEditCover}
-            className="bg-[#232323] p-8 rounded-2xl flex flex-col gap-4 w-full max-w-md shadow-2xl transform scale-95 animate-slideUp"
-          >
-            <h2 className="text-xl font-bold mb-2">Modifier l'album</h2>
-            <p>Titre de l'album :</p>
-            <input ref={editTitleRef} type="text" defaultValue={selectedAlbum.title} placeholder="Titre de l'album" className="p-2 rounded bg-[#1D1D1B] text-white border" />
-            <p>Image de couverture :</p>
-            <input ref={editCoverRef} type="file" accept="image/*" className="p-2 rounded bg-[#1D1D1B] text-white border" />
-            <div className="flex gap-4 mt-2">
-              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded button-hover" disabled={loading}>
-                Modifier
-              </button>
-              <button
-                type="button"
-                className="bg-gray-500 text-white px-4 py-2 rounded button-hover"
-                onClick={() => {
-                  setShowEdit(false);
-                  setSelectedAlbum(null);
-                }}
-              >
-                Annuler
-              </button>
-            </div>
-            {error && <p className="text-red-400">{error}</p>}
-          </form>
-        </div>
-      )}
+      <EditAlbumModal
+        open={showEdit}
+        onClose={() => {
+          setShowEdit(false);
+          setSelectedAlbum(null);
+        }}
+        onSubmit={handleEditCover}
+        loading={loading}
+        error={error}
+        selectedAlbum={selectedAlbum}
+        editTitleRef={editTitleRef}
+        editCoverRef={editCoverRef}
+      />
 
-      {/* MODALE SUPPRESSION */}
-      {showDelete && selectedAlbum && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 animate-fadeInBg">
-          <div className="bg-[#232323] p-8 rounded-2xl text-center w-full max-w-md animate-modalPop shadow-[0_0_25px_rgba(255,255,255,0.1)]">
-            <h2 className="text-xl font-bold mb-4 text-red-500">Supprimer cet album ?</h2>
-            <p className="text-gray-300 mb-6">Cette action est irréversible.</p>
-            <div className="flex justify-center gap-4">
-              <button className="bg-red-600 text-white px-5 py-2 rounded button-hover" onClick={handleDelete} disabled={loading}>
-                {loading ? 'Suppression...' : 'Supprimer'}
-              </button>
-              <button
-                className="bg-gray-500 text-white px-5 py-2 rounded button-hover"
-                onClick={() => {
-                  setShowDelete(false);
-                  setSelectedAlbum(null);
-                }}
-              >
-                Annuler
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <DeleteAlbumModal
+        open={showDelete}
+        onClose={() => {
+          setShowDelete(false);
+          setSelectedAlbum(null);
+        }}
+        onConfirm={handleDelete}
+        loading={loading}
+        selectedAlbum={selectedAlbum}
+      />
     </div>
   );
 }

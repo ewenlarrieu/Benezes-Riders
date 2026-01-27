@@ -1,4 +1,5 @@
 import Event from "../models/Event.js";
+import nodemailer from "nodemailer";
 
 export const createEvent = async (req, res) => {
   try {
@@ -123,6 +124,40 @@ export const registerToEvent = async (req, res) => {
 
     event.registrations.push(registration);
     await event.save();
+
+    // Envoyer un email de confirmation à l'inscrit
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
+
+      await transporter.sendMail({
+        from: `"Benezes Riders" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: `Confirmation d'inscription - ${event.title}`,
+        html: `
+          <h2>Inscription confirmée !</h2>
+          <p>Bonjour ${name},</p>
+          <p>Votre inscription à l'événement <strong>${event.title}</strong> a bien été enregistrée.</p>
+          <h3>Détails de l'événement :</h3>
+          <ul>
+            <li><strong>Dates :</strong> Du ${new Date(event.startDate).toLocaleDateString("fr-FR")} au ${new Date(event.endDate).toLocaleDateString("fr-FR")}</li>
+            <li><strong>Lieu :</strong> ${event.location}</li>
+            <li><strong>Prix :</strong> Gratuit</li>
+          </ul>
+          <p>Nous avons hâte de vous voir !</p>
+          <p>Cordialement,<br>L'équipe Benezes Riders</p>
+        `,
+      });
+    } catch (emailError) {
+      console.error("Erreur envoi email confirmation:", emailError);
+    }
 
     res.status(201).json({
       message: "Inscription enregistrée",

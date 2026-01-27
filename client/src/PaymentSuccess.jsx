@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
 
 export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();

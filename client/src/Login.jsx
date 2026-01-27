@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/NavBar';
-import Footer from '../components/Footer';
+import Navbar from './components/NavBar';
+import Footer from './components/Footer';
 import { AuthContext } from './AuthContext/AuthContext';
 
 export default function Login() {

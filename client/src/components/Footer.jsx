@@ -43,7 +43,7 @@ export default function Footer() {
           rel="noopener noreferrer"
         >
           <img
-            src="/img/Facebook-logo.png"
+            src="/img/Facebook-Logo.png"
             alt="Logo facebook"
             className="w-12 h-12 cursor-pointer transition-transform duration-300 hover:scale-110 hover:drop-shadow-lg"
           />

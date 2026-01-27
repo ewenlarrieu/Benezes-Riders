@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { AuthContext } from '../src/AuthContext/AuthContext';
+import { AuthContext } from '../AuthContext/AuthContext';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ export default function Navbar() {
         {/* --- Logo principal --- */}
         <div>
           <img
-            src="/img/logo.png"
+            src="/img/Logo.png"
             alt="Logo Benezes Riders"
             className="h-12 w-auto"
           />

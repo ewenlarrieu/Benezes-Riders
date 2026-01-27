@@ -1,16 +1,17 @@
 ﻿import React, { useContext, useEffect, useMemo, useState } from 'react';
-import Navbar from '../components/NavBar';
+import Navbar from './components/NavBar';
 import { AuthContext } from './AuthContext/AuthContext';
 import './styles/responsive/events.css';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/Footer';
+import Footer from './components/Footer';
 import { Plus, Trash2, Edit3 } from 'lucide-react';
 import CreateEventModal from './components/events/CreateEventModal';
 import EditEventModal from './components/events/EditEventModal';
 import DeleteEventModal from './components/events/DeleteEventModal';
 import RegisterEventModal from './components/events/RegisterEventModal';
 import RegistrationsModal from './components/events/RegistrationsModal';
-import AlbumGrid from './components/AlbumGrid';
+import AlbumGrid from './components/albums/AlbumGrid';
+import AdminSection from './components/AdminSection';
 
 export default function Events() {
   const { isAuthenticated, authFetch } = useContext(AuthContext);
@@ -358,49 +359,46 @@ export default function Events() {
     <div className="bg-[#1D1D1B] text-white flex flex-col min-h-screen" style={{ fontFamily: 'Poppins, sans-serif' }}>
       <Navbar />
       {isAuthenticated && (
-        <div className="admin-section w-full mt-5 px-5 relative">
-          <div className="tracking-custom text-right text-2xl font-bold">admin</div>
-          <div className="admin-buttons flex justify-center mt-5 space-x-6 flex-wrap">
-            <button
-              type="button"
-              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
-              onClick={() => setShowCreate(true)}
-            >
-              <span>Créer un événement</span>
-              <Plus size={20} className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600" />
-            </button>
-            <button
-              type="button"
-              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
-              onClick={() => {
-                setShowEdit(true);
-                setEditError('');
-              }}
-            >
-              <span>Modifier un événement</span>
-              <Edit3 size={20} className="transition-transform duration-200 group-hover:text-blue-600" />
-            </button>
-            <button
-              type="button"
-              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
-              onClick={() => {
-                setShowDelete(true);
-                setDeleteError('');
-              }}
-            >
-              <span>Supprimer un événement</span>
-              <Trash2 size={20} className="transition-transform duration-200 group-hover:text-red-600" />
-            </button>
-            <button
-              type="button"
-              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
-              onClick={() => setShowRegistrations(true)}
-            >
-              <span>Voir les inscriptions</span>
-              <Edit3 size={20} className="transition-transform duration-200 group-hover:text-green-600 rotate-90" />
-            </button>
-          </div>
-        </div>
+        <AdminSection>
+          <button
+            type="button"
+            className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+            onClick={() => setShowCreate(true)}
+          >
+            <span>Créer un événement</span>
+            <Plus size={20} className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600" />
+          </button>
+          <button
+            type="button"
+            className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+            onClick={() => {
+              setShowEdit(true);
+              setEditError('');
+            }}
+          >
+            <span>Modifier un événement</span>
+            <Edit3 size={20} className="transition-transform duration-200 group-hover:text-blue-600" />
+          </button>
+          <button
+            type="button"
+            className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+            onClick={() => {
+              setShowDelete(true);
+              setDeleteError('');
+            }}
+          >
+            <span>Supprimer un événement</span>
+            <Trash2 size={20} className="transition-transform duration-200 group-hover:text-red-600" />
+          </button>
+          <button
+            type="button"
+            className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+            onClick={() => setShowRegistrations(true)}
+          >
+            <span>Voir les inscriptions</span>
+            <Edit3 size={20} className="transition-transform duration-200 group-hover:text-green-600 rotate-90" />
+          </button>
+        </AdminSection>
       )}
 
       <CreateEventModal
