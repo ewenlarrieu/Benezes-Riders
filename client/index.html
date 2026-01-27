@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
@@ -17,6 +17,12 @@
     <meta name="author" content="Benezes Riders" />
     <meta name="robots" content="index, follow" />
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://benezes-riders.netlify.app/" />
+
+    <!-- Language & Location -->
+    <meta property="og:locale" content="fr_FR" />
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Benezes Riders - Club Moto Passionné" />
@@ -34,6 +40,24 @@
       content="Rejoignez une bande de passionnés de moto qui partagent la liberté et la bonne humeur sur les routes."
     />
     <meta name="twitter:image" content="/img/Logo-2.png" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Benezes Riders",
+        "description": "Club de motards passionnés partageant la liberté, les routes ouvertes et la bonne humeur",
+        "url": "https://benezes-riders.netlify.app",
+        "logo": "https://benezes-riders.netlify.app/img/Logo.png",
+        "sameAs": ["https://www.facebook.com/benezesriders"],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "Customer Service",
+          "url": "https://benezes-riders.netlify.app/contact"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

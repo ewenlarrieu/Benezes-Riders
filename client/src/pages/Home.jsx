@@ -49,6 +49,7 @@ export default function Home() {
             src="/img/img1.png"
             alt="Groupe de motards Benezes Riders sur la route"
             className="w-screen h-auto"
+            loading="lazy"
           />
 
           <div className="absolute top-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center text-center">
@@ -76,6 +77,7 @@ export default function Home() {
             src="/img/Logo-2.png"
             alt="Logo Benezes Riders - Club de motards"
             className="about-logo absolute opacity-90 z-10"
+            loading="lazy"
           />
 
      
@@ -110,6 +112,7 @@ export default function Home() {
             src="/img/image-3.png"
             alt="Motards du club Benezes Riders lors d'une sortie groupe"
             className="about-image absolute z-10"
+            loading="lazy"
           />
         </section>
         <section className='Equipe' aria-label="Membres de l'équipe">
@@ -200,6 +203,7 @@ export default function Home() {
         src="/img/image4.png"
         alt="Paysage hivernal pour événement moto Benezes Riders"
         className="w-full object-cover"
+        loading="lazy"
       />
 
    

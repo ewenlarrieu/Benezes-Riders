@@ -136,6 +136,7 @@ export default function AlbumDetails() {
                 src={selectedImage}
                 alt="fullscreen"
                 className="w-full h-auto max-h-[90vh] object-contain rounded-2xl border-4 border-white shadow-2xl"
+                loading="lazy"
               />
               <button
                 onClick={() => setSelectedImage(null)}

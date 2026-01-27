@@ -47,6 +47,7 @@ export default function AddPhotoModal({
               src={previewImages[0]}
               alt="preview"
               className="rounded-xl border border-gray-600 w-full h-auto object-cover"
+              loading="lazy"
             />
             <button
               type="button"

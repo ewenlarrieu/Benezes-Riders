@@ -48,6 +48,7 @@ export default function Navbar() {
             src="/img/Logo.png"
             alt="Logo Benezes Riders"
             className="h-12 w-auto"
+            loading="eager"
           />
         </div>
 
@@ -86,6 +87,7 @@ export default function Navbar() {
             alt="Admin"
             className="h-10 w-auto cursor-pointer hover:opacity-60 transition-opacity"
             onClick={handleAdminClick}
+            loading="lazy"
           />
           <span className="text-sm font-semibold mt-1">
             {isAuthenticated ? 'Déconnexion' : 'Connexion'}

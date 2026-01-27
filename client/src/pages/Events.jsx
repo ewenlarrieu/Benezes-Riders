@@ -424,7 +424,7 @@ export default function Events() {
 
       {/* SECTION IMAGE + EVENT */}
       <div className="relative w-full mt-10 event-image-container">
-        <img src="/img/img1.png" alt="image de fond" className="rounded-2xl" />
+        <img src="/img/img1.png" alt="image de fond" className="rounded-2xl" loading="lazy" />
 
         {/* Overlay pour texte */}
         <div className="absolute inset-0 flex items-center justify-center">

@@ -19,14 +19,9 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const data = await authService.login(pseudo, password);
-
-      if (data.token) {
-        login(data.token); 
-        navigate('/home'); 
-      } else {
-        setError("Erreur lors de la connexion. Réessayez.");
-      }
+      await authService.login(pseudo, password);
+      login(); // Le cookie est automatiquement stocké
+      navigate('/home'); 
     } catch (err) {
       console.error(err);
       setError('Identifiants incorrects ou serveur indisponible.');

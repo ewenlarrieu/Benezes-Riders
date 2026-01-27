@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /login
+
+# Sitemap
+Sitemap: https://benezes-riders.netlify.app/sitemap.xml
