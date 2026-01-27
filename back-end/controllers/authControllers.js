@@ -1,6 +1,7 @@
 import Admin from "../models/Admin.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import validator from "validator";
 
 // --- Enregistrement de l'administrateur ---
 export const registerAdmin = async (req, res) => {
@@ -12,6 +13,24 @@ export const registerAdmin = async (req, res) => {
       return res
         .status(400)
         .json({ message: "Veuillez remplir tous les champs." });
+    }
+
+    // Validation username (alphanumérique, 3-30 caractères)
+    if (
+      !validator.isAlphanumeric(username, "en-US", { ignore: "_-" }) ||
+      !validator.isLength(username, { min: 3, max: 30 })
+    ) {
+      return res.status(400).json({
+        message:
+          "Le nom d'utilisateur doit contenir 3-30 caractères alphanumériques",
+      });
+    }
+
+    // Validation password (minimum 8 caractères)
+    if (!validator.isLength(password, { min: 8 })) {
+      return res.status(400).json({
+        message: "Le mot de passe doit contenir au moins 8 caractères",
+      });
     }
 
     const existingAdmin = await Admin.findOne({});
@@ -45,6 +64,16 @@ export const loginAdmin = async (req, res) => {
       return res
         .status(400)
         .json({ message: "Veuillez remplir tous les champs." });
+    }
+
+    // Validation basique (prévention injection)
+    if (typeof username !== "string" || typeof password !== "string") {
+      return res.status(400).json({ message: "Données invalides" });
+    }
+
+    // Limite longueur pour éviter abus
+    if (username.length > 100 || password.length > 100) {
+      return res.status(400).json({ message: "Données trop longues" });
     }
 
     // Cherche l'admin dans la base de données

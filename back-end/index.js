@@ -3,6 +3,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import mongoSanitize from "express-mongo-sanitize";
 import authRoutes from "./routes/authRoutes.js";
 import albumRoutes from "./routes/AlbumRoute.js";
 import eventRoutes from "./routes/eventRoute.js";
@@ -13,18 +16,47 @@ dotenv.config();
 
 const app = express();
 
-// Configuration CORS pour accepter les cookies
-app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:5173",
-  credentials: true
-}));
-app.use(express.json());
-app.use(cookieParser());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  }),
+);
 
-app.use("/api/auth", authRoutes);
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { message: "Trop de tentatives, réessayez dans 15 minutes" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 3,
+  message: { message: "Trop de messages envoyés, réessayez dans 1 heure" },
+});
+
+const eventRegisterLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: { message: "Trop d'inscriptions, réessayez plus tard" },
+});
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  }),
+);
+app.use(express.json({ limit: "10mb" }));
+app.use(cookieParser());
+app.use(mongoSanitize());
+
+app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/events", eventRoutes);
-app.use("/api/contact", contactRoutes);
+app.use("/api/contact", contactLimiter, contactRoutes);
 app.use("/api/stripe", stripeRoutes);
 
 const PORT = process.env.PORT || 5000;
@@ -34,7 +66,6 @@ app.listen(PORT, () => {
   console.log(`Le serveur tourne sur le port ${PORT} `);
 });
 
-// Connectez-vous à MongoDB
 mongoose
   .connect(mongoUrl)
   .then(() => {

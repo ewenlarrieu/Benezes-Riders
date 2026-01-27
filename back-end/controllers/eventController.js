@@ -1,10 +1,10 @@
 import Event from "../models/Event.js";
 import nodemailer from "nodemailer";
+import validator from "validator";
 
 export const createEvent = async (req, res) => {
   try {
-    const { title, startDate, endDate, location, description, price } =
-      req.body;
+    let { title, startDate, endDate, location, description, price } = req.body;
 
     if (
       !title ||
@@ -16,6 +16,34 @@ export const createEvent = async (req, res) => {
       price === null
     ) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Sanitization
+    title = validator.trim(validator.escape(title));
+    location = validator.trim(validator.escape(location));
+    description = validator.trim(validator.escape(description));
+
+    // Validation longueurs
+    if (!validator.isLength(title, { min: 3, max: 200 })) {
+      return res
+        .status(400)
+        .json({ message: "Le titre doit contenir 3-200 caractères" });
+    }
+
+    // Validation dates
+    if (!validator.isISO8601(startDate) || !validator.isISO8601(endDate)) {
+      return res.status(400).json({ message: "Format de date invalide" });
+    }
+
+    if (new Date(startDate) >= new Date(endDate)) {
+      return res
+        .status(400)
+        .json({ message: "La date de début doit être avant la date de fin" });
+    }
+
+    // Validation prix
+    if (typeof price !== "number" || price < 0 || price > 10000) {
+      return res.status(400).json({ message: "Prix invalide (0-10000)" });
     }
 
     const newEvent = new Event({
@@ -103,10 +131,33 @@ export const getEventById = async (req, res) => {
 export const registerToEvent = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, phone, message } = req.body;
+    let { name, email, phone, message } = req.body;
 
     if (!name || !email) {
       return res.status(400).json({ message: "Nom et email requis" });
+    }
+
+    // Sanitization
+    name = validator.trim(validator.escape(name));
+    email = validator.normalizeEmail(email);
+    if (phone) phone = validator.trim(phone);
+    if (message) message = validator.trim(validator.escape(message));
+
+    // Validation email
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ message: "Email invalide" });
+    }
+
+    // Validation nom (2-100 caractères)
+    if (!validator.isLength(name, { min: 2, max: 100 })) {
+      return res
+        .status(400)
+        .json({ message: "Le nom doit contenir 2-100 caractères" });
+    }
+
+    // Validation téléphone si fourni
+    if (phone && !validator.isMobilePhone(phone, "any")) {
+      return res.status(400).json({ message: "Numéro de téléphone invalide" });
     }
 
     const event = await Event.findById(id);

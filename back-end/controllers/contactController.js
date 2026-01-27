@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import validator from "validator";
 
 // Configuration du transporteur email
 const createTransporter = () => {
@@ -14,7 +15,7 @@ const createTransporter = () => {
 // Envoyer un message de contact
 export const sendContactMessage = async (req, res) => {
   try {
-    const { fullname, email, subject, message } = req.body;
+    let { fullname, email, subject, message } = req.body;
 
     // Validation des champs
     if (!fullname || !email || !subject || !message) {
@@ -23,12 +24,36 @@ export const sendContactMessage = async (req, res) => {
       });
     }
 
-    // Validation basique de l'email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    // Sanitization (trim et escape HTML)
+    fullname = validator.trim(validator.escape(fullname));
+    subject = validator.trim(validator.escape(subject));
+    message = validator.trim(validator.escape(message));
+    email = validator.normalizeEmail(email);
+
+    // Validation email
+    if (!validator.isEmail(email)) {
       return res.status(400).json({
         message: "Format d'email invalide",
       });
+    }
+
+    // Validation longueurs
+    if (!validator.isLength(fullname, { min: 2, max: 100 })) {
+      return res
+        .status(400)
+        .json({ message: "Le nom doit contenir 2-100 caractères" });
+    }
+
+    if (!validator.isLength(subject, { min: 3, max: 200 })) {
+      return res
+        .status(400)
+        .json({ message: "L'objet doit contenir 3-200 caractères" });
+    }
+
+    if (!validator.isLength(message, { min: 10, max: 2000 })) {
+      return res
+        .status(400)
+        .json({ message: "Le message doit contenir 10-2000 caractères" });
     }
 
     const transporter = createTransporter();
