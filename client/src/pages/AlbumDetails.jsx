@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "./components/NavBar";
-import Footer from "./components/Footer";
-import { AuthContext } from "./AuthContext/AuthContext";
-import AdminSection from "./components/AdminSection";
+import Navbar from "../components/NavBar";
+import Footer from "../components/Footer";
+import { AuthContext } from "../contexts/AuthContext";
+import AdminSection from "../components/AdminSection";
 import { Plus } from "lucide-react";
-import AddPhotoModal from "./components/albumDetails/AddPhotoModal";
-import DeletePhotoModal from "./components/albumDetails/DeletePhotoModal";
-import PhotoGrid from "./components/albumDetails/PhotoGrid";
+import AddPhotoModal from "../components/albumDetails/AddPhotoModal";
+import DeletePhotoModal from "../components/albumDetails/DeletePhotoModal";
+import PhotoGrid from "../components/albumDetails/PhotoGrid";
+import { albumService } from "../services/albumService";
 
 export default function AlbumDetails() {
   const { id } = useParams();
@@ -17,22 +18,18 @@ export default function AlbumDetails() {
   const [showDeletePhoto, setShowDeletePhoto] = useState(false);
   const [showAddPhoto, setShowAddPhoto] = useState(false);
   const [photoToDelete, setPhotoToDelete] = useState(null);
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, authFetch } = useContext(AuthContext);
   const [album, setAlbum] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef();
 
-  const token = localStorage.getItem("adminToken");
-
   // Charger l'album
   useEffect(() => {
     const fetchAlbum = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/albums/${id}`);
-        if (!res.ok) throw new Error("Erreur lors du chargement de l'album");
-        const data = await res.json();
+        const data = await albumService.getAlbumById(id);
         setAlbum(data);
       } catch (err) {
         setError("Impossible de charger l'album");
@@ -51,17 +48,10 @@ export default function AlbumDetails() {
     formData.append("photos", fileRef.current.files[0]);
     try {
       setUploading(true);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/albums/${id}/photos`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-      if (!res.ok) throw new Error("Erreur upload");
-      const data = await res.json();
+      const data = await albumService.addPhotos(id, formData, authFetch);
       setAlbum(data.album);
       fileRef.current.value = "";
-      setPreviewImages([]);
-    } catch (err) {
+      setPreviewImages([]);      setShowAddPhoto(false);    } catch (err) {
       setError("Erreur lors de l’ajout de la photo");
     } finally {
       setUploading(false);
@@ -85,16 +75,7 @@ export default function AlbumDetails() {
   const handleDeletePhoto = async () => {
     if (!photoToDelete) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/albums/${id}/photos`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ photoUrl: photoToDelete }),
-      });
-      if (!res.ok) throw new Error('Erreur lors de la suppression');
-      const data = await res.json();
+      const data = await albumService.deletePhoto(id, photoToDelete, authFetch);
       setAlbum(data.album);
       setShowDeletePhoto(false);
       setPhotoToDelete(null);

@@ -1,17 +1,19 @@
 ﻿import React, { useContext, useEffect, useMemo, useState } from 'react';
-import Navbar from './components/NavBar';
-import { AuthContext } from './AuthContext/AuthContext';
-import './styles/responsive/events.css';
+import Navbar from '../components/NavBar';
+import { AuthContext } from '../contexts/AuthContext';
+import '../styles/responsive/events.css';
 import { useNavigate } from 'react-router-dom';
-import Footer from './components/Footer';
+import Footer from '../components/Footer';
 import { Plus, Trash2, Edit3 } from 'lucide-react';
-import CreateEventModal from './components/events/CreateEventModal';
-import EditEventModal from './components/events/EditEventModal';
-import DeleteEventModal from './components/events/DeleteEventModal';
-import RegisterEventModal from './components/events/RegisterEventModal';
-import RegistrationsModal from './components/events/RegistrationsModal';
-import AlbumGrid from './components/albums/AlbumGrid';
-import AdminSection from './components/AdminSection';
+import CreateEventModal from '../components/events/CreateEventModal';
+import EditEventModal from '../components/events/EditEventModal';
+import DeleteEventModal from '../components/events/DeleteEventModal';
+import RegisterEventModal from '../components/events/RegisterEventModal';
+import RegistrationsModal from '../components/events/RegistrationsModal';
+import AlbumGrid from '../components/albums/AlbumGrid';
+import AdminSection from '../components/AdminSection';
+import { eventService } from '../services/eventService';
+import { albumService } from '../services/albumService';
 
 export default function Events() {
   const { isAuthenticated, authFetch } = useContext(AuthContext);
@@ -61,8 +63,7 @@ export default function Events() {
 
   const fetchNextEvent = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/next`);
-      const data = await res.json();
+      const data = await eventService.getNextEvent();
       setNextEvent(data.message ? null : data);
     } catch (err) {
       console.error(err);
@@ -74,8 +75,7 @@ export default function Events() {
 
   const fetchUpcomingEvents = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/events`);
-      const data = await res.json();
+      const data = await eventService.getAllEvents();
       const events = Array.isArray(data.events) ? data.events : Array.isArray(data) ? data : [];
       const today = new Date();
       const upcoming = events
@@ -111,19 +111,7 @@ export default function Events() {
     };
 
     try {
-      const res = await authFetch(`${import.meta.env.VITE_API_URL}/events`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Erreur lors de la création de l'événement");
-      }
-
+      await eventService.createEvent(payload, authFetch);
       setShowCreate(false);
       e.target.reset();
       fetchNextEvent();
@@ -147,15 +135,7 @@ export default function Events() {
     setDeleteLoading(true);
 
     try {
-      const res = await authFetch(`${import.meta.env.VITE_API_URL}/events/${deleteId}`, {
-        method: 'DELETE',
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Erreur lors de la suppression de l'événement");
-      }
-
+      await eventService.deleteEvent(deleteId, authFetch);
       setShowDelete(false);
       setDeleteId('');
       fetchNextEvent();
@@ -184,19 +164,7 @@ export default function Events() {
     };
 
     try {
-      const res = await authFetch(`${import.meta.env.VITE_API_URL}/events/${editId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Erreur lors de la modification de l'événement");
-      }
-
+      await eventService.updateEvent(editId, payload, authFetch);
       setShowEdit(false);
       setEditId('');
       fetchNextEvent();
@@ -251,19 +219,7 @@ export default function Events() {
     try {
       // Si l'événement est gratuit, inscription directe
       if (registerEvent.price === 0) {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${registerEvent._id}/register`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(registerForm),
-        });
-
-        if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.message || "Erreur lors de l'inscription");
-        }
-
+        await eventService.registerToEvent(registerEvent._id, registerForm);
         setRegisterSuccess('Inscription envoyée !');
         setTimeout(() => {
           setShowRegister(false);
@@ -278,26 +234,13 @@ export default function Events() {
         }, 1200);
       } else {
         // Si l'événement est payant, créer une session Stripe
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/stripe/create-checkout-session`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            eventId: registerEvent._id,
-            name: registerForm.name,
-            email: registerForm.email,
-            phone: registerForm.phone,
-            message: registerForm.message,
-          }),
+        const { url } = await eventService.createCheckoutSession({
+          eventId: registerEvent._id,
+          name: registerForm.name,
+          email: registerForm.email,
+          phone: registerForm.phone,
+          message: registerForm.message,
         });
-
-        if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.message || "Erreur lors de la création de la session de paiement");
-        }
-
-        const { url } = await res.json();
         
         // Rediriger vers la page de paiement Stripe
         window.location.href = url;
@@ -593,8 +536,7 @@ function AlbumsSection({ navigate }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/albums`)
-      .then((res) => res.json())
+    albumService.getAllAlbums()
       .then((data) => {
         if (Array.isArray(data)) {
           setAlbums(data);

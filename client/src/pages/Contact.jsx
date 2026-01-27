@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import Navbar from './components/NavBar';
-import Footer from './components/Footer';
-import './styles/responsive/contact.css'
+import Navbar from '../components/NavBar';
+import Footer from '../components/Footer';
+import '../styles/responsive/contact.css'
+import { contactService } from '../services/contactService';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -28,29 +29,16 @@ export default function Contact() {
     setSuccess('');
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+      const data = await contactService.sendMessage(formData);
+      setSuccess(data.message);
+      setFormData({
+        fullname: '',
+        email: '',
+        subject: '',
+        message: ''
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccess(data.message);
-        setFormData({
-          fullname: '',
-          email: '',
-          subject: '',
-          message: ''
-        });
-      } else {
-        setError(data.message || 'Erreur lors de l\'envoi du message');
-      }
     } catch (err) {
-      setError('Erreur de connexion au serveur');
+      setError('Erreur lors de l\'envoi du message');
     } finally {
       setLoading(false);
     }

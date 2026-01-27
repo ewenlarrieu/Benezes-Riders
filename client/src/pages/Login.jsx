@@ -1,8 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './components/NavBar';
-import Footer from './components/Footer';
-import { AuthContext } from './AuthContext/AuthContext';
+import Navbar from '../components/NavBar';
+import Footer from '../components/Footer';
+import { AuthContext } from '../contexts/AuthContext';
+import { authService } from '../services/authService';
 
 export default function Login() {
   const { login } = useContext(AuthContext);
@@ -18,19 +19,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username: pseudo, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Erreur de connexion');
-      }
+      const data = await authService.login(pseudo, password);
 
       if (data.token) {
         login(data.token); 

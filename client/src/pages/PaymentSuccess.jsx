@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
+import { eventService } from '../services/eventService';
 
 export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();
@@ -21,13 +22,7 @@ export default function PaymentSuccess() {
     // Vérifier le paiement auprès du serveur
     const verifyPayment = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/stripe/verify-payment/${sessionId}`);
-        
-        if (!res.ok) {
-          throw new Error('Erreur lors de la vérification du paiement');
-        }
-
-        const data = await res.json();
+        const data = await eventService.verifyPayment(sessionId);
         
         if (data.success) {
           setStatus('success');

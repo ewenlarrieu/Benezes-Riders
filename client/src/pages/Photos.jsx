@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './components/NavBar';
-import Footer from './components/Footer';
-import AlbumGrid from './components/albums/AlbumGrid';
-import { AuthContext } from './AuthContext/AuthContext';
-import './styles/responsive/photo.css';
+import Navbar from '../components/NavBar';
+import Footer from '../components/Footer';
+import AlbumGrid from '../components/albums/AlbumGrid';
+import { AuthContext } from '../contexts/AuthContext';
+import '../styles/responsive/photo.css';
 import { Plus, Trash2, Edit3 } from 'lucide-react';
-import AdminSection from './components/AdminSection';
-import CreateAlbumModal from './components/albums/CreateAlbumModal';
-import EditAlbumModal from './components/albums/EditAlbumModal';
-import DeleteAlbumModal from './components/albums/DeleteAlbumModal';
+import AdminSection from '../components/AdminSection';
+import CreateAlbumModal from '../components/albums/CreateAlbumModal';
+import EditAlbumModal from '../components/albums/EditAlbumModal';
+import DeleteAlbumModal from '../components/albums/DeleteAlbumModal';
+import { albumService } from '../services/albumService';
 
 export default function Photos() {
   const { isAuthenticated, authFetch } = useContext(AuthContext);
@@ -34,8 +35,7 @@ export default function Photos() {
     const fetchAlbums = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/albums`);
-        const data = await res.json();
+        const data = await albumService.getAllAlbums();
         const list = Array.isArray(data) ? data : Array.isArray(data.albums) ? data.albums : [];
         setAlbums(list);
       } catch (err) {
@@ -60,12 +60,7 @@ export default function Photos() {
     formData.append('cover', coverRef.current.files[0]);
     try {
       setLoading(true);
-      const res = await authFetch(`${import.meta.env.VITE_API_URL}/albums`, {
-        method: 'POST',
-        body: formData,
-      });
-      if (!res.ok) throw new Error('Erreur lors de la création');
-      const newAlbum = await res.json();
+      const newAlbum = await albumService.createAlbum(formData, authFetch);
       setAlbums((prev) => [newAlbum, ...prev]);
       setShowCreate(false);
       titleRef.current.value = '';
@@ -83,10 +78,7 @@ export default function Photos() {
     setError('');
     try {
       setLoading(true);
-      const res = await authFetch(`${import.meta.env.VITE_API_URL}/albums/${selectedAlbum._id}`, {
-        method: 'DELETE',
-      });
-      if (!res.ok) throw new Error('Erreur lors de la suppression');
+      await albumService.deleteAlbum(selectedAlbum._id, authFetch);
       setAlbums((prev) => prev.filter((a) => a._id !== selectedAlbum._id));
       setShowDelete(false);
       setSelectedAlbum(null);
@@ -117,12 +109,7 @@ export default function Photos() {
     }
     try {
       setLoading(true);
-      const res = await authFetch(`${import.meta.env.VITE_API_URL}/albums/${selectedAlbum._id}/cover`, {
-        method: 'PUT',
-        body: formData,
-      });
-      if (!res.ok) throw new Error('Erreur lors de la modification');
-      const updated = await res.json();
+      const updated = await albumService.updateAlbumCover(selectedAlbum._id, formData, authFetch);
       setAlbums((prev) => prev.map((a) => (a._id === updated._id ? updated : a)));
       setShowEdit(false);
       setSelectedAlbum(null);

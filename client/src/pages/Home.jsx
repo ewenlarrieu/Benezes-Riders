@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
-import './styles/responsive/home.css';
-
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
+import '../styles/responsive/home.css';
+import { eventService } from '../services/eventService';
 import { useNavigate} from 'react-router-dom';
 
 
@@ -15,8 +15,7 @@ export default function Home() {
    useEffect(() => {
      const fetchNextEvent = async () => {
        try {
-         const res = await fetch(`${import.meta.env.VITE_API_URL}/events/next`);
-         const data = await res.json();
+         const data = await eventService.getNextEvent();
          setNextEvent(data.message ? null : data);
        } catch (err) {
          console.error('Erreur lors de la récupération de l\'événement:', err);
