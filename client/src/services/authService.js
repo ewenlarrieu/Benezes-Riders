@@ -6,23 +6,30 @@ export const authService = {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include", // Envoyer et recevoir les cookies
       body: JSON.stringify({ username: pseudo, password }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "Erreur de connexion");
+      throw new Error(data.message || "Erreur de connexion");
     }
 
-    return response.json();
+    // Stocker le token dans localStorage
+    if (data.token) {
+      localStorage.setItem("adminToken", data.token);
+    }
+
+    return data;
   },
 
   // Déconnexion admin
   async logout() {
+    // Supprimer le token du localStorage
+    localStorage.removeItem("adminToken");
+
     const response = await fetch(`${API_URL}/auth/logout`, {
       method: "POST",
-      credentials: "include", // Envoyer le cookie pour le supprimer
     });
 
     if (!response.ok) {

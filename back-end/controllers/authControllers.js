@@ -95,16 +95,10 @@ export const loginAdmin = async (req, res) => {
       { expiresIn: "1h" },
     );
 
-    // Envoie le token dans un cookie HttpOnly
-    res.cookie("adminToken", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 3600000, // 1 heure en millisecondes
-    });
-
+    // Renvoyer le token en JSON (pour localStorage)
     res.status(200).json({
       message: "Connexion réussie.",
+      token: token,
     });
   } catch (error) {
     console.error("Erreur de connexion admin:", error);
@@ -114,11 +108,7 @@ export const loginAdmin = async (req, res) => {
 
 // --- Déconnexion de l'administrateur ---
 export const logoutAdmin = (req, res) => {
-  res.clearCookie("adminToken", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-  });
+  // Le token sera supprimé côté client (localStorage)
   res.status(200).json({ message: "Déconnexion réussie." });
 };
 

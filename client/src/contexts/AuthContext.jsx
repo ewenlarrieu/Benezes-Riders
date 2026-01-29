@@ -14,15 +14,30 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      // Tentative de requête pour vérifier l'authentification
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        setIsAuthenticated(false);
+        setIsLoading(false);
+        return;
+      }
+      
+      // Vérifier l'authentification avec le token
       const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/check`, {
-        credentials: 'include'
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       // 401 est un état normal (non authentifié), pas une erreur
       setIsAuthenticated(response.ok);
+      
+      // Si le token est invalide, le supprimer
+      if (!response.ok) {
+        localStorage.removeItem('adminToken');
+      }
     } catch (error) {
       // Erreur réseau uniquement
       setIsAuthenticated(false);
+      localStorage.removeItem('adminToken');
     } finally {
       setIsLoading(false);
     }
@@ -41,14 +56,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // authFetch avec credentials pour envoyer le cookie automatiquement
+  // authFetch avec le token dans le header Authorization
   const authFetch = async (url, options = {}) => {
     try {
+      const token = localStorage.getItem('adminToken');
       const res = await fetch(url, { 
-        ...options, 
-        credentials: 'include',
+        ...options,
         headers: {
-          ...(options.headers || {}),
+          ...options.headers,
+          ...(token && { 'Authorization': `Bearer ${token}` }),
         }
       });
       

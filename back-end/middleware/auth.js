@@ -1,8 +1,13 @@
 import jwt from "jsonwebtoken";
 
-// Middleware pour vérifier le token JWT depuis le cookie (admin uniquement)
+// Middleware pour vérifier le token JWT depuis le header Authorization (admin uniquement)
 export function verifyAdmin(req, res, next) {
-  const token = req.cookies.adminToken;
+  // Lire le token depuis le header Authorization
+  const authHeader = req.headers.authorization;
+  const token =
+    authHeader && authHeader.startsWith("Bearer ")
+      ? authHeader.substring(7)
+      : null;
 
   if (!token) {
     return res
