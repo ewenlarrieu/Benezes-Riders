@@ -24,7 +24,7 @@ export default function Login() {
       navigate('/home'); 
     } catch (err) {
       console.error(err);
-      setError('Identifiants incorrects ou serveur indisponible.');
+      setError(err.message || 'Identifiants incorrects ou serveur indisponible.');
     } finally {
       setLoading(false);
     }

@@ -22,7 +22,7 @@ export default function AddPhotoModal({
         onDragOver={onDragOver}
         onDrop={onDrop}
       >
-        <h2 className="text-xl font-bold mb-4 text-center">Ajouter une photo</h2>
+        <h2 className="text-xl font-bold mb-4 text-center">Ajouter des photos</h2>
 
         <div
           className="border-2 border-dashed border-gray-400 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:border-white transition"
@@ -32,6 +32,7 @@ export default function AddPhotoModal({
             type="file"
             ref={fileRef}
             accept="image/*"
+            multiple
             className="hidden"
             onChange={onFileChange}
           />
@@ -42,20 +43,35 @@ export default function AddPhotoModal({
         </div>
 
         {previewImages.length > 0 && (
-          <div className="mt-4 relative">
-            <img
-              src={previewImages[0]}
-              alt="preview"
-              className="rounded-xl border border-gray-600 w-full h-auto object-cover"
-              loading="lazy"
-            />
-            <button
-              type="button"
-              onClick={onRemovePreview}
-              className="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full px-2 py-1 text-xs transition"
-            >
-              ✕
-            </button>
+          <div className="mt-4">
+            <div className="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
+              <span className="text-sm">
+                {previewImages.length} photo{previewImages.length > 1 ? 's' : ''} sélectionnée{previewImages.length > 1 ? 's' : ''}
+              </span>
+              <button
+                type="button"
+                onClick={onRemovePreview}
+                className="bg-red-600 hover:bg-red-700 text-white rounded-full px-3 py-1 text-xs transition"
+              >
+                Supprimer
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-2 mt-2">
+              {previewImages.slice(0, 9).map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={`preview-${idx}`}
+                  className="rounded-lg border border-gray-600 w-full h-20 object-cover"
+                  loading="lazy"
+                />
+              ))}
+              {previewImages.length > 9 && (
+                <div className="rounded-lg border border-gray-600 bg-gray-700 flex items-center justify-center h-20">
+                  <span className="text-xs">+{previewImages.length - 9}</span>
+                </div>
+              )}
+            </div>
           </div>
         )}
 

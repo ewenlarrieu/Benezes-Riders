@@ -23,6 +23,7 @@ export default function AlbumDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const fileRef = useRef();
 
   // Charger l'album
@@ -43,16 +44,22 @@ export default function AlbumDetails() {
   // Ajouter des photos
   const handleAddPhotos = async (e) => {
     e.preventDefault();
-    if (!fileRef.current.files.length) return alert("Sélectionne une photo");
+    if (!selectedFiles.length) return alert("Sélectionne au moins une photo");
     const formData = new FormData();
-    formData.append("photos", fileRef.current.files[0]);
+    // Ajouter toutes les photos sélectionnées
+    selectedFiles.forEach((file) => {
+      formData.append("photos", file);
+    });
     try {
       setUploading(true);
       const data = await albumService.addPhotos(id, formData, authFetch);
       setAlbum(data.album);
       fileRef.current.value = "";
-      setPreviewImages([]);      setShowAddPhoto(false);    } catch (err) {
-      setError("Erreur lors de l’ajout de la photo");
+      setPreviewImages([]);
+      setSelectedFiles([]);
+      setShowAddPhoto(false);
+    } catch (err) {
+      setError("Erreur lors de l'ajout des photos");
     } finally {
       setUploading(false);
     }
@@ -60,16 +67,33 @@ export default function AlbumDetails() {
 
   // Gérer fichiers sélectionnés / drag & drop
   const handleFiles = (files) => {
-    const validFile = files.find((f) => f.type.startsWith("image/"));
-    if (!validFile) return;
-    setPreviewImages([URL.createObjectURL(validFile)]);
-
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(validFile);
-    fileRef.current.files = dataTransfer.files;
+    const validFiles = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    if (!validFiles.length) return;
+    
+    // Filtrer les doublons (même nom ET même taille)
+    const newFiles = validFiles.filter(newFile => {
+      return !selectedFiles.some(existingFile => 
+        existingFile.name === newFile.name && existingFile.size === newFile.size
+      );
+    });
+    
+    if (!newFiles.length) return; // Tous les fichiers sont déjà présents
+    
+    // Créer des previews pour les nouvelles images uniquement
+    const newPreviews = newFiles.map(f => URL.createObjectURL(f));
+    setPreviewImages(prev => [...prev, ...newPreviews]);
+    
+    // Accumuler les fichiers
+    setSelectedFiles(prev => [...prev, ...newFiles]);
   };
 
-  const removePreview = () => setPreviewImages([]);
+  const removePreview = () => {
+    setPreviewImages([]);
+    setSelectedFiles([]);
+    if (fileRef.current) {
+      fileRef.current.value = "";
+    }
+  };
 
   // Supprimer une photo
   const handleDeletePhoto = async () => {
@@ -100,7 +124,7 @@ export default function AlbumDetails() {
             className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
             onClick={() => setShowAddPhoto(true)}
           >
-            <span>Ajouter une photo</span>
+            <span>Ajouter des photos</span>
             <Plus size={20} className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600" />
           </button>
         </AdminSection>

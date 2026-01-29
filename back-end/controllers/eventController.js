@@ -140,7 +140,10 @@ export const registerToEvent = async (req, res) => {
     // Sanitization
     name = validator.trim(validator.escape(name));
     email = validator.normalizeEmail(email);
-    if (phone) phone = validator.trim(phone);
+    if (phone) {
+      // Nettoyer le téléphone (retirer espaces, tirets, points)
+      phone = validator.trim(phone).replace(/[\s\-\.]/g, "");
+    }
     if (message) message = validator.trim(validator.escape(message));
 
     // Validation email
@@ -155,8 +158,8 @@ export const registerToEvent = async (req, res) => {
         .json({ message: "Le nom doit contenir 2-100 caractères" });
     }
 
-    // Validation téléphone si fourni
-    if (phone && !validator.isMobilePhone(phone, "any")) {
+    // Validation téléphone si fourni (après nettoyage)
+    if (phone && phone.length > 0 && !validator.isMobilePhone(phone, "any")) {
       return res.status(400).json({ message: "Numéro de téléphone invalide" });
     }
 

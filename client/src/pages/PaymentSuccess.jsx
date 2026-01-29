@@ -9,10 +9,21 @@ export default function PaymentSuccess() {
   const navigate = useNavigate();
   const [status, setStatus] = useState('loading'); // 'loading', 'success', 'error'
   const [message, setMessage] = useState('');
+  const [isFree, setIsFree] = useState(false);
 
   useEffect(() => {
     const sessionId = searchParams.get('session_id')?.trim();
+    const freeRegistration = searchParams.get('free');
 
+    // Si c'est une inscription gratuite
+    if (freeRegistration === 'true') {
+      setIsFree(true);
+      setStatus('success');
+      setMessage('Votre inscription a été confirmée avec succès !');
+      return;
+    }
+
+    // Sinon, vérifier le paiement Stripe
     if (!sessionId) {
       setStatus('error');
       setMessage('Session de paiement introuvable');
@@ -57,7 +68,9 @@ export default function PaymentSuccess() {
           {status === 'success' && (
             <div className="bg-[#232323] p-8 rounded-2xl text-center">
               <div className="text-green-500 text-6xl mb-4">✓</div>
-              <h2 className="text-3xl font-bold text-white mb-4">Paiement réussi !</h2>
+              <h2 className="text-3xl font-bold text-white mb-4">
+                {isFree ? 'Inscription réussie !' : 'Paiement réussi !'}
+              </h2>
               <p className="text-white/90 text-lg mb-6">{message}</p>
               <p className="text-white/70 mb-8">Un email de confirmation vous a été envoyé.</p>
               <button

@@ -38,7 +38,7 @@ export default function Contact() {
         message: ''
       });
     } catch (err) {
-      setError('Erreur lors de l\'envoi du message');
+      setError(err.message || 'Erreur lors de l\'envoi du message');
     } finally {
       setLoading(false);
     }

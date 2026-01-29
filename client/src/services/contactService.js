@@ -9,10 +9,12 @@ export const contactService = {
       body: JSON.stringify(messageData),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error("Erreur lors de l'envoi du message");
+      throw new Error(data.message || "Erreur lors de l'envoi du message");
     }
 
-    return response.json();
+    return data;
   },
 };

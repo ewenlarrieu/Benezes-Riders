@@ -220,18 +220,8 @@ export default function Events() {
       // Si l'événement est gratuit, inscription directe
       if (registerEvent.price === 0) {
         await eventService.registerToEvent(registerEvent._id, registerForm);
-        setRegisterSuccess('Inscription envoyée !');
-        setTimeout(() => {
-          setShowRegister(false);
-          setRegisterEvent(null);
-          setRegisterForm({
-            name: '',
-            email: '',
-            phone: '',
-            message: '',
-          });
-          setRegisterSuccess('');
-        }, 1200);
+        // Rediriger vers la page de confirmation
+        navigate('/payment-success?free=true');
       } else {
         // Si l'événement est payant, créer une session Stripe
         const { url } = await eventService.createCheckoutSession({
