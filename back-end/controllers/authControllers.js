@@ -99,7 +99,7 @@ export const loginAdmin = async (req, res) => {
     res.cookie("adminToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 3600000, // 1 heure en millisecondes
     });
 
@@ -117,7 +117,7 @@ export const logoutAdmin = (req, res) => {
   res.clearCookie("adminToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   });
   res.status(200).json({ message: "Déconnexion réussie." });
 };
