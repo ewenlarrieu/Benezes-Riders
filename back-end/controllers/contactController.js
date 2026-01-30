@@ -49,7 +49,7 @@ export const sendContactMessage = async (req, res) => {
 
     // Configuration de l'email avec Resend
     const emailData = {
-      from: process.env.EMAIL_FROM || "onboarding@resend.dev",
+      from: "Benezes Riders <onboarding@resend.dev>",
       to: process.env.EMAIL_RECIPIENT,
       reply_to: email,
       subject: `[Contact Benezes Riders] ${subject}`,

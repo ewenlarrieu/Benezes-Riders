@@ -184,7 +184,7 @@ export const registerToEvent = async (req, res) => {
     // Envoyer un email de confirmation à l'inscrit
     try {
       await resend.emails.send({
-        from: process.env.EMAIL_FROM || "onboarding@resend.dev",
+        from: "Benezes Riders <onboarding@resend.dev>",
         to: email,
         subject: `Confirmation d'inscription - ${event.title}`,
         html: `
