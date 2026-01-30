@@ -3,8 +3,10 @@ import validator from "validator";
 
 // Configuration du transporteur email
 const createTransporter = () => {
-  return nodemailer.createTransport({
-    service: "gmail",
+  return nodemailer.createTransporter({
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_PORT) || 465,
+    secure: true, // SSL pour port 465
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASSWORD,
