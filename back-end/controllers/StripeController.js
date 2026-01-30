@@ -1,8 +1,9 @@
 import Stripe from "stripe";
 import Event from "../models/Event.js";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Crée une session de paiment Stripe
 export const createCheckoutSession = async (req, res) => {
@@ -93,18 +94,8 @@ export const verifyPayment = async (req, res) => {
 
       // Envoyer un email de confirmation à l'inscrit
       try {
-        const transporter = nodemailer.createTransport({
-          host: process.env.EMAIL_HOST,
-          port: process.env.EMAIL_PORT,
-          secure: false,
-          auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASSWORD,
-          },
-        });
-
-        await transporter.sendMail({
-          from: `"Benezes Riders" <${process.env.EMAIL_USER}>`,
+        await resend.emails.send({
+          from: process.env.EMAIL_FROM || "onboarding@resend.dev",
           to: email,
           subject: `Confirmation d'inscription - ${event.title}`,
           html: `
