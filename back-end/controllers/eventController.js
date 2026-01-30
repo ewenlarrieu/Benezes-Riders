@@ -1,5 +1,7 @@
 import Event from "../models/Event.js";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 import validator from "validator";
 
 export const createEvent = async (req, res) => {
@@ -181,18 +183,8 @@ export const registerToEvent = async (req, res) => {
 
     // Envoyer un email de confirmation à l'inscrit
     try {
-      const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: parseInt(process.env.EMAIL_PORT) || 465,
-        secure: true, // SSL pour port 465
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-      });
-
-      await transporter.sendMail({
-        from: `"Benezes Riders" <${process.env.EMAIL_USER}>`,
+      await resend.emails.send({
+        from: process.env.EMAIL_FROM || "onboarding@resend.dev",
         to: email,
         subject: `Confirmation d'inscription - ${event.title}`,
         html: `

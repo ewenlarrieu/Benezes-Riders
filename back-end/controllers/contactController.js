@@ -1,18 +1,7 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import validator from "validator";
 
-// Configuration du transporteur email
-const createTransporter = () => {
-  return nodemailer.createTransporter({
-    host: process.env.EMAIL_HOST,
-    port: parseInt(process.env.EMAIL_PORT) || 465,
-    secure: true, // SSL pour port 465
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-};
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Envoyer un message de contact
 export const sendContactMessage = async (req, res) => {
@@ -58,13 +47,11 @@ export const sendContactMessage = async (req, res) => {
         .json({ message: "Le message doit contenir 10-2000 caractères" });
     }
 
-    const transporter = createTransporter();
-
-    // Configuration de l'email
-    const mailOptions = {
-      from: `"Benezes Riders Contact" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_RECIPIENT, // Email où vous recevrez les messages
-      replyTo: email,
+    // Configuration de l'email avec Resend
+    const emailData = {
+      from: process.env.EMAIL_FROM || "onboarding@resend.dev",
+      to: process.env.EMAIL_RECIPIENT,
+      reply_to: email,
       subject: `[Contact Benezes Riders] ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f4;">
@@ -98,8 +85,8 @@ ${message}
       `,
     };
 
-    // Envoi de l'email
-    await transporter.sendMail(mailOptions);
+    // Envoyer l'email avec Resend
+    await resend.emails.send(emailData);
 
     res.status(200).json({
       message: "Message envoyé avec succès ! Nous vous répondrons rapidement.",
