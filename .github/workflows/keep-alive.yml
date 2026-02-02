@@ -1,0 +1,31 @@
+name: Keep Backend Alive
+
+on:
+  schedule:
+    # Exécute toutes les 5 minutes (*/5 * * * *)
+    # Format: minute hour day month day-of-week
+    - cron: "*/5 * * * *"
+  workflow_dispatch: # Permet de déclencher manuellement
+
+jobs:
+  ping-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping Backend Health Endpoint
+        run: |
+          echo "🔄 Ping du backend à $(date)"
+
+          # Remplacez cette URL par l'URL de votre backend déployé
+          BACKEND_URL="${{ secrets.BACKEND_URL || 'https://votre-backend-url.onrender.com' }}"
+
+          response=$(curl -s -o /dev/null -w "%{http_code}" $BACKEND_URL/health)
+
+          if [ $response -eq 200 ]; then
+            echo "✅ Backend actif (HTTP $response)"
+          else
+            echo "⚠️ Backend a répondu avec le code HTTP $response"
+          fi
+
+      - name: Log Timestamp
+        run: echo "⏰ Dernier ping effectué à $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
