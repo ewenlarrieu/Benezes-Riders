@@ -131,7 +131,7 @@
 }
 
 /* Tablette (1024px et moins) */
-@media (max-width: 1023px) {
+@media (max-width: 1600px) {
     .about-logo {
         position: relative;
         right: auto;
@@ -437,6 +437,7 @@
 .contact-section-text {
     font-size: 1.875rem;
     margin-top: 2.5rem;
+    color: white;
 }
 
 /* Boutons - Desktop */
