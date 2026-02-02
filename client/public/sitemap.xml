@@ -4,7 +4,15 @@
   <!-- Page d'accueil -->
   <url>
     <loc>https://benezes-riders.netlify.app/</loc>
-    <lastmod>2026-01-27</lastmod>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Page Home -->
+  <url>
+    <loc>https://benezes-riders.netlify.app/home</loc>
+    <lastmod>2026-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -12,15 +20,15 @@
   <!-- Page Photos -->
   <url>
     <loc>https://benezes-riders.netlify.app/photos</loc>
-    <lastmod>2026-01-27</lastmod>
+    <lastmod>2026-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Page Événements -->
   <url>
-    <loc>https://benezes-riders.netlify.app/events</loc>
-    <lastmod>2026-01-27</lastmod>
+    <loc>https://benezes-riders.netlify.app/evenements</loc>
+    <lastmod>2026-02-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
@@ -28,7 +36,7 @@
   <!-- Page Contact -->
   <url>
     <loc>https://benezes-riders.netlify.app/contact</loc>
-    <lastmod>2026-01-27</lastmod>
+    <lastmod>2026-02-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
