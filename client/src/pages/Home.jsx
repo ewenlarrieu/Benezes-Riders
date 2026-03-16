@@ -202,6 +202,35 @@ export default function Home() {
           />
         </section>
 
+        {/* Boutons admin pour gérer les membres - toujours visible pour l'admin */}
+        {isAuthenticated && (
+          <AdminSection>
+            <button
+              type="button"
+              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+              onClick={() => {
+                setShowCreateMember(true);
+                setMemberError('');
+              }}
+            >
+              <span>Ajouter un membre</span>
+              <Plus size={20} className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600" />
+            </button>
+            <button
+              type="button"
+              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+              onClick={() => {
+                setShowDeleteMember(true);
+                setMemberError('');
+              }}
+              disabled={members.length === 0}
+            >
+              <span>Supprimer un membre</span>
+              <Trash2 size={20} className="transition-transform duration-200 group-hover:text-red-600" />
+            </button>
+          </AdminSection>
+        )}
+
         {/* Section Équipe - affichée uniquement si des membres existent */}
         {!membersLoading && members.length > 0 && (
           <section className='Equipe' aria-label="Membres de l'équipe">
@@ -209,34 +238,6 @@ export default function Home() {
             <p className='equipe-text tracking-custom text-center text-white' style={{ fontFamily: 'Montserrat, sans-serif' }}>
               Ceux qui font tourner les moteurs des Benezes Riders
             </p>
-
-            {/* Boutons admin */}
-            {isAuthenticated && (
-              <AdminSection>
-                <button
-                  type="button"
-                  className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
-                  onClick={() => {
-                    setShowCreateMember(true);
-                    setMemberError('');
-                  }}
-                >
-                  <span>Ajouter un membre</span>
-                  <Plus size={20} className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600" />
-                </button>
-                <button
-                  type="button"
-                  className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
-                  onClick={() => {
-                    setShowDeleteMember(true);
-                    setMemberError('');
-                  }}
-                >
-                  <span>Supprimer un membre</span>
-                  <Trash2 size={20} className="transition-transform duration-200 group-hover:text-red-600" />
-                </button>
-              </AdminSection>
-            )}
             
             <div className='equipe-container border-2 border-white bg-[#2F2F2C] rounded-3xl mx-auto'>
               <div className='equipe-grid grid gap-10'>
