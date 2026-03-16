@@ -49,16 +49,43 @@
 .backdrop-blur-md {
     padding: 1.2rem;
     max-width: 65%;
+    max-height: 90%;
     width: auto;
-    gap: 1.75rem;
+    gap: 1.2rem;
+    overflow-y: auto;
 }
 
 .backdrop-blur-md h3 {
-    font-size: 2rem;
+    font-size: 1.8rem;
 }
 
 .backdrop-blur-md span {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
+}
+
+/* Scrollbar personnalisée pour la carte */
+.backdrop-blur-md::-webkit-scrollbar {
+    width: 8px;
+}
+
+.backdrop-blur-md::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.backdrop-blur-md::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.backdrop-blur-md::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Limiter la hauteur de la description */
+.next-event-content {
+    max-height: 150px;
+    overflow-y: auto;
 }
 
 /* Desktop large (1280px et moins) */
@@ -77,21 +104,27 @@
     }
 
     .next-event-title {
-        font-size: 1.7rem !important;
+        font-size: 1.6rem !important;
     }
 
     .next-event-content {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        max-height: 130px;
     }
 
     .backdrop-blur-md {
         padding: 1.1rem;
         max-width: 60%;
-        gap: 0.7rem;
+        max-height: 88%;
+        gap: 1rem;
+    }
+
+    .backdrop-blur-md h3 {
+        font-size: 1.7rem;
     }
 
     .backdrop-blur-md span {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
 }
@@ -112,21 +145,27 @@
     }
 
     .next-event-title {
-        font-size: 1.2rem !important;
+        font-size: 1.4rem !important;
     }
 
     .next-event-content {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+        max-height: 120px;
     }
 
     .backdrop-blur-md {
         padding: 1rem;
         max-width: 65%;
-        gap: 0.65rem;
+        max-height: 85%;
+        gap: 0.9rem;
+    }
+
+    .backdrop-blur-md h3 {
+        font-size: 1.5rem;
     }
 
     .backdrop-blur-md span {
-        font-size: 1.05rem;
+        font-size: 0.95rem;
     }
 }
 
@@ -147,21 +186,27 @@
     }
 
     .next-event-title {
-        font-size: 1.1rem !important;
+        font-size: 1.2rem !important;
     }
 
     .next-event-content {
         font-size: 0.85rem;
+        max-height: 100px;
     }
 
     .backdrop-blur-md {
         padding: 0.9rem;
         max-width: 75%;
-        gap: 0.6rem;
+        max-height: 82%;
+        gap: 0.7rem;
+    }
+
+    .backdrop-blur-md h3 {
+        font-size: 1.3rem;
     }
 
     .backdrop-blur-md span {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
     }
 
     .admin-section .admin-buttons {
@@ -198,17 +243,23 @@
     }
 
     .next-event-title {
-        font-size: 1.05rem;
+        font-size: 1.05rem !important;
     }
 
     .next-event-content {
         font-size: 0.75rem;
+        max-height: 90px;
     }
 
     .backdrop-blur-md {
         padding: 0.75rem;
         max-width: 80%;
+        max-height: 80%;
         gap: 0.5rem;
+    }
+
+    .backdrop-blur-md h3 {
+        font-size: 1.1rem;
     }
 
     .backdrop-blur-md span {
@@ -234,17 +285,23 @@
     }
 
     .next-event-title {
-        font-size: 0.9rem;
+        font-size: 0.9rem !important;
     }
 
     .next-event-content {
         font-size: 0.7rem;
+        max-height: 80px;
     }
 
     .backdrop-blur-md {
         padding: 0.6rem;
         max-width: 85%;
+        max-height: 78%;
         gap: 0.45rem;
+    }
+
+    .backdrop-blur-md h3 {
+        font-size: 1rem;
     }
 
     .backdrop-blur-md span {
