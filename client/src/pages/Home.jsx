@@ -1,38 +1,124 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
+import AdminSection from '../components/AdminSection';
+import CreateMemberModal from '../components/members/CreateMemberModal';
+import DeleteMemberModal from '../components/members/DeleteMemberModal';
 import '../styles/responsive/home.css';
 import { eventService } from '../services/eventService';
-import { useNavigate} from 'react-router-dom';
+import { memberService } from '../services/memberService';
+import { AuthContext } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { Plus, Trash2 } from 'lucide-react';
 
 
 export default function Home() {
-   const navigate = useNavigate();
-   const [nextEvent, setNextEvent] = useState(null);
-   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { isAuthenticated, authFetch } = useContext(AuthContext);
+  const [nextEvent, setNextEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  // États pour les membres
+  const [members, setMembers] = useState([]);
+  const [membersLoading, setMembersLoading] = useState(true);
+  
+  // États pour les modals membres
+  const [showCreateMember, setShowCreateMember] = useState(false);
+  const [showDeleteMember, setShowDeleteMember] = useState(false);
+  const [selectedMemberId, setSelectedMemberId] = useState('');
+  const [memberError, setMemberError] = useState('');
+  const [memberActionLoading, setMemberActionLoading] = useState(false);
 
-   // Récupérer le prochain événement
-   useEffect(() => {
-     const fetchNextEvent = async () => {
-       try {
-         const data = await eventService.getNextEvent();
-         setNextEvent(data.message ? null : data);
-       } catch (err) {
-         console.error('Erreur lors de la récupération de l\'événement:', err);
-         setNextEvent(null);
-       } finally {
-         setLoading(false);
-       }
-     };
-     fetchNextEvent();
-   }, []);
+  // Récupérer le prochain événement
+  useEffect(() => {
+    const fetchNextEvent = async () => {
+      try {
+        const data = await eventService.getNextEvent();
+        setNextEvent(data.message ? null : data);
+      } catch (err) {
+        console.error('Erreur lors de la récupération de l\'événement:', err);
+        setNextEvent(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNextEvent();
+  }, []);
 
-   // Formater la date en français
-   const formatDate = (dateString) => {
-     const date = new Date(dateString);
-     const options = { day: 'numeric', month: 'long', year: 'numeric' };
-     return date.toLocaleDateString('fr-FR', options);
-   };
+  // Récupérer tous les membres
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const data = await memberService.getAllMembers();
+        setMembers(data);
+      } catch (err) {
+        console.error('Erreur lors de la récupération des membres:', err);
+        setMembers([]);
+      } finally {
+        setMembersLoading(false);
+      }
+    };
+    fetchMembers();
+  }, []);
+
+  // Créer un membre
+  const handleCreateMember = async (e) => {
+    e.preventDefault();
+    setMemberError('');
+    setMemberActionLoading(true);
+
+    const formData = new FormData(e.target);
+
+    try {
+      const newMember = await memberService.createMember(formData, authFetch);
+      setMembers([...members, newMember]);
+      setShowCreateMember(false);
+      e.target.reset();
+    } catch (err) {
+      console.error(err);
+      setMemberError(err.message || 'Erreur lors de la création du membre');
+    } finally {
+      setMemberActionLoading(false);
+    }
+  };
+
+  // Supprimer un membre
+  const handleDeleteMember = async (e) => {
+    e.preventDefault();
+    if (!selectedMemberId) {
+      setMemberError('Veuillez sélectionner un membre');
+      return;
+    }
+
+    setMemberError('');
+    setMemberActionLoading(true);
+
+    try {
+      await memberService.deleteMember(selectedMemberId, authFetch);
+      setMembers(members.filter((m) => m._id !== selectedMemberId));
+      setShowDeleteMember(false);
+      setSelectedMemberId('');
+    } catch (err) {
+      console.error(err);
+      setMemberError(err.message || 'Erreur lors de la suppression du membre');
+    } finally {
+      setMemberActionLoading(false);
+    }
+  };
+
+  // Initialiser le membre sélectionné
+  useEffect(() => {
+    if (showDeleteMember && members.length > 0 && !selectedMemberId) {
+      setSelectedMemberId(members[0]._id);
+    }
+  }, [showDeleteMember, members, selectedMemberId]);
+
+  // Formater la date en français
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString('fr-FR', options);
+  };
   return (
     <div
       className="min-h-screen bg-[#1D1D1B]"
@@ -115,82 +201,65 @@ export default function Home() {
             loading="lazy"
           />
         </section>
-        <section className='Equipe' aria-label="Membres de l'équipe">
-          <h2 className='equipe-title tracking-custom font-bold text-center underline text-white'>MEMBRES DE L'EQUIPE</h2>
-          <p className='equipe-text tracking-custom text-center text-white' style={{ fontFamily: 'Montserrat, sans-serif' }}>
-            Ceux qui font tourner les moteurs des Benezes Riders
-          </p>
-          
-       
-          <div className='equipe-container border-2 border-white bg-[#2F2F2C] rounded-3xl mx-auto'>
-        
-            <div className='equipe-grid grid gap-10'>
-              
-      
-              <div className='member-card flex flex-col items-center'>
-                <h3 className='member-name text-white font-bold tracking-custom text-center'>NOM (OU SURNOM)</h3>
-          
-                <div className='bg-white rounded-2xl p-1'>
-               
-                  <div className='bg-[#2F2F2C] rounded-2xl p-1'>
-                  
-                    <div className='bg-white rounded-xl p-1'>
-                   
-                      <div className='member-photo bg-gray-600 rounded-lg flex items-center justify-center'>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
+        {/* Section Équipe - affichée uniquement si des membres existent */}
+        {!membersLoading && members.length > 0 && (
+          <section className='Equipe' aria-label="Membres de l'équipe">
+            <h2 className='equipe-title tracking-custom font-bold text-center underline text-white'>MEMBRES DE L'EQUIPE</h2>
+            <p className='equipe-text tracking-custom text-center text-white' style={{ fontFamily: 'Montserrat, sans-serif' }}>
+              Ceux qui font tourner les moteurs des Benezes Riders
+            </p>
+
+            {/* Boutons admin */}
+            {isAuthenticated && (
+              <AdminSection>
+                <button
+                  type="button"
+                  className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+                  onClick={() => {
+                    setShowCreateMember(true);
+                    setMemberError('');
+                  }}
+                >
+                  <span>Ajouter un membre</span>
+                  <Plus size={20} className="transition-transform duration-200 group-hover:rotate-90 group-hover:text-green-600" />
+                </button>
+                <button
+                  type="button"
+                  className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
+                  onClick={() => {
+                    setShowDeleteMember(true);
+                    setMemberError('');
+                  }}
+                >
+                  <span>Supprimer un membre</span>
+                  <Trash2 size={20} className="transition-transform duration-200 group-hover:text-red-600" />
+                </button>
+              </AdminSection>
+            )}
             
-              <div className='member-card flex flex-col items-center'>
-                <h3 className='member-name text-white font-bold tracking-custom text-center'>NOM (OU SURNOM)</h3>
-                <div className='bg-white rounded-2xl p-1'>
-                  <div className='bg-[#2F2F2C] rounded-2xl p-1'>
-                    <div className='bg-white rounded-xl p-1'>
-                      <div className='member-photo bg-gray-600 rounded-lg flex items-center justify-center'>
-                       
+            <div className='equipe-container border-2 border-white bg-[#2F2F2C] rounded-3xl mx-auto'>
+              <div className='equipe-grid grid gap-10'>
+                {members.map((member) => (
+                  <div key={member._id} className='member-card flex flex-col items-center'>
+                    <h3 className='member-name text-white font-bold tracking-custom text-center'>{member.name}</h3>
+                    <div className='bg-white rounded-2xl p-1'>
+                      <div className='bg-[#2F2F2C] rounded-2xl p-1'>
+                        <div className='bg-white rounded-xl p-1'>
+                          <div className='member-photo bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden'>
+                            <img src={member.photo} alt={member.name} className="w-full h-full object-cover" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
-
-              <div className='member-card flex flex-col items-center'>
-                <h3 className='member-name text-white font-bold tracking-custom text-center'>NOM (OU SURNOM)</h3>
-                <div className='bg-white rounded-2xl p-1'>
-                  <div className='bg-[#2F2F2C] rounded-2xl p-1'>
-                    <div className='bg-white rounded-xl p-1'>
-                      <div className='member-photo bg-gray-600 rounded-lg flex items-center justify-center'>
-                      
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-     
-              <div className='member-card flex flex-col items-center'>
-                <h3 className='member-name text-white font-bold tracking-custom text-center'>NOM (OU SURNOM)</h3>
-                <div className='bg-white rounded-2xl p-1'>
-                  <div className='bg-[#2F2F2C] rounded-2xl p-1'>
-                    <div className='bg-white rounded-xl p-1'>
-                      <div className='member-photo bg-gray-600 rounded-lg flex items-center justify-center'>
-                        
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-        
-
             </div>
-          </div>
-        </section>
-<section className="event relative" aria-label="Événements à venir">
+          </section>
+        )}
+
+        <section className="event relative" aria-label="Événements à venir">
  <h2 className="tracking-custom font-bold underline text-center text-white about-title uppercase">
   événement à venir
 </h2>
@@ -276,6 +345,34 @@ export default function Home() {
     </div>
 </section>
 </main>
+
+      {/* Modals pour la gestion des membres */}
+      <CreateMemberModal
+        open={showCreateMember}
+        onClose={() => {
+          setShowCreateMember(false);
+          setMemberError('');
+        }}
+        onSubmit={handleCreateMember}
+        loading={memberActionLoading}
+        error={memberError}
+      />
+
+      <DeleteMemberModal
+        open={showDeleteMember}
+        onClose={() => {
+          setShowDeleteMember(false);
+          setMemberError('');
+          setSelectedMemberId('');
+        }}
+        onSubmit={handleDeleteMember}
+        loading={memberActionLoading}
+        error={memberError}
+        members={members}
+        selectedId={selectedMemberId}
+        onSelectChange={setSelectedMemberId}
+      />
+
     <footer>
       <Footer/>
     </footer>

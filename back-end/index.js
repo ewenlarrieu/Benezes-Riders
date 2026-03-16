@@ -10,6 +10,7 @@ import albumRoutes from "./routes/AlbumRoute.js";
 import eventRoutes from "./routes/eventRoute.js";
 import contactRoutes from "./routes/contactRoute.js";
 import stripeRoutes from "./routes/StripeRoute.js";
+import memberRoutes from "./routes/memberRoute.js";
 
 dotenv.config();
 
@@ -62,6 +63,7 @@ app.use("/api/albums", albumRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/stripe", stripeRoutes);
+app.use("/api/members", memberRoutes);
 
 export { authLimiter };
 
