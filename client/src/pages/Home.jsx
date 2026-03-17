@@ -280,11 +280,16 @@ export default function Home() {
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-5">
       
         <div
+          onClick={() => nextEvent && navigate('/evenements')}
           className="event-card rounded-[10px] border-4 border-white/80
                      backdrop-blur-md bg-linear-to-br from-black/40 via-black/30 to-transparent
                      flex items-center justify-center text-white
                      shadow-[0_20px_60px_rgba(0,0,0,0.5)]
-                     transform transition-all duration-300 hover:scale-[1.02]"
+                     transform transition-all duration-300 hover:scale-[1.02]
+                     cursor-pointer"
+          role="button"
+          aria-label="Voir les détails de l'événement"
+          tabIndex={nextEvent ? 0 : -1}
         >
           {loading ? (
             <p className="text-center tracking-custom text-2xl font-light animate-pulse">Chargement...</p>
