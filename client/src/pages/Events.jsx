@@ -219,9 +219,13 @@ export default function Events() {
     try {
       // Si l'événement est gratuit, inscription directe
       if (registerEvent.price === 0) {
-        await eventService.registerToEvent(registerEvent._id, registerForm);
-        // Rediriger vers la page de confirmation
-        navigate('/payment-success?free=true');
+        const response = await eventService.registerToEvent(registerEvent._id, registerForm);
+        
+        // Vérifier si l'email a bien été envoyé
+        const emailStatus = response.emailSent ? 'sent' : 'failed';
+        
+        // Rediriger vers la page de confirmation avec le statut de l'email
+        navigate(`/payment-success?free=true&email=${emailStatus}`);
       } else {
         // Si l'événement est payant, créer une session Stripe
         const { url } = await eventService.createCheckoutSession({

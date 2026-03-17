@@ -10,16 +10,24 @@ export default function PaymentSuccess() {
   const [status, setStatus] = useState('loading'); // 'loading', 'success', 'error'
   const [message, setMessage] = useState('');
   const [isFree, setIsFree] = useState(false);
+  const [emailWarning, setEmailWarning] = useState(false);
 
   useEffect(() => {
     const sessionId = searchParams.get('session_id')?.trim();
     const freeRegistration = searchParams.get('free');
+    const emailStatus = searchParams.get('email'); // 'sent' ou 'failed'
 
     // Si c'est une inscription gratuite
     if (freeRegistration === 'true') {
       setIsFree(true);
       setStatus('success');
       setMessage('Votre inscription a été confirmée avec succès !');
+      
+      // Vérifier si l'email a échoué
+      if (emailStatus === 'failed') {
+        setEmailWarning(true);
+      }
+      
       return;
     }
 
@@ -72,7 +80,19 @@ export default function PaymentSuccess() {
                 {isFree ? 'Inscription réussie !' : 'Paiement réussi !'}
               </h2>
               <p className="text-white/90 text-lg mb-6">{message}</p>
-              <p className="text-white/70 mb-8">Un email de confirmation vous a été envoyé.</p>
+              
+              {!emailWarning ? (
+                <p className="text-white/70 mb-8">Un email de confirmation vous a été envoyé.</p>
+              ) : (
+                <div className="bg-yellow-600/20 border border-yellow-600/50 rounded-lg p-4 mb-8">
+                  <p className="text-yellow-400 font-semibold mb-2">⚠️ Problème d'envoi d'email</p>
+                  <p className="text-white/80 text-sm">
+                    Votre inscription est bien enregistrée, mais l'email de confirmation n'a pas pu être envoyé. 
+                    Veuillez vérifier votre adresse email ou contactez-nous si vous ne recevez pas de confirmation.
+                  </p>
+                </div>
+              )}
+              
               <button
                 onClick={() => navigate('/evenements')}
                 className="bg-green-600 text-white px-8 py-3 rounded-full font-bold hover:bg-green-700 transition-all duration-300"

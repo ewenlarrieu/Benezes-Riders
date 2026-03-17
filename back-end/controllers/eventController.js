@@ -141,7 +141,7 @@ export const registerToEvent = async (req, res) => {
 
     // Sanitization
     name = validator.trim(validator.escape(name));
-    email = validator.normalizeEmail(email);
+    email = validator.trim(email.toLowerCase()); // Seulement trim et lowercase, pas de normalizeEmail agressif
     if (phone) {
       // Nettoyer le téléphone (retirer espaces, tirets, points)
       phone = validator.trim(phone).replace(/[\s\-\.]/g, "");
@@ -152,6 +152,8 @@ export const registerToEvent = async (req, res) => {
     if (!validator.isEmail(email)) {
       return res.status(400).json({ message: "Email invalide" });
     }
+    
+    console.log(`📧 Tentative d'inscription - Email: ${email}, Nom: ${name}`);
 
     // Validation nom (2-100 caractères)
     if (!validator.isLength(name, { min: 2, max: 100 })) {
@@ -181,33 +183,55 @@ export const registerToEvent = async (req, res) => {
     event.registrations.push(registration);
     await event.save();
 
-    // Envoyer un email de confirmation à l'inscrit
-    try {
-      await resend.emails.send({
-        from: "Benezes Riders <onboarding@resend.dev>",
-        to: email,
-        subject: `Confirmation d'inscription - ${event.title}`,
-        html: `
-          <h2>Inscription confirmée !</h2>
-          <p>Bonjour ${name},</p>
-          <p>Votre inscription à l'événement <strong>${event.title}</strong> a bien été enregistrée.</p>
-          <h3>Détails de l'événement :</h3>
-          <ul>
-            <li><strong>Dates :</strong> Du ${new Date(event.startDate).toLocaleDateString("fr-FR")} au ${new Date(event.endDate).toLocaleDateString("fr-FR")}</li>
-            <li><strong>Lieu :</strong> ${event.location}</li>
-            <li><strong>Prix :</strong> Gratuit</li>
-          </ul>
-          <p>Nous avons hâte de vous voir !</p>
-          <p>Cordialement,<br>L'équipe Benezes Riders</p>
-        `,
-      });
-    } catch (emailError) {
-      console.error("Erreur envoi email confirmation:", emailError);
+    // Envoyer un email de confirmation à l'inscrit avec retry
+    let emailSent = false;
+    let emailError = null;
+    
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        console.log(`📨 Tentative ${attempt}/3 d'envoi email à ${email}`);
+        
+        const result = await resend.emails.send({
+          from: "Benezes Riders <onboarding@resend.dev>",
+          to: email,
+          subject: `Confirmation d'inscription - ${event.title}`,
+          html: `
+            <h2>Inscription confirmée !</h2>
+            <p>Bonjour ${name},</p>
+            <p>Votre inscription à l'événement <strong>${event.title}</strong> a bien été enregistrée.</p>
+            <h3>Détails de l'événement :</h3>
+            <ul>
+              <li><strong>Dates :</strong> Du ${new Date(event.startDate).toLocaleDateString("fr-FR")} au ${new Date(event.endDate).toLocaleDateString("fr-FR")}</li>
+              <li><strong>Lieu :</strong> ${event.location}</li>
+              <li><strong>Prix :</strong> Gratuit</li>
+            </ul>
+            <p>Nous avons hâte de vous voir !</p>
+            <p>Cordialement,<br>L'équipe Benezes Riders</p>
+          `,
+        });
+        
+        console.log(`✅ Email envoyé avec succès à ${email}:`, result);
+        emailSent = true;
+        break; // Sortir si succès
+      } catch (error) {
+        emailError = error;
+        console.error(`❌ Erreur tentative ${attempt}/3 pour ${email}:`, error.message);
+        
+        // Attendre 2 secondes avant de réessayer
+        if (attempt < 3) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+      }
+    }
+    
+    if (!emailSent) {
+      console.error(`🚨 ÉCHEC FINAL: Impossible d'envoyer l'email à ${email} après 3 tentatives:`, emailError);
     }
 
     res.status(201).json({
       message: "Inscription enregistrée",
       registration,
+      emailSent, // Indiquer si l'email a été envoyé
     });
   } catch (error) {
     console.error("Error registering to event:", error);
