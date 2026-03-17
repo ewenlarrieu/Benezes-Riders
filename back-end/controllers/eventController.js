@@ -1,7 +1,5 @@
 import Event from "../models/Event.js";
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendEmail } from "../config/nodemailer.js";
 import validator from "validator";
 
 export const createEvent = async (req, res) => {
@@ -152,7 +150,7 @@ export const registerToEvent = async (req, res) => {
     if (!validator.isEmail(email)) {
       return res.status(400).json({ message: "Email invalide" });
     }
-    
+
     console.log(`📧 Tentative d'inscription - Email: ${email}, Nom: ${name}`);
 
     // Validation nom (2-100 caractères)
@@ -186,13 +184,12 @@ export const registerToEvent = async (req, res) => {
     // Envoyer un email de confirmation à l'inscrit avec retry
     let emailSent = false;
     let emailError = null;
-    
+
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
         console.log(`📨 Tentative ${attempt}/3 d'envoi email à ${email}`);
-        
-        const result = await resend.emails.send({
-          from: "Benezes Riders <onboarding@resend.dev>",
+
+        const result = await sendEmail({
           to: email,
           subject: `Confirmation d'inscription - ${event.title}`,
           html: `
@@ -209,23 +206,29 @@ export const registerToEvent = async (req, res) => {
             <p>Cordialement,<br>L'équipe Benezes Riders</p>
           `,
         });
-        
+
         console.log(`✅ Email envoyé avec succès à ${email}:`, result);
         emailSent = true;
         break; // Sortir si succès
       } catch (error) {
         emailError = error;
-        console.error(`❌ Erreur tentative ${attempt}/3 pour ${email}:`, error.message);
-        
+        console.error(
+          `❌ Erreur tentative ${attempt}/3 pour ${email}:`,
+          error.message,
+        );
+
         // Attendre 2 secondes avant de réessayer
         if (attempt < 3) {
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         }
       }
     }
-    
+
     if (!emailSent) {
-      console.error(`🚨 ÉCHEC FINAL: Impossible d'envoyer l'email à ${email} après 3 tentatives:`, emailError);
+      console.error(
+        `🚨 ÉCHEC FINAL: Impossible d'envoyer l'email à ${email} après 3 tentatives:`,
+        emailError,
+      );
     }
 
     res.status(201).json({

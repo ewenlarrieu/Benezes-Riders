@@ -1,9 +1,8 @@
 import Stripe from "stripe";
 import Event from "../models/Event.js";
-import { Resend } from "resend";
+import { sendEmail } from "../config/nodemailer.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Crée une session de paiment Stripe
 export const createCheckoutSession = async (req, res) => {
@@ -94,8 +93,7 @@ export const verifyPayment = async (req, res) => {
 
       // Envoyer un email de confirmation à l'inscrit
       try {
-        await resend.emails.send({
-          from: "Benezes Riders <onboarding@resend.dev>",
+        await sendEmail({
           to: email,
           subject: `Confirmation d'inscription - ${event.title}`,
           html: `
