@@ -49,41 +49,4 @@ export const eventService = {
       throw new Error("Erreur lors de la suppression de l'événement");
     return res.json();
   },
-
-  // Inscription gratuite à un événement
-  async registerToEvent(eventId, registrationData) {
-    const res = await fetch(`${API_URL}/events/${eventId}/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(registrationData),
-    });
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || "Erreur lors de l'inscription");
-    }
-    return res.json();
-  },
-
-  // Créer une session de paiement Stripe
-  async createCheckoutSession(eventData) {
-    const res = await fetch(`${API_URL}/stripe/create-checkout-session`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(eventData),
-    });
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(
-        error.message || "Erreur lors de la création de la session Stripe",
-      );
-    }
-    return res.json();
-  },
-
-  // Vérifier le paiement Stripe
-  async verifyPayment(sessionId) {
-    const res = await fetch(`${API_URL}/stripe/verify-payment/${sessionId}`);
-    if (!res.ok) throw new Error("Erreur lors de la vérification du paiement");
-    return res.json();
-  },
 };

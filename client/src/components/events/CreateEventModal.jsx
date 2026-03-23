@@ -34,6 +34,17 @@ export default function CreateEventModal({ open, onClose, onSubmit, loading, err
           <span>Prix (€)</span>
           <input name="price" type="number" min="0" step="0.01" required className="p-2 rounded bg-[#1D1D1B] text-white border" />
         </label>
+        <label className="flex flex-col gap-2">
+          <span>Lien HelloAsso</span>
+          <input 
+            name="helloAssoLink" 
+            type="url" 
+            required 
+            placeholder="https://www.helloasso.com/..." 
+            className="p-2 rounded bg-[#1D1D1B] text-white border" 
+          />
+          <span className="text-xs text-gray-400">Créez l'événement sur HelloAsso puis collez le lien ici</span>
+        </label>
         <div className="flex gap-4 mt-2">
           <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded button-hover" disabled={loading}>
             {loading ? 'Création...' : 'Créer'}

@@ -8,8 +8,6 @@ import { Plus, Trash2, Edit3 } from 'lucide-react';
 import CreateEventModal from '../components/events/CreateEventModal';
 import EditEventModal from '../components/events/EditEventModal';
 import DeleteEventModal from '../components/events/DeleteEventModal';
-import RegisterEventModal from '../components/events/RegisterEventModal';
-import RegistrationsModal from '../components/events/RegistrationsModal';
 import AlbumGrid from '../components/albums/AlbumGrid';
 import AdminSection from '../components/AdminSection';
 import { eventService } from '../services/eventService';
@@ -43,21 +41,8 @@ export default function Events() {
     location: '',
     description: '',
     price: '',
+    helloAssoLink: '',
   });
-
-  const [showRegister, setShowRegister] = useState(false);
-  const [registerEvent, setRegisterEvent] = useState(null);
-  const [registerForm, setRegisterForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  });
-  const [registerError, setRegisterError] = useState('');
-  const [registerSuccess, setRegisterSuccess] = useState('');
-  const [registerLoading, setRegisterLoading] = useState(false);
-  const [showRegistrations, setShowRegistrations] = useState(false);
-  const [registrationsEventId, setRegistrationsEventId] = useState('');
 
   const navigate = useNavigate();
 
@@ -108,6 +93,7 @@ export default function Events() {
       location: formData.get('location'),
       description: formData.get('description'),
       price: Number(formData.get('price')),
+      helloAssoLink: formData.get('helloAssoLink'),
     };
 
     try {
@@ -178,74 +164,15 @@ export default function Events() {
   };
 
   const openRegisterModal = (event) => {
-    setRegisterEvent(event);
-    setRegisterForm({
-      name: '',
-      email: '',
-      phone: '',
-      message: '',
-    });
-    setRegisterError('');
-    setRegisterSuccess('');
-    setShowRegister(true);
-  };
-
-  const handleRegisterChange = (field, value) => {
-    setRegisterForm((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleRegisterSubmit = async (e) => {
-    e.preventDefault();
-    if (!registerEvent?._id) {
-      setRegisterError('Aucun événement sélectionné');
-      return;
-    }
-    if (!registerForm.name || !registerForm.email) {
-      setRegisterError('Nom et email requis');
-      return;
-    }
-
-    // Validation basique de l'email pour Stripe
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(registerForm.email)) {
-      setRegisterError('Format d\'email invalide');
-      return;
-    }
-
-    setRegisterLoading(true);
-    setRegisterError('');
-    setRegisterSuccess('');
-
-    try {
-      // Si l'événement est gratuit, inscription directe
-      if (registerEvent.price === 0) {
-        const response = await eventService.registerToEvent(registerEvent._id, registerForm);
-        
-        // Vérifier si l'email a bien été envoyé
-        const emailStatus = response.emailSent ? 'sent' : 'failed';
-        
-        // Rediriger vers la page de confirmation avec le statut de l'email
-        navigate(`/payment-success?free=true&email=${emailStatus}`);
-      } else {
-        // Si l'événement est payant, créer une session Stripe
-        const { url } = await eventService.createCheckoutSession({
-          eventId: registerEvent._id,
-          name: registerForm.name,
-          email: registerForm.email,
-          phone: registerForm.phone,
-          message: registerForm.message,
-        });
-        
-        // Rediriger vers la page de paiement Stripe
-        window.location.href = url;
-      }
-    } catch (err) {
-      console.error(err);
-      setRegisterError(err.message);
-    } finally {
-      setRegisterLoading(false);
+    // Redirection directe vers HelloAsso
+    if (event.helloAssoLink) {
+      window.open(event.helloAssoLink, '_blank');
+    } else {
+      alert('Lien d\'inscription non disponible');
     }
   };
+
+
 
   const upcomingList = useMemo(
     () => upcomingEvents.filter((event) => !nextEvent || event._id !== nextEvent._id),
@@ -327,14 +254,6 @@ export default function Events() {
             <span>Supprimer un événement</span>
             <Trash2 size={20} className="transition-transform duration-200 group-hover:text-red-600" />
           </button>
-          <button
-            type="button"
-            className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition flex items-center space-x-2 group"
-            onClick={() => setShowRegistrations(true)}
-          >
-            <span>Voir les inscriptions</span>
-            <Edit3 size={20} className="transition-transform duration-200 group-hover:text-green-600 rotate-90" />
-          </button>
         </AdminSection>
       )}
 
@@ -379,33 +298,6 @@ export default function Events() {
         eventOptions={eventOptions}
         deleteId={deleteId}
         onSelectChange={setDeleteId}
-      />
-
-      <RegisterEventModal
-        open={showRegister}
-        onClose={() => {
-          setShowRegister(false);
-          setRegisterError('');
-          setRegisterSuccess('');
-        }}
-        onSubmit={handleRegisterSubmit}
-        loading={registerLoading}
-        error={registerError}
-        success={registerSuccess}
-        registerEvent={registerEvent}
-        registerForm={registerForm}
-        onFieldChange={handleRegisterChange}
-      />
-
-      <RegistrationsModal
-        open={showRegistrations}
-        onClose={() => {
-          setShowRegistrations(false);
-          setRegistrationsEventId('');
-        }}
-        eventOptions={eventOptions}
-        registrationsEventId={registrationsEventId}
-        onSelectChange={setRegistrationsEventId}
       />
 
       <h1 className="event-title tracking-custom font-bold underline text-center">NOS ÉVÉNEMENTS</h1>

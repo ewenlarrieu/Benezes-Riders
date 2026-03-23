@@ -9,7 +9,6 @@ import authRoutes from "./routes/authRoutes.js";
 import albumRoutes from "./routes/AlbumRoute.js";
 import eventRoutes from "./routes/eventRoute.js";
 import contactRoutes from "./routes/contactRoute.js";
-import stripeRoutes from "./routes/StripeRoute.js";
 import memberRoutes from "./routes/memberRoute.js";
 
 dotenv.config();
@@ -31,12 +30,6 @@ const authLimiter = rateLimit({
   message: { message: "Trop de tentatives, réessayez dans 15 minutes" },
   standardHeaders: true,
   legacyHeaders: false,
-});
-
-const eventRegisterLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 10,
-  message: { message: "Trop d'inscriptions, réessayez plus tard" },
 });
 
 app.use(
@@ -62,7 +55,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/contact", contactRoutes);
-app.use("/api/stripe", stripeRoutes);
 app.use("/api/members", memberRoutes);
 
 export { authLimiter };

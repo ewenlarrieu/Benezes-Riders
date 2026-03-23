@@ -100,6 +100,18 @@ export default function EditEventModal({
                 className="p-2 rounded bg-[#1D1D1B] text-white border"
               />
             </label>
+            <label className="flex flex-col gap-2">
+              <span>Lien HelloAsso</span>
+              <input
+                type="url"
+                value={editForm.helloAssoLink || ''}
+                onChange={(event) => onFieldChange('helloAssoLink', event.target.value)}
+                required
+                placeholder="https://www.helloasso.com/..."
+                className="p-2 rounded bg-[#1D1D1B] text-white border"
+              />
+              <span className="text-xs text-gray-400">Lien vers l'événement HelloAsso</span>
+            </label>
           </>
         )}
         <div className="flex gap-4 mt-2">

@@ -12,7 +12,6 @@ const Events = lazy(() => import('./pages/Events'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Login = lazy(() => import('./pages/Login'));
 const AlbumDetails = lazy(() => import('./pages/AlbumDetails'));
-const PaymentSuccess = lazy(() => import('./pages/PaymentSuccess'));
 
 // Composant de chargement
 const LoadingFallback = () => (
@@ -48,7 +47,6 @@ const App = () => {
           <Route path="/evenements" element={<Events />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/connexion" element={<Login />} />
-          <Route path="/payment-success" element={<PaymentSuccess />} />
         </Routes>
       </Suspense>
     </Router>
