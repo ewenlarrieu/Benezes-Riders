@@ -197,12 +197,6 @@ export default function Events() {
   }, [showEdit, eventOptions, editId]);
 
   useEffect(() => {
-    if (showRegistrations && eventOptions.length > 0 && !registrationsEventId) {
-      setRegistrationsEventId(eventOptions[0]._id);
-    }
-  }, [showRegistrations, eventOptions, registrationsEventId]);
-
-  useEffect(() => {
     const current = eventOptions.find((event) => event._id === editId);
     if (!current) return;
     setEditForm({

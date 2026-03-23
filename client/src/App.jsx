@@ -1,6 +1,5 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { startHealthCheck } from "./services/healthCheckService";
 import './styles/responsive/home.css';
 import './styles/responsive/photo.css';
 import './styles/responsive/events.css'
@@ -24,18 +23,6 @@ const LoadingFallback = () => (
 );
 
 const App = () => {
-  // Démarre le health check au chargement de l'application
-  useEffect(() => {
-    const healthCheckInterval = startHealthCheck();
-    
-    // Nettoyage lors du démontage du composant
-    return () => {
-      if (healthCheckInterval) {
-        clearInterval(healthCheckInterval);
-      }
-    };
-  }, []);
-
   return (
     <Router>
       <Suspense fallback={<LoadingFallback />}>
