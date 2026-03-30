@@ -168,29 +168,32 @@ export default function Home() {
 
      
           <div className="about-content relative z-20">
-            <h2 className="about-title tracking-custom font-bold underline text-white">
+            <h1 className="about-title tracking-custom font-bold underline text-white">
               QUI SOMMES NOUS ?
-            </h2>
+            </h1>
 
             <div className="text-white" style={{ fontFamily: 'Montserrat, sans-serif' }}>
               <p className="about-text tracking-custom font-light leading-relaxed">
-                <span className="font-bold">Benezes Riders</span>, c'est plus qu'un
-                club : c'est une bande de passionnés qui partagent la même envie de
-                liberté, de routes ouvertes et de{' '}
-                <span className="font-bold">bonne humeur</span>.
+                <span className="font-bold">Benezes Riders</span> est un club moto passionné 
+                qui réunit des motards partageant la même envie de liberté, de routes ouvertes 
+                et de bonne humeur. Notre association de motards{' '}
+                <span className="font-bold">Benezes Riders</span> organise régulièrement des 
+                balades moto, événements et rassemblements pour tous les passionnés de deux-roues.
               </p>
 
               <p className="about-text tracking-custom font-light leading-relaxed">
-                <span className="font-bold">Fondé en ...</span>, le club est
-                aujourd'hui une vraie famille de motards qui se retrouvent tout au
-                long de l'année pour rouler, échanger et surtout vivre de{' '}
-                <span className="font-bold">bons moments.</span>
+                Le club <span className="font-bold">Benezes Riders</span> est aujourd'hui une 
+                vraie famille de motards qui se retrouvent tout au long de l'année pour rouler, 
+                échanger et surtout vivre de{' '}
+                <span className="font-bold">bons moments ensemble</span>. Que vous soyez motard 
+                débutant ou expérimenté, rejoignez la communauté Benezes Riders !
               </p>
 
               <p className="about-text tracking-custom font-light leading-relaxed">
-                Ici, pas de prise de tête, juste la{' '}
-                <span className="font-bold">passion</span> et le{' '}
-                <span className="font-bold">respect</span> entre motards. 
+                Chez <span className="font-bold">Benezes Riders</span>, pas de prise de tête, 
+                juste la <span className="font-bold">passion de la moto</span>, le{' '}
+                <span className="font-bold">respect</span> entre motards et l'esprit de convivialité 
+                qui font notre force. Découvrez nos événements et rejoignez le club moto Benezes Riders !
               </p>
             </div>
           </div>
