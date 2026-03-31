@@ -302,23 +302,23 @@ export default function Events() {
         </h2>
       </div>
 
-      {/* SECTION IMAGE + EVENT */}
+      
       <div className="relative w-full mt-10 event-image-container">
         <img src="/img/img1.png" alt="image de fond" className="rounded-2xl" loading="lazy" />
 
-        {/* Overlay pour texte */}
+
         <div className="absolute inset-0 flex items-center justify-center">
           {loading ? (
             <p className="text-white text-xl bg-black/60 px-5 py-3 rounded-xl shadow-lg">Chargement...</p>
           ) : nextEvent ? (
             <div className="flex flex-col items-center gap-6 w-full max-w-3xl">
               <div className="backdrop-blur-md bg-white/10 border border-white/30 rounded-2xl p-8 text-center w-full tracking-custom shadow-lg flex flex-col items-center gap-8">
-                {/* TITRE */}
+      
                 <h3 className="next-event-title font-bold underline uppercase text-white drop-shadow-md">
                   {nextEvent.title}
                 </h3>
 
-                {/* DATES */}
+  
                 <div className="text-white/90 text-xl flex flex-col items-center gap-2">
                   <span className="font-semibold text-3xl">DATE</span>
 
@@ -333,19 +333,18 @@ export default function Events() {
                   </div>
                 </div>
 
-                {/* LIEU */}
+
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-3xl font-semibold ">LIEU</span>
                   <p className="text-white/90 next-event-content">{nextEvent.location}</p>
                 </div>
 
-                {/* DESCRIPTION */}
+
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-3xl font-semibold ">DESCRIPTION</span>
                   <p className="text-white/80 next-event-content">{nextEvent.description}</p>
                 </div>
 
-                {/* PRIX */}
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-3xl font-semibold ">PRIX</span>
                   <p className="text-white/90 next-event-content">
@@ -403,7 +402,6 @@ export default function Events() {
 
       <h2 className="event-title tracking-custom font-bold underline text-center uppercase">Événements passés</h2>
 
-      {/* SECTION ALBUMS PHOTOS */}
       <AlbumsSection navigate={navigate} />
       <Footer />
     </div>

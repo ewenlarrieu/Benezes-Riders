@@ -26,7 +26,7 @@ export default function AlbumDetails() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const fileRef = useRef();
 
-  // Charger l'album
+ 
   useEffect(() => {
     const fetchAlbum = async () => {
       try {
@@ -41,12 +41,11 @@ export default function AlbumDetails() {
     fetchAlbum();
   }, [id]);
 
-  // Ajouter des photos
+
   const handleAddPhotos = async (e) => {
     e.preventDefault();
     if (!selectedFiles.length) return alert("Sélectionne au moins une photo");
     const formData = new FormData();
-    // Ajouter toutes les photos sélectionnées
     selectedFiles.forEach((file) => {
       formData.append("photos", file);
     });
@@ -65,25 +64,25 @@ export default function AlbumDetails() {
     }
   };
 
-  // Gérer fichiers sélectionnés / drag & drop
+ 
   const handleFiles = (files) => {
     const validFiles = Array.from(files).filter((f) => f.type.startsWith("image/"));
     if (!validFiles.length) return;
     
-    // Filtrer les doublons (même nom ET même taille)
+    
     const newFiles = validFiles.filter(newFile => {
       return !selectedFiles.some(existingFile => 
         existingFile.name === newFile.name && existingFile.size === newFile.size
       );
     });
     
-    if (!newFiles.length) return; // Tous les fichiers sont déjà présents
+    if (!newFiles.length) return; 
     
-    // Créer des previews pour les nouvelles images uniquement
+   
     const newPreviews = newFiles.map(f => URL.createObjectURL(f));
     setPreviewImages(prev => [...prev, ...newPreviews]);
     
-    // Accumuler les fichiers
+
     setSelectedFiles(prev => [...prev, ...newFiles]);
   };
 
@@ -95,7 +94,7 @@ export default function AlbumDetails() {
     }
   };
 
-  // Supprimer une photo
+
   const handleDeletePhoto = async () => {
     if (!photoToDelete) return;
     try {
@@ -117,7 +116,7 @@ export default function AlbumDetails() {
         <Navbar />
       </nav>
 
-      {/* Section admin */}
+   
       {isAuthenticated && (
         <AdminSection>
           <button
@@ -138,7 +137,7 @@ export default function AlbumDetails() {
           {album.title}
         </h1>
 
-        {/* Galerie */}
+
         <PhotoGrid
           photos={album.photos}
           isAuthenticated={isAuthenticated}
@@ -149,7 +148,7 @@ export default function AlbumDetails() {
           }}
         />
 
-        {/* Modale plein écran */}
+   
         {selectedImage && (
           <div
             className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 animate-fadeIn"

@@ -42,7 +42,7 @@ export default function Navbar() {
         className="flex items-center justify-between w-full px-4"
         style={{ fontFamily: 'Poppins, sans-serif' }}
       >
-        {/* --- Logo principal --- */}
+     
         <div>
           <img
             src="/img/Logo.png"
@@ -52,7 +52,7 @@ export default function Navbar() {
           />
         </div>
 
-        {/* --- Menu desktop --- */}
+       
         <ul className="hidden md:flex gap-20 text-lg mx-auto font-semibold tracking-custom">
           <li
             className="relative cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
@@ -80,7 +80,7 @@ export default function Navbar() {
           </li>
         </ul>
 
-        {/* --- Logo admin + texte --- */}
+    
         <div className="flex flex-col items-center text-center">
           <img
             src="/img/Admin-logo.png"
@@ -94,7 +94,7 @@ export default function Navbar() {
           </span>
         </div>
 
-        {/* --- Menu mobile (titre + flèche) --- */}
+    
         <div className="md:hidden absolute left-1/2 transform -translate-x-1/2 top-4">
           <div className="relative inline-flex items-center bg-[#2A2A28] rounded-md px-3 py-2">
             <span className="text-white cursor-default pr-3">{currentPage}</span>
@@ -108,7 +108,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* --- Menu mobile déroulant --- */}
+      
       {menuOpen && (
         <div className="md:hidden bg-[#1D1D1B] text-white flex flex-col items-center py-3 space-y-3 animate-fade-in">
           <div

@@ -30,7 +30,7 @@ export default function Photos() {
 
   const navigate = useNavigate();
 
-  // Charger les albums
+
   useEffect(() => {
     const fetchAlbums = async () => {
       setLoading(true);
@@ -47,7 +47,6 @@ export default function Photos() {
     fetchAlbums();
   }, []);
 
-  // Créer un album
   const handleCreate = async (e) => {
     e.preventDefault();
     setError('');
@@ -72,7 +71,7 @@ export default function Photos() {
     }
   };
 
-  // Supprimer un album
+ 
   const handleDelete = async () => {
     if (!selectedAlbum) return;
     setError('');
@@ -89,7 +88,7 @@ export default function Photos() {
     }
   };
 
-  // Modifier titre/couverture
+
   const handleEditCover = async (e) => {
     e.preventDefault();
     if (!selectedAlbum) return;
@@ -159,7 +158,7 @@ export default function Photos() {
       </nav>
 
       <main className="grow">
-        {/* SECTION ADMIN */}
+        
         {isAuthenticated && (
           <AdminSection>
             <button
@@ -172,10 +171,10 @@ export default function Photos() {
           </AdminSection>
         )}
 
-        {/* TITRE GALERIE */}
+  
         <h1 className="photos-title tracking-custom font-bold underline text-center">GALERIE PHOTOS</h1>
 
-        {/* AFFICHAGE DES ALBUMS */}
+       
         {loading ? (
           <p className="text-center mt-8">Chargement des albums...</p>
         ) : (

@@ -18,18 +18,18 @@ export default function Home() {
   const [nextEvent, setNextEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // États pour les membres
+
   const [members, setMembers] = useState([]);
   const [membersLoading, setMembersLoading] = useState(true);
   
-  // États pour les modals membres
+
   const [showCreateMember, setShowCreateMember] = useState(false);
   const [showDeleteMember, setShowDeleteMember] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState('');
   const [memberError, setMemberError] = useState('');
   const [memberActionLoading, setMemberActionLoading] = useState(false);
 
-  // Récupérer le prochain événement
+  
   useEffect(() => {
     const fetchNextEvent = async () => {
       try {
@@ -45,7 +45,7 @@ export default function Home() {
     fetchNextEvent();
   }, []);
 
-  // Récupérer tous les membres
+ 
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -61,7 +61,7 @@ export default function Home() {
     fetchMembers();
   }, []);
 
-  // Créer un membre
+
   const handleCreateMember = async (e) => {
     e.preventDefault();
     setMemberError('');
@@ -82,7 +82,7 @@ export default function Home() {
     }
   };
 
-  // Supprimer un membre
+
   const handleDeleteMember = async (e) => {
     e.preventDefault();
     if (!selectedMemberId) {
@@ -106,14 +106,14 @@ export default function Home() {
     }
   };
 
-  // Initialiser le membre sélectionné
+
   useEffect(() => {
     if (showDeleteMember && members.length > 0 && !selectedMemberId) {
       setSelectedMemberId(members[0]._id);
     }
   }, [showDeleteMember, members, selectedMemberId]);
 
-  // Formater la date en français
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -205,7 +205,7 @@ export default function Home() {
           />
         </section>
 
-        {/* Boutons admin pour gérer les membres - toujours visible pour l'admin */}
+     
         {isAuthenticated && (
           <AdminSection>
             <button
@@ -234,7 +234,7 @@ export default function Home() {
           </AdminSection>
         )}
 
-        {/* Section Équipe - affichée uniquement si des membres existent */}
+     
         {!membersLoading && members.length > 0 && (
           <section className='Equipe' aria-label="Membres de l'équipe">
             <h2 className='equipe-title tracking-custom font-bold text-center underline text-white'>MEMBRES DE L'EQUIPE</h2>
@@ -355,7 +355,7 @@ export default function Home() {
 </section>
 </main>
 
-      {/* Modals pour la gestion des membres */}
+      
       <CreateMemberModal
         open={showCreateMember}
         onClose={() => {

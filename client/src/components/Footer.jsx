@@ -5,7 +5,7 @@ export default function Footer() {
      const navigate = useNavigate();
   return (
     <footer className="bg-[#343433] text-white py-10 mt-20">
-      {/* Liens de navigation */}
+    
       <ul className="footer-nav flex flex-wrap justify-center tracking-custom font-medium text-center">
         <li className="footer-nav-item relative cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
         onClick={() => navigate('/')}>
@@ -25,20 +25,19 @@ export default function Footer() {
         </li>
       </ul>
 
-      {/* Texte principal */}
+
       <p className="footer-club-name tracking-custom text-center font-semibold">
         CLUB DES BENEZES RIDERS
       </p>
 
-      {/* Email responsive */}
       <p className="footer-email tracking-custom text-center font-semibold underline wrap-break-word px-4 leading-snug">
         Benezesriders164@gmail.com
       </p>
 
-      {/* Logo Facebook */}
+   
       <div className="flex justify-center mt-8">
         <a
-          href="https://www.facebook.com/profile.php?id=61578358867025&locale=fr_FR" // Mets ici l'URL de ta page Facebook
+          href="https://www.facebook.com/profile.php?id=61578358867025&locale=fr_FR" 
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -51,7 +50,7 @@ export default function Footer() {
         </a>
       </div>
 
-      {/* Copyright */}
+
       <p className="footer-copyright tracking-custom font-semibold text-center opacity-80">
         © 2025 Benezes Riders – Tous droits réservés
       </p>

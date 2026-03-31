@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Vérifie si l'utilisateur est authentifié au chargement
+
   useEffect(() => {
     checkAuth();
   }, []);
@@ -21,21 +21,21 @@ export const AuthProvider = ({ children }) => {
         return;
       }
       
-      // Vérifier l'authentification avec le token
+      
       const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/check`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      // 401 est un état normal (non authentifié), pas une erreur
+   
       setIsAuthenticated(response.ok);
       
-      // Si le token est invalide, le supprimer
+
       if (!response.ok) {
         localStorage.removeItem('adminToken');
       }
     } catch (error) {
-      // Erreur réseau uniquement
+     
       setIsAuthenticated(false);
       localStorage.removeItem('adminToken');
     } finally {
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // authFetch avec le token dans le header Authorization
+  
   const authFetch = async (url, options = {}) => {
     try {
       const token = localStorage.getItem('adminToken');
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
         }
       });
       
-      // Si token invalide ou expiré, déconnecter automatiquement
+   
       if (res.status === 401 || res.status === 403) {
         setIsAuthenticated(false);
         window.location.href = '/home';

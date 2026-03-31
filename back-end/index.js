@@ -42,15 +42,6 @@ app.use(
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
-// Health check endpoint (pour éviter que le serveur se mette en veille)
-app.get("/health", (req, res) => {
-  res.status(200).json({
-    status: "OK",
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-  });
-});
-
 app.use("/api/auth", authRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/events", eventRoutes);

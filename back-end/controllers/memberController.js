@@ -9,7 +9,6 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Récupérer tous les membres
 export const getAllMembers = async (req, res) => {
   try {
     const members = await Member.find().sort({ order: 1, createdAt: -1 });
@@ -22,7 +21,6 @@ export const getAllMembers = async (req, res) => {
   }
 };
 
-// Créer un nouveau membre
 export const createMember = async (req, res) => {
   let file;
   try {
@@ -38,12 +36,10 @@ export const createMember = async (req, res) => {
 
     file = req.file.path;
 
-    // Upload de l'image sur Cloudinary
     const result = await cloudinary.v2.uploader.upload(file, {
       folder: "members",
     });
 
-    // Supprime le fichier temporaire
     fs.unlink(file, (err) => {
       if (err) console.error("Erreur suppression fichier temporaire:", err);
     });
@@ -56,7 +52,6 @@ export const createMember = async (req, res) => {
     await newMember.save();
     res.status(201).json(newMember);
   } catch (error) {
-    // Nettoyer le fichier en cas d'erreur
     if (file) {
       fs.unlink(file, (err) => {
         if (err) console.error("Erreur suppression fichier:", err);
@@ -67,7 +62,6 @@ export const createMember = async (req, res) => {
   }
 };
 
-// Supprimer un membre
 export const deleteMember = async (req, res) => {
   try {
     const { id } = req.params;
@@ -77,7 +71,6 @@ export const deleteMember = async (req, res) => {
       return res.status(404).json({ message: "Membre introuvable" });
     }
 
-    // Supprimer l'image de Cloudinary si elle existe
     if (member.photo) {
       try {
         const publicId = member.photo
@@ -101,7 +94,6 @@ export const deleteMember = async (req, res) => {
   }
 };
 
-// Modifier un membre
 export const updateMember = async (req, res) => {
   let file;
   try {
@@ -113,16 +105,13 @@ export const updateMember = async (req, res) => {
       return res.status(404).json({ message: "Membre introuvable" });
     }
 
-    // Mise à jour du nom
     if (name) {
       member.name = name;
     }
 
-    // Mise à jour de la photo si fournie
     if (req.file) {
       file = req.file.path;
 
-      // Supprimer l'ancienne image de Cloudinary
       if (member.photo) {
         try {
           const publicId = member.photo
@@ -136,14 +125,12 @@ export const updateMember = async (req, res) => {
         }
       }
 
-      // Upload de la nouvelle image
       const result = await cloudinary.v2.uploader.upload(file, {
         folder: "members",
       });
 
       member.photo = result.secure_url;
 
-      // Supprime le fichier temporaire
       fs.unlink(file, (err) => {
         if (err) console.error("Erreur suppression fichier temporaire:", err);
       });
@@ -152,7 +139,6 @@ export const updateMember = async (req, res) => {
     await member.save();
     res.status(200).json(member);
   } catch (error) {
-    // Nettoyer le fichier en cas d'erreur
     if (file) {
       fs.unlink(file, (err) => {
         if (err) console.error("Erreur suppression fichier:", err);

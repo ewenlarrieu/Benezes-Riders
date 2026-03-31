@@ -61,7 +61,7 @@ export default function Contact() {
           </div>
         </section>
 
-        {/* Messages de succès ou d'erreur */}
+ 
         {success && (
           <div className="max-w-4xl mx-auto px-6 mb-6">
             <div className="bg-green-600 text-white p-4 rounded-lg text-center font-semibold">
@@ -77,7 +77,7 @@ export default function Contact() {
           </div>
         )}
 
-        {/* Formulaire de contact */}
+     
         <section className="flex justify-center px-6 pb-20" aria-label="Formulaire de contact">
           <form className="w-full max-w-4xl bg-[#232323] border-2 border-white rounded-2xl p-8" onSubmit={handleSubmit} aria-label="Formulaire pour nous contacter">
             <div className="mb-6">

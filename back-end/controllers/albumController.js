@@ -3,7 +3,6 @@ import "dotenv/config";
 import cloudinary from "cloudinary";
 import Album from "../models/Album.js";
 
-// Supprimer une photo d'un album
 export const deletePhotoFromAlbum = async (req, res) => {
   try {
     const { id } = req.params;
@@ -38,7 +37,6 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Récupère tous les albums
 export const getAllAlbums = async (req, res) => {
   try {
     const albums = await Album.find().sort({ createdAt: -1 });
@@ -51,7 +49,6 @@ export const getAllAlbums = async (req, res) => {
   }
 };
 
-//Crée  un album ave image de couverture
 export const creatAlbum = async (req, res) => {
   let file;
   try {
@@ -67,7 +64,6 @@ export const creatAlbum = async (req, res) => {
       folder: "album/covers",
     });
 
-    // Supprime le fichier temporaire après upload
     fs.unlink(file, (err) => {
       if (err) console.error("Erreur suppression fichier temporaire:", err);
     });
@@ -81,14 +77,12 @@ export const creatAlbum = async (req, res) => {
 
     res.status(201).json(newAlbum);
   } catch (error) {
-    // Supprime le fichier temporaire en cas d'erreur
     if (file) fs.unlink(file, () => {});
     console.error(error);
     res.status(500).json({ message: "Erreur lors de la création de l'album" });
   }
 };
 
-//Modifier l'image de couverture
 export const updateCover = async (req, res) => {
   let file;
   try {
@@ -96,19 +90,18 @@ export const updateCover = async (req, res) => {
     const { title } = req.body;
     let updateFields = {};
 
-    // Si un fichier est envoyé, upload sur Cloudinary
     if (req.file) {
       file = req.file.path;
       const result = await cloudinary.v2.uploader.upload(file, {
         folder: "album/covers",
       });
       updateFields.coverImage = result.secure_url;
-      // Supprime le fichier temporaire après upload
+
       fs.unlink(file, (err) => {
         if (err) console.error("Erreur suppression fichier temporaire:", err);
       });
     }
-    // Si un titre est envoyé, on le met à jour
+
     if (title) {
       updateFields.title = title;
     }
@@ -130,7 +123,6 @@ export const updateCover = async (req, res) => {
   }
 };
 
-// Supprime un album par son id
 export const deleteAlbum = async (req, res) => {
   try {
     const { id } = req.params;
@@ -147,7 +139,6 @@ export const deleteAlbum = async (req, res) => {
   }
 };
 
-// Récupérer un album par son id
 export const getAlbumById = async (req, res) => {
   try {
     const album = await Album.findById(req.params.id);
@@ -161,8 +152,6 @@ export const getAlbumById = async (req, res) => {
       .json({ message: "Erreur lors de la récupération de l'album" });
   }
 };
-
-// Ajouter des photos dans un album existant
 
 export const addPhotosAlbum = async (req, res) => {
   try {
@@ -188,7 +177,7 @@ export const addPhotosAlbum = async (req, res) => {
         if (err) console.error("Erreur suppression fichier:", err);
       });
     }
-    // Mise à jour du tableau "photos" de l'album
+
     album.photos.push(...uploadedPhotos);
     await album.save();
 

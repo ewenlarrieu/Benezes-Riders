@@ -32,7 +32,7 @@ export default function DeleteMemberModal({ open, onClose, onSubmit, loading, er
             </label>
 
             <div className="bg-yellow-900/30 border border-yellow-600 rounded p-3 text-yellow-200 text-sm">
-              <strong>⚠️ Attention :</strong> Cette action est irréversible. La photo sera également supprimée.
+              <strong> Attention :</strong> Cette action est irréversible. La photo sera également supprimée.
             </div>
 
             <div className="flex gap-4 mt-2">

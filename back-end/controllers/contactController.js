@@ -1,32 +1,26 @@
 import { sendEmail } from "../config/nodemailer.js";
 import validator from "validator";
 
-// Envoyer un message de contact
 export const sendContactMessage = async (req, res) => {
   try {
     let { fullname, email, subject, message } = req.body;
-
-    // Validation des champs
     if (!fullname || !email || !subject || !message) {
       return res.status(400).json({
         message: "Tous les champs sont obligatoires",
       });
     }
 
-    // Sanitization (trim et escape HTML)
     fullname = validator.trim(validator.escape(fullname));
     subject = validator.trim(validator.escape(subject));
     message = validator.trim(validator.escape(message));
     email = validator.normalizeEmail(email);
 
-    // Validation email
     if (!validator.isEmail(email)) {
       return res.status(400).json({
         message: "Format d'email invalide",
       });
     }
 
-    // Validation longueurs
     if (!validator.isLength(fullname, { min: 2, max: 100 })) {
       return res
         .status(400)
@@ -45,7 +39,6 @@ export const sendContactMessage = async (req, res) => {
         .json({ message: "Le message doit contenir 10-2000 caractères" });
     }
 
-    // Envoyer l'email avec Nodemailer
     await sendEmail({
       to: process.env.EMAIL_RECIPIENT,
       subject: `[Contact Benezes Riders] ${subject}`,
@@ -70,7 +63,7 @@ export const sendContactMessage = async (req, res) => {
         </div>
       `,
     });
-
+    s;
     res.status(200).json({
       message: "Message envoyé avec succès ! Nous vous répondrons rapidement.",
     });

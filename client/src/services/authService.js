@@ -1,7 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const authService = {
-  // Connexion admin
   async login(pseudo, password) {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
@@ -15,7 +14,6 @@ export const authService = {
       throw new Error(data.message || "Erreur de connexion");
     }
 
-    // Stocker le token dans localStorage
     if (data.token) {
       localStorage.setItem("adminToken", data.token);
     }
@@ -23,9 +21,7 @@ export const authService = {
     return data;
   },
 
-  // Déconnexion admin
   async logout() {
-    // Supprimer le token du localStorage
     localStorage.removeItem("adminToken");
 
     const response = await fetch(`${API_URL}/auth/logout`, {

@@ -1,5 +1,3 @@
-// Supprimer une photo d'un album
-
 import express from "express";
 import multer from "multer";
 import {
@@ -27,7 +25,7 @@ router.post(
   "/:id/photos",
   verifyAdmin,
   upload.array("photos", 10),
-  addPhotosAlbum
+  addPhotosAlbum,
 );
 router.delete(
   "/:id/photos",
@@ -39,7 +37,7 @@ router.delete(
       next();
     }
   },
-  deletePhotoFromAlbum
+  deletePhotoFromAlbum,
 );
 
 export default router;

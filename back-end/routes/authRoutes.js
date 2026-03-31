@@ -9,11 +9,9 @@ import {
 import { verifyAdmin } from "../middleware/auth.js";
 
 const router = express.Router();
-
-// Rate limiter spécifique pour login/register
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 tentatives max
+  windowMs: 15 * 60 * 1000,
+  max: 5,
   message: { message: "Trop de tentatives, réessayez dans 15 minutes" },
   standardHeaders: true,
   legacyHeaders: false,
@@ -22,6 +20,6 @@ const authLimiter = rateLimit({
 router.post("/register", authLimiter, registerAdmin);
 router.post("/login", authLimiter, loginAdmin);
 router.post("/logout", logoutAdmin);
-router.get("/check", verifyAdmin, checkAuth); // Pas de rate limiter ici
+router.get("/check", verifyAdmin, checkAuth);
 
 export default router;

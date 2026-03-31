@@ -1,5 +1,4 @@
 import Event from "../models/Event.js";
-import { sendEmail } from "../config/nodemailer.js";
 import validator from "validator";
 
 export const createEvent = async (req, res) => {
@@ -27,13 +26,11 @@ export const createEvent = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Sanitization
     title = validator.trim(validator.escape(title));
     location = validator.trim(validator.escape(location));
     description = validator.trim(validator.escape(description));
     helloAssoLink = validator.trim(helloAssoLink);
 
-    // Validation lien HelloAsso
     if (
       !validator.isURL(helloAssoLink, {
         protocols: ["http", "https"],
@@ -43,14 +40,12 @@ export const createEvent = async (req, res) => {
       return res.status(400).json({ message: "Lien HelloAsso invalide" });
     }
 
-    // Validation longueurs
     if (!validator.isLength(title, { min: 3, max: 200 })) {
       return res
         .status(400)
         .json({ message: "Le titre doit contenir 3-200 caractères" });
     }
 
-    // Validation dates
     if (!validator.isISO8601(startDate) || !validator.isISO8601(endDate)) {
       return res.status(400).json({ message: "Format de date invalide" });
     }
@@ -61,7 +56,6 @@ export const createEvent = async (req, res) => {
         .json({ message: "La date de début doit être avant la date de fin" });
     }
 
-    // Validation prix
     if (typeof price !== "number" || price < 0 || price > 10000) {
       return res.status(400).json({ message: "Prix invalide (0-10000)" });
     }
@@ -105,7 +99,7 @@ export const deleteEvent = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deleteEvent = await Event.findByIdAndDelete(id); // Ajout de 'await'
+    const deleteEvent = await Event.findByIdAndDelete(id);
 
     if (!deleteEvent) {
       return res.status(404).json({

@@ -1,7 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const eventService = {
-  // Récupérer le prochain événement
   async getNextEvent() {
     const res = await fetch(`${API_URL}/events/next`);
     if (!res.ok)
@@ -9,7 +8,6 @@ export const eventService = {
     return res.json();
   },
 
-  // Récupérer tous les événements
   async getAllEvents() {
     const res = await fetch(`${API_URL}/events`);
     if (!res.ok)
@@ -17,7 +15,6 @@ export const eventService = {
     return res.json();
   },
 
-  // Créer un événement (admin)
   async createEvent(eventData, authFetch) {
     const res = await authFetch(`${API_URL}/events`, {
       method: "POST",
@@ -28,7 +25,6 @@ export const eventService = {
     return res.json();
   },
 
-  // Modifier un événement (admin)
   async updateEvent(eventId, eventData, authFetch) {
     const res = await authFetch(`${API_URL}/events/${eventId}`, {
       method: "PUT",
@@ -40,7 +36,6 @@ export const eventService = {
     return res.json();
   },
 
-  // Supprimer un événement (admin)
   async deleteEvent(eventId, authFetch) {
     const res = await authFetch(`${API_URL}/events/${eventId}`, {
       method: "DELETE",

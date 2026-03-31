@@ -20,7 +20,7 @@ export default function Login() {
 
     try {
       await authService.login(pseudo, password);
-      login(); // Le cookie est automatiquement stocké
+      login(); 
       navigate('/home'); 
     } catch (err) {
       console.error(err);
@@ -40,17 +40,17 @@ export default function Login() {
       </nav>
 
       <main className="flex flex-col items-center justify-center grow mt-20 px-4 sm:px-6 md:px-10">
-        {/* --- Titre responsive --- */}
+      
         <h1 className="tracking-custom text-center text-3xl sm:text-4xl md:text-5xl underline font-bold mb-10 sm:mb-14 md:mb-18">
           CONNECTEZ-VOUS
         </h1>
 
-        {/* --- Formulaire de connexion --- */}
+      
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-md sm:max-w-lg md:max-w-2xl bg-[#3939394f] border-2 border-white rounded-[20px] p-6 sm:p-10 md:p-14 shadow-xl"
         >
-          {/* Champ pseudo */}
+         
           <div className="mb-8 sm:mb-10">
             <p className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 tracking-custom">Pseudo</p>
             <input
@@ -63,7 +63,7 @@ export default function Login() {
             />
           </div>
 
-          {/* Champ mot de passe */}
+       
           <div className="mb-8 sm:mb-10">
             <p className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 tracking-custom">Mot de passe</p>
             <input
@@ -76,12 +76,11 @@ export default function Login() {
             />
           </div>
 
-          {/* Message d'erreur */}
+         
           {error && (
             <p className="text-red-400 text-center font-semibold mb-5">{error}</p>
           )}
 
-          {/* Bouton centré */}
           <div className="flex justify-center mt-8 sm:mt-10">
             <button
               type="submit"

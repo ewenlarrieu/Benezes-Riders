@@ -4,7 +4,7 @@ import './styles/responsive/home.css';
 import './styles/responsive/photo.css';
 import './styles/responsive/events.css'
 
-// Lazy loading des pages
+
 const Home = lazy(() => import('./pages/Home'));
 const Photos = lazy(() => import('./pages/Photos'));
 const Events = lazy(() => import('./pages/Events'));
@@ -12,7 +12,6 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Login = lazy(() => import('./pages/Login'));
 const AlbumDetails = lazy(() => import('./pages/AlbumDetails'));
 
-// Composant de chargement
 const LoadingFallback = () => (
   <div className="min-h-screen bg-[#1D1D1B] flex items-center justify-center">
     <div className="text-center">
